@@ -8,19 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\dehaa\\.nuget\\packages\\": {}
+    "/Users/nauddrost/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dehaa\\Documents\\GitHub\\Project_B\\Project.csproj",
+      "projectUniqueName": "/Users/nauddrost/Documents/WorkShopRep/Project_B/Project.csproj",
       "projectName": "Project",
-      "projectPath": "C:\\Users\\dehaa\\Documents\\GitHub\\Project_B\\Project.csproj",
-      "packagesPath": "C:\\Users\\dehaa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dehaa\\Documents\\GitHub\\Project_B\\obj\\",
+      "projectPath": "/Users/nauddrost/Documents/WorkShopRep/Project_B/Project.csproj",
+      "packagesPath": "/Users/nauddrost/.nuget/packages/",
+      "outputPath": "/Users/nauddrost/Documents/WorkShopRep/Project_B/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\dehaa\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/nauddrost/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -59,7 +59,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.405\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.405/RuntimeIdentifierGraph.json"
       }
     }
   }
