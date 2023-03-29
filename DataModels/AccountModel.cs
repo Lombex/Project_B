@@ -3,6 +3,8 @@
 
 class AccountModel
 {
+    // Add is_disabled : true/false
+
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
@@ -22,9 +24,4 @@ class AccountModel
         Password = password;
         FullName = fullName;
     }
-
 }
-
-
-
-
