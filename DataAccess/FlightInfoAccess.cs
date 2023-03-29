@@ -1,4 +1,4 @@
-public class FlightInfoAccess
+static class FlightInfoAccess
 {
     
 }

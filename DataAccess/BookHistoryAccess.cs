@@ -1,4 +1,4 @@
-public class BookHistoryAccess
+static class BookHistoryAccess
 {
     
 }
