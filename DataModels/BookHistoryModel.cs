@@ -1,6 +1,9 @@
 using System.Text.Json.Serialization;
 
-class BookHistoryModel
+namespace DataModels
 {
-    
+    public class BookHistoryModel
+    {
+
+    }
 }

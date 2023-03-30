@@ -1,6 +1,9 @@
 using System.Text.Json.Serialization;
 
-class FlightInfoModel
+namespace DataModels
 {
-    
+    public class FlightInfoModel
+    {
+
+    }
 }

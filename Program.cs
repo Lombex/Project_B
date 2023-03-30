@@ -1,10 +1,17 @@
-﻿// See https://aka.ms/new-console-template for more information
-public class program
+﻿namespace MainSpace
 {
-    public static void Main()
+    public static class Program
     {
-        Console.WriteLine("Welcome to this amazing program");
-        Menu.Start();
+        public static void Main(string[] args)
+        {
+            // --- Menu --- //
+
+            /// --- Menu --- //
+
+            Console.Write("Input: ");
+            string? UserInput = Console.ReadLine();
+            Console.WriteLine(UserInput);
+        }
     }
 }
 
