@@ -5,12 +5,8 @@
         public static void Main(string[] args)
         {
             // --- Menu --- //
+            Menu.Start();
 
-            /// --- Menu --- //
-
-            Console.Write("Input: ");
-            string? UserInput = Console.ReadLine();
-            Console.WriteLine(UserInput);
         }
     }
 }
