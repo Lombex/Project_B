@@ -6,60 +6,56 @@ static class Menu
     //You could edit this to show different menus depending on the user's role
     static public void Start()
     {
-        List<string> main_menu_choises = new List<string>() {"Enter 1 to login", "Enter 2 to create accaunt", "Enter 3 to quit"};
-        foreach(string item in main_menu_choises)
+        List<string> main_menu_choises = new List<string>() { "Enter 1 to login", "Enter 2 to create account", "Enter 3 to quit" };
+        foreach (string item in main_menu_choises)
         {
             Console.WriteLine(item);
         }
         string input = Console.ReadLine();
 
-        if (input == "1")
+        switch (input)
         {
-            UserLogin.Start();
+            case "1":
+                UserLogin.Start();
+                break;
+            case "2":
+                Console.WriteLine("Welcome to 'make account'");
+                UserLogin.MakeAccount();
+                break;
+            case "3":
+                Console.WriteLine("Quitting application");
+                break;
+            default:
+                Console.WriteLine("Invalid input, please try again");
+                Start();
+                break;
         }
-        else if (input == "2")
-        {
-            Console.WriteLine("Welcome to 'make account'");
-            UserLogin.MakeAccount();
-        }
-        else if (input == "3")
-        {
-            Console.WriteLine("Quitting application");
-        }
-        else
-        {
-            Console.WriteLine("Invalid input, please try again");
-            Menu.Start();
-        }
-
     }
 
     static public void Account()
     {
-        List<string> main_account_choises = new List<string>() {"Enter 1 to book a flight", "Enter 2 to see bookings", "Enter 3 to log out"};
-        foreach(string item in main_account_choises)
+        List<string> main_account_choises = new List<string>() { "Enter 1 to book a flight", "Enter 2 to see bookings", "Enter 3 to log out" };
+        foreach (string item in main_account_choises)
         {
             Console.WriteLine(item);
         }
         string input = Console.ReadLine();
 
-        if (input == "1")
+        switch (input)
         {
-           ViewFlights.Menu();
+            case "1":
+                ViewFlights.Menu();
+                break;
+            case "2":
+                AccountFunctionaliy.Menu();
+                break;
+            case "3":
+                Start();
+                break;
+            default:
+                Console.WriteLine("Invalid input, please try again");
+                Account();
+                break;
         }
-        else if (input == "2")
-        {
-            AccountFunctionaliy.Menu();
-        }
-        else if (input == "3")
-        {
-            Menu.Start();
-        }
-        else
-        {
-            Console.WriteLine("Invalid input, please try again");
-            Menu.Account();
-        }
-        
     }
 }
