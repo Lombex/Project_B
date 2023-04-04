@@ -44,7 +44,7 @@ class AccountsLogic
         return _accounts.Find(i => i.Id == id);
     }
 
-    public AccountModel? CheckLogin(string email, string password)
+    public AccountModel? CheckLogin(string email, string? password)
     {
         if (email == null || password == null) throw new Exception("Both email and password are null");
         CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password);
