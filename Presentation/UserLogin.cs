@@ -10,17 +10,20 @@ static class UserLogin
         Console.WriteLine("Please enter your password");
         string? password = UserLogin.HidePassword();
         AccountModel? acc = accountsLogic.CheckLogin(email, password);
-        if (acc != null)
+        if(acc == null)
+        {
+            Console.WriteLine("No account found with that email and password");
+            Menu.Start();
+        }
+        else
         {
             Console.WriteLine("Welcome back " + acc.FullName);
             Console.WriteLine("Your email number is " + acc.EmailAddress);
             Menu.Account();
         }
-        else
-        {
-            Console.WriteLine("No account found with that email and password");
-            Menu.Start();
-        }
+
+        //Write some code to go back to the menu
+        //Menu.Start();
     }
     public static void MakeAccount()
     {
