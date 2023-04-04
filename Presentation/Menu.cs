@@ -15,6 +15,7 @@ static class Menu
     }
     static public void Start()
     {
+        Console.Clear();
         PrintBanner();
         List<string> main_menu_choises = new List<string>() { " Enter 1 to login", " Enter 2 to create account", " Enter 3 to quit" };
         Console.WriteLine("\n+-------------------------+");
@@ -46,6 +47,8 @@ static class Menu
 
     static public void Account()
     {
+        Console.Clear();
+        PrintBanner();
         List<string> main_account_choises = new List<string>() { " Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to log out" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_account_choises)
