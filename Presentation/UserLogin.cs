@@ -61,7 +61,7 @@ static class UserLogin
                 writer.Write(updatedJson);
                 writer.Close();
             }
-            Menu.Start();
+            Menu.Account();
         }
     }
 
