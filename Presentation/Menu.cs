@@ -15,6 +15,7 @@ static class Menu
     }
     static public void Start()
     {
+        Console.WriteLine("Welcome to");
         PrintBanner();
         List<string> main_menu_choises = new List<string>() { " Enter 1 to login", " Enter 2 to create account", " Enter 3 to quit" };
         Console.WriteLine("\n+-------------------------+");
@@ -31,6 +32,7 @@ static class Menu
                 UserLogin.Start();
                 break;
             case "2":
+                Console.Clear();
                 Console.WriteLine("Welcome to 'make account'");
                 UserLogin.MakeAccount();
                 break;
