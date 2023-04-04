@@ -10,7 +10,7 @@ static class UserLogin
         Console.WriteLine("Please enter your password");
         string? password = UserLogin.HidePassword();
         AccountModel? acc = accountsLogic.CheckLogin(email, password);
-        if(acc == null)
+        if (acc == null)
         {
             Console.WriteLine("No account found with that email and password");
             Menu.Start();
@@ -43,8 +43,7 @@ static class UserLogin
         }
         else
         {
-            string reader = File.ReadAllText("DataSources/accounts.json");
-            List<AccountModel> dataList = JsonConvert.DeserializeObject<List<AccountModel>>(reader)!;
+            List<AccountModel> dataList = AccountsAccess.LoadAll();
             if (dataList.Any(data => data.EmailAddress == email))
                 Console.WriteLine("An account with the same email address already exists. Please choose a different email address.");
 
@@ -53,10 +52,7 @@ static class UserLogin
                 int highestId = dataList.Max(data => data.Id);
                 AccountModel newData = new AccountModel(highestId + 1, email, password_1, full_name);
                 dataList.Add(newData);
-                string updatedJson = JsonConvert.SerializeObject(dataList, Formatting.Indented);
-                StreamWriter writer = new("DataSources/accounts.json");
-                writer.Write(updatedJson);
-                writer.Close();
+                AccountsAccess.WriteAll(dataList);
             }
             Menu.Account();
         }

@@ -66,7 +66,7 @@ static class Menu
                 ViewFlights.Menu();
                 break;
             case "2":
-                AccountFunctionaliy.Menu();
+                AccountFunctionality.Menu();
                 break;
             case "3":
                 Start();
