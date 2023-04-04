@@ -1,4 +1,7 @@
 using Newtonsoft.Json;
+using System.Text;
+using System.Security.Cryptography;
+
 static class UserLogin
 {
     static private AccountsLogic accountsLogic = new AccountsLogic();
@@ -9,7 +12,7 @@ static class UserLogin
         string email = Console.ReadLine()!;
         Console.WriteLine("Please enter your password");
         string? password = UserLogin.HidePassword();
-        AccountModel? acc = accountsLogic.CheckLogin(email, password);
+        AccountModel? acc = accountsLogic.CheckLogin(email, GetHashedSHA256(password));
         if(acc == null)
         {
             Console.WriteLine("No account found with that email and password");
@@ -51,7 +54,7 @@ static class UserLogin
             else
             {
                 int highestId = dataList.Max(data => data.Id);
-                AccountModel newData = new AccountModel(highestId + 1, email, password_1, full_name);
+                AccountModel newData = new AccountModel(highestId + 1, email, GetHashedSHA256(password_1), full_name);
                 dataList.Add(newData);
                 string updatedJson = JsonConvert.SerializeObject(dataList, Formatting.Indented);
                 StreamWriter writer = new("DataSources/accounts.json");
@@ -87,5 +90,15 @@ static class UserLogin
         }
         Console.WriteLine();
         return password;
+    }
+    public static string GetHashedSHA256(string password)
+    {
+        using (SHA256 sha256Hash = SHA256.Create())
+        {
+            byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));   
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < bytes.Length; i++) builder.Append(bytes[i].ToString("x2"));
+            return builder.ToString();
+        }
     }
 }

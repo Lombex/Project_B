@@ -15,7 +15,7 @@ public class Admin : User
     {
         foreach (AccountModel User in AccountsAccess.LoadAll())
         {
-            if (User.EmailAddress == EmailAddress) User.Password = ChangedPassword;
+            if (User.EmailAddress == EmailAddress) User.Password = UserLogin.GetHashedSHA256(ChangedPassword);
             else throw new Exception("This user doesnt exist!");
         }
     }
