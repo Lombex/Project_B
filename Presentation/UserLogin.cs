@@ -10,7 +10,7 @@ static class UserLogin
         Console.WriteLine("Please enter your email address");
         string email = Console.ReadLine()!;
         Console.WriteLine("Please enter your password");
-        string? password = Console.ReadLine();
+        string? password = UserLogin.HidePassword();
         AccountModel? acc = accountsLogic.CheckLogin(email, password);
         if(acc == null)
         {
@@ -32,9 +32,9 @@ static class UserLogin
         Console.WriteLine("Please enter your email address");
         string email = Console.ReadLine()!;
         Console.WriteLine("Please enter your password");
-        string password_1 = Console.ReadLine()!;
+        string password_1 = UserLogin.HidePassword();
         Console.WriteLine("Please enter your password again");
-        string password_2 = Console.ReadLine()!;
+        string password_2 = UserLogin.HidePassword();
 
         if (password_1 != password_2)
         {
@@ -58,7 +58,35 @@ static class UserLogin
                 writer.Write(updatedJson);
                 writer.Close();
             }
-            Menu.Start();
+            Menu.Account();
         }
+    }
+
+    public static string HidePassword()
+    {
+        string password = "";
+        ConsoleKeyInfo info = Console.ReadKey(true);
+        while (info.Key != ConsoleKey.Enter)
+        {
+            if (info.Key != ConsoleKey.Backspace)
+            {
+                Console.Write("*");
+                password += info.KeyChar;
+            }
+            else if (info.Key == ConsoleKey.Backspace)
+            {
+                if (!string.IsNullOrEmpty(password))
+                {
+                    password = password.Substring(0, password.Length - 1);
+                    int pos = Console.CursorLeft;
+                    Console.SetCursorPosition(pos - 1, Console.CursorTop);
+                    Console.Write(" ");
+                    Console.SetCursorPosition(pos - 1, Console.CursorTop);
+                }
+            }
+            info = Console.ReadKey(true);
+        }
+        Console.WriteLine();
+        return password;
     }
 }

@@ -15,7 +15,7 @@ static class Menu
     }
     static public void Start()
     {
-        Console.WriteLine("Welcome to");
+        Console.Clear();
         PrintBanner();
         List<string> main_menu_choises = new List<string>() { " Enter 1 to login", " Enter 2 to create account", " Enter 3 to quit" };
         Console.WriteLine("\n+-------------------------+");
@@ -24,6 +24,7 @@ static class Menu
             Console.WriteLine(item);
         }
         Console.WriteLine("+-------------------------+");
+        Console.Write(">> ");
         string input = Console.ReadLine()!;
 
         switch (input)
@@ -32,7 +33,6 @@ static class Menu
                 UserLogin.Start();
                 break;
             case "2":
-                Console.Clear();
                 Console.WriteLine("Welcome to 'make account'");
                 UserLogin.MakeAccount();
                 break;
@@ -48,6 +48,8 @@ static class Menu
 
     static public void Account()
     {
+        Console.Clear();
+        PrintBanner();
         List<string> main_account_choises = new List<string>() { " Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to log out" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_account_choises)
@@ -55,6 +57,7 @@ static class Menu
             Console.WriteLine(item);
         }
         Console.WriteLine("+-------------------------+");
+        Console.Write(">> ");
         string input = Console.ReadLine()!;
 
         switch (input)
