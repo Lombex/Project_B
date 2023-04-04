@@ -16,11 +16,13 @@ static class Menu
     static public void Start()
     {
         PrintBanner();
-        List<string> main_menu_choises = new List<string>() { "Enter 1 to login", "Enter 2 to create account", "Enter 3 to quit" };
+        List<string> main_menu_choises = new List<string>() { " Enter 1 to login", " Enter 2 to create account", " Enter 3 to quit" };
+        Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_menu_choises)
         {
             Console.WriteLine(item);
         }
+        Console.WriteLine("+-------------------------+");
         string input = Console.ReadLine()!;
 
         switch (input)
@@ -44,11 +46,13 @@ static class Menu
 
     static public void Account()
     {
-        List<string> main_account_choises = new List<string>() { "Enter 1 to book a flight", "Enter 2 to see bookings", "Enter 3 to log out" };
+        List<string> main_account_choises = new List<string>() { " Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to log out" };
+        Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_account_choises)
         {
             Console.WriteLine(item);
         }
+        Console.WriteLine("+-------------------------+");
         string input = Console.ReadLine()!;
 
         switch (input)
