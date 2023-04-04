@@ -4,8 +4,18 @@ static class Menu
     //This shows the menu. You can call back to this method to show the menu again
     //after another presentation method is completed.
     //You could edit this to show different menus depending on the user's role
+    static public void PrintBanner()
+    {
+        Console.WriteLine(" _____       _   _               _                            _      _ _  ");
+        Console.WriteLine("|  __ \\     | | | |             | |                     /\\   (_)    | (_) ");
+        Console.WriteLine("| |__) |___ | |_| |_ ___ _ __ __| | __ _ _ __ ___      /  \\   _ _ __| |_ _ __   ___  ___ ");
+        Console.WriteLine("|  _  // _ \\| __| __/ _ \\ '__/ _` |/ _` | '_ ` _ \\    / /\\ \\ | | '__| | | '_ \\ / _ \\/ __|");
+        Console.WriteLine("| | \\ \\ (_) | |_| ||  __/ | | (_| | (_| | | | | | |  / ____ \\| | |  | | | | | |  __/\\_ \"");
+        Console.WriteLine("|_|  \\_\\___/ \\__|\\__\\___|_|  \\__,_|\\__,_|_| |_| |_| /_/    \\_\\_|_|  |_|_|_| |_|\\___||___/");
+    }
     static public void Start()
     {
+        PrintBanner();
         List<string> main_menu_choises = new List<string>() { "Enter 1 to login", "Enter 2 to create account", "Enter 3 to quit" };
         foreach (string item in main_menu_choises)
         {
