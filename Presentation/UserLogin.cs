@@ -17,9 +17,12 @@ static class UserLogin
             Console.WriteLine("No account found with that email and password");
             Menu.Start();
         }
-        Console.WriteLine("Welcome back " + acc.FullName);
-        Console.WriteLine("Your email number is " + acc.EmailAddress);
-        Menu.Account();
+        else
+        {
+            Console.WriteLine("Welcome back " + acc.FullName);
+            Console.WriteLine("Your email number is " + acc.EmailAddress);
+            Menu.Account();
+        }
 
         //Write some code to go back to the menu
         //Menu.Start();
