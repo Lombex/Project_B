@@ -24,6 +24,7 @@ static class Menu
             Console.WriteLine(item);
         }
         Console.WriteLine("+-------------------------+");
+        Console.Write(">> ");
         string input = Console.ReadLine()!;
 
         switch (input)
@@ -56,6 +57,7 @@ static class Menu
             Console.WriteLine(item);
         }
         Console.WriteLine("+-------------------------+");
+        Console.Write(">> ");
         string input = Console.ReadLine()!;
 
         switch (input)
