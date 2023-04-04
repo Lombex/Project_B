@@ -3,16 +3,16 @@
 
 public class AccountModel
 {
-    [JsonPropertyName("id")]
+    [JsonPropertyName("Id")]
     public int Id { get; set; }
 
-    [JsonPropertyName("emailAddress")]
+    [JsonPropertyName("EmailAddress")]
     public string EmailAddress { get; set; }
 
-    [JsonPropertyName("password")]
+    [JsonPropertyName("Password")]
     public string Password { get; set; }
 
-    [JsonPropertyName("fullName")]
+    [JsonPropertyName("FullName")]
     public string FullName { get; set; }
 
     // [JsonPropertyName("hasdisability")]
