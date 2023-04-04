@@ -1,4 +1,4 @@
-public class AccountFunctionaliy
+public class AccountFunctionality
 {
     public static void Menu()
     {

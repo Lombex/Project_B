@@ -1,4 +1,4 @@
-public class BookHistory
+public class BookHistoryLogic
 {
     // private field (list) with json info 
 

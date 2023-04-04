@@ -2,8 +2,6 @@ using Newtonsoft.Json;
 static class UserLogin
 {
     static private AccountsLogic accountsLogic = new AccountsLogic();
-
-
     public static void Start()
     {
         Console.WriteLine("Welcome to the login page");
@@ -24,7 +22,6 @@ static class UserLogin
             Menu.Start();
         }
     }
-
     public static void MakeAccount()
     {
         Console.WriteLine("Please enter your full name");
@@ -61,7 +58,6 @@ static class UserLogin
             Menu.Account();
         }
     }
-
     public static string HidePassword()
     {
         string password = "";
