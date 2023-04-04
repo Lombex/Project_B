@@ -8,9 +8,9 @@ static class UserLogin
     {
         Console.WriteLine("Welcome to the login page");
         Console.WriteLine("Please enter your email address");
-        string email = Console.ReadLine();
+        string email = Console.ReadLine()!;
         Console.WriteLine("Please enter your password");
-        string password = Console.ReadLine();
+        string password = Console.ReadLine()!;
         AccountModel acc = accountsLogic.CheckLogin(email, password);
         if (acc != null)
         {
@@ -31,13 +31,13 @@ static class UserLogin
     public static void MakeAccount()
     {
         Console.WriteLine("Please enter your full name");
-        string full_name = Console.ReadLine();
+        string full_name = Console.ReadLine()!;
         Console.WriteLine("Please enter your email address");
-        string email = Console.ReadLine();
+        string email = Console.ReadLine()!;
         Console.WriteLine("Please enter your password");
-        string password_1 = Console.ReadLine();
+        string password_1 = Console.ReadLine()!;
         Console.WriteLine("Please enter your password again");
-        string password_2 = Console.ReadLine();
+        string password_2 = Console.ReadLine()!;
 
         if (password_1 != password_2)
         {
@@ -47,7 +47,7 @@ static class UserLogin
         else
         {
             string reader = File.ReadAllText("DataSources/accounts.json");
-            List<AccountModel> dataList = JsonConvert.DeserializeObject<List<AccountModel>>(reader);
+            List<AccountModel> dataList = JsonConvert.DeserializeObject<List<AccountModel>>(reader)!;
             if (dataList.Any(data => data.EmailAddress == email))
                 Console.WriteLine("An account with the same email address already exists. Please choose a different email address.");
 

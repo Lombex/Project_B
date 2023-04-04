@@ -11,7 +11,7 @@ static class Menu
         {
             Console.WriteLine(item);
         }
-        string input = Console.ReadLine();
+        string input = Console.ReadLine()!;
 
         switch (input)
         {
@@ -39,7 +39,7 @@ static class Menu
         {
             Console.WriteLine(item);
         }
-        string input = Console.ReadLine();
+        string input = Console.ReadLine()!;
 
         switch (input)
         {
