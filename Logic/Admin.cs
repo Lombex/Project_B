@@ -19,7 +19,8 @@ public class Admin : User
             {
                 User.Password = AccountsLogic.GetHashedSHA256(ChangedPassword);
                 Menu.AdminAccount();
-            } else
+            }
+            else
             {
                 Console.WriteLine("This Account does either not exists or does not match with given input!");
                 Menu.AdminAccount();
@@ -28,7 +29,7 @@ public class Admin : User
     }
 
     // Create new account method 
-    public void create_account()
+    public void Create_account()
     {
         UserLogin.MakeAccount(true);
     }

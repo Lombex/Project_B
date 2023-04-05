@@ -81,7 +81,7 @@ static class Menu
         Console.Clear();
         PrintBanner();
 
-        Admin admin = new Admin();  
+        Admin admin = new Admin();
 
         List<string> admin_account_choices = new List<string>() { " Enter 1 to create user account", " Enter 2 to change user password", " Enter 3 to log out" };
         Console.WriteLine("\n+-------------------------+");
@@ -95,14 +95,14 @@ static class Menu
         switch (input)
         {
             case "1":
-                admin.create_account();
+                admin.Create_account();
                 break;
             case "2":
                 Console.Write("Please enter an email\n>>");
-                var email_adres = Console.ReadLine();
+                var email_address = Console.ReadLine();
                 Console.WriteLine("Please enter an password\n>>");
                 var password = Console.ReadLine();
-                admin.ChangeUserPassword(email_adres, password);
+                admin.ChangeUserPassword(email_address!, password!);
                 break;
             case "3":
                 Menu.Start();

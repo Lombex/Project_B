@@ -1,6 +1,3 @@
-using Newtonsoft.Json;
-using System.Text;
-
 static class UserLogin
 {
     static private AccountsLogic accountsLogic = new AccountsLogic();
@@ -12,7 +9,7 @@ static class UserLogin
         Console.WriteLine("Please enter your password");
         string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
         AccountModel? acc = accountsLogic.CheckLogin(email, password);
-        if(acc == null)
+        if (acc == null)
         {
             Console.Clear();
             Console.WriteLine("No account found with that email and password (Press enter to continue)");
@@ -22,7 +19,7 @@ static class UserLogin
         {
             Console.Clear();
             Console.WriteLine("Welcome back " + acc.FullName);
-            Console.WriteLine("Your email number is " + acc.EmailAddress);
+            Console.WriteLine("Your email address is " + acc.EmailAddress);
             if (acc.IsAdmin) Menu.AdminAccount();
             else Menu.Account();
         }
@@ -56,13 +53,13 @@ static class UserLogin
                 dataList.Add(newData);
                 AccountsAccess.WriteAll(dataList);
             }
-            if (!is_admin) 
+            if (!is_admin)
             {
                 Menu.Account();
             }
             else Menu.AdminAccount();
         }
     }
-    
-    
+
+
 }
