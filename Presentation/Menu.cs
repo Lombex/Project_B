@@ -76,4 +76,41 @@ static class Menu
                 break;
         }
     }
+
+    public static void AdminAccount()
+    {
+        Console.Clear();
+        PrintBanner();
+
+        Admin admin = new Admin();  
+
+        List<string> admin_account_choises = new List<string>() { " Enter 1 to create user account", " Enter 2 to check user password", " Enter 3 to change user password", "Enter 4 to log out" };
+
+        string input = Console.ReadLine()!;
+        switch (input)
+        {
+            case "1":
+                admin.create_account();
+                break;
+            case "2":
+                Console.WriteLine("Please enter an email\n>>");
+                var email = Console.ReadLine();
+                admin.CheckUserPassword(email);
+                break;
+            case "3":
+                Console.WriteLine("Please enter an email\n>>");
+                var email_adres = Console.ReadLine();
+                Console.WriteLine("Please enter an password\n>>");
+                var password = Console.ReadLine();
+                admin.ChangeUserPassword(email_adres, password);
+                break;
+            case "4":
+                Menu.Start();
+                break;
+            default:
+                Console.WriteLine("Invalid input, please try again");
+                Account();
+                break;
+        }
+    }
 }
