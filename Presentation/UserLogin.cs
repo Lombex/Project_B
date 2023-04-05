@@ -25,7 +25,7 @@ static class UserLogin
             Menu.Account();
         }
     }
-    public static void MakeAccount()
+    public static void MakeAccount(bool is_admin)
     {
         Console.WriteLine("Please enter your full name");
         string full_name = Console.ReadLine()!;
@@ -39,7 +39,7 @@ static class UserLogin
         if (password_1 != password_2)
         {
             Console.WriteLine("Password is not the same, please try again..");
-            UserLogin.MakeAccount();
+            UserLogin.MakeAccount(false);
         }
         else
         {
@@ -54,7 +54,10 @@ static class UserLogin
                 dataList.Add(newData);
                 AccountsAccess.WriteAll(dataList);
             }
-            Menu.Account();
+            if (is_admin == false)
+            {
+                Menu.Account();
+            }
         }
     }
     public static string HidePassword()

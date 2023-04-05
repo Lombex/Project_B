@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
 public class Admin : User
 {
-    // Create new account method 
 
     // Create new method edit customer account data
 
@@ -11,6 +10,9 @@ public class Admin : User
 
     // Create new method change flight data
 
+
+
+    // Change user password function 
     public void ChangeUserPassword(string EmailAddress, string ChangedPassword)
     {
         foreach (AccountModel User in AccountsAccess.LoadAll())
@@ -19,6 +21,8 @@ public class Admin : User
             else throw new Exception("This user doesnt exist!");
         }
     }
+
+    // Check user password password
     public string CheckUserPassword(string EmailAddress)
     {
         foreach (AccountModel User in AccountsAccess.LoadAll())
@@ -27,6 +31,12 @@ public class Admin : User
             else throw new Exception("Email does not exists");
         }
         return null!;
+    }
+
+    // Create new account method 
+    public void create_account()
+    {
+        UserLogin.MakeAccount(true);
     }
 
 }

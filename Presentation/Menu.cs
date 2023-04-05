@@ -33,8 +33,8 @@ static class Menu
                 UserLogin.Start();
                 break;
             case "2":
-                Console.WriteLine("Welcome to 'make account'");
-                UserLogin.MakeAccount();
+                Console.WriteLine("Welcome to 'create account'");
+                UserLogin.MakeAccount(false);
                 break;
             case "3":
                 Console.WriteLine("Quitting application");
