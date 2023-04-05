@@ -56,7 +56,11 @@ static class UserLogin
                 dataList.Add(newData);
                 AccountsAccess.WriteAll(dataList);
             }
-            if (!is_admin) Menu.Account();
+            if (!is_admin) 
+            {
+                Menu.Account();
+            }
+            else Menu.AdminAccount();
         }
     }
     
