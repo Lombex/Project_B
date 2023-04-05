@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using System.Text;
-using System.Security.Cryptography;
 
 static class UserLogin
 {
@@ -11,7 +10,7 @@ static class UserLogin
         Console.WriteLine("Please enter your email address");
         string email = Console.ReadLine()!;
         Console.WriteLine("Please enter your password");
-        string? password = GetHashedSHA256(UserLogin.HidePassword());
+        string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
         AccountModel? acc = accountsLogic.CheckLogin(email, password);
         if(acc == null)
         {
@@ -34,9 +33,9 @@ static class UserLogin
         Console.WriteLine("Please enter your email address");
         string email = Console.ReadLine()!;
         Console.WriteLine("Please enter your password");
-        string password_1 = GetHashedSHA256(UserLogin.HidePassword());
+        string password_1 = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
         Console.WriteLine("Please enter your password again");
-        string password_2 = GetHashedSHA256(UserLogin.HidePassword());
+        string password_2 = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
 
         if (password_1 != password_2)
         {
@@ -62,41 +61,6 @@ static class UserLogin
             }
         }
     }
-    public static string HidePassword()
-    {
-        string password = "";
-        ConsoleKeyInfo info = Console.ReadKey(true);
-        while (info.Key != ConsoleKey.Enter)
-        {
-            if (info.Key != ConsoleKey.Backspace)
-            {
-                Console.Write("*");
-                password += info.KeyChar;
-            }
-            else if (info.Key == ConsoleKey.Backspace)
-            {
-                if (!string.IsNullOrEmpty(password))
-                {
-                    password = password.Substring(0, password.Length - 1);
-                    int pos = Console.CursorLeft;
-                    Console.SetCursorPosition(pos - 1, Console.CursorTop);
-                    Console.Write(" ");
-                    Console.SetCursorPosition(pos - 1, Console.CursorTop);
-                }
-            }
-            info = Console.ReadKey(true);
-        }
-        Console.WriteLine();
-        return password;
-    }
-    public static string GetHashedSHA256(string password)
-    {
-        using (SHA256 sha256Hash = SHA256.Create())
-        {
-            byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));   
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < bytes.Length; i++) builder.Append(bytes[i].ToString("x2"));
-            return builder.ToString();
-        }
-    }
+    
+    
 }
