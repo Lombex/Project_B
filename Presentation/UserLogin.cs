@@ -15,11 +15,13 @@ static class UserLogin
         AccountModel? acc = accountsLogic.CheckLogin(email, password);
         if(acc == null)
         {
-            Console.WriteLine("No account found with that email and password");
+            Console.Clear();
+            Console.WriteLine("No account found with that email and password (Press enter to continue)");
             Menu.Start();
         }
         else
         {
+            Console.Clear();
             Console.WriteLine("Welcome back " + acc.FullName);
             Console.WriteLine("Your email number is " + acc.EmailAddress);
             Menu.Account();
@@ -50,11 +52,11 @@ static class UserLogin
             else
             {
                 int highestId = dataList.Max(data => data.Id);
-                AccountModel newData = new AccountModel(highestId + 1, email, password_1, full_name);
+                AccountModel newData = new AccountModel(highestId + 1, email, password_1, full_name); // admin is automaticly false
                 dataList.Add(newData);
                 AccountsAccess.WriteAll(dataList);
             }
-            if (is_admin == false)
+            if (!is_admin)
             {
                 Menu.Account();
             }

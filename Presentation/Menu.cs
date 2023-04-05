@@ -14,15 +14,11 @@ static class Menu
     }
     static public void Start()
     {
-        Console.Clear();
         PrintBanner();
         Console.WriteLine("\n!! In this application, please press the 'Enter' button every time you want to confirm !!");
         List<string> main_menu_choises = new List<string>() { " Enter 1 to login", " Enter 2 to create account", " Enter 3 to quit" };
         Console.WriteLine("\n+-------------------------+");
-        foreach (string item in main_menu_choises)
-        {
-            Console.WriteLine(item);
-        }
+        foreach (string item in main_menu_choises) Console.WriteLine(item);   
         Console.WriteLine("+-------------------------+");
         Console.Write(">> ");
         string input = Console.ReadLine()!;
@@ -51,10 +47,7 @@ static class Menu
         PrintBanner();
         List<string> main_account_choises = new List<string>() { " Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to log out" };
         Console.WriteLine("\n+-------------------------+");
-        foreach (string item in main_account_choises)
-        {
-            Console.WriteLine(item);
-        }
+        foreach (string item in main_account_choises) Console.WriteLine(item);     
         Console.WriteLine("+-------------------------+");
         Console.Write(">> ");
         string input = Console.ReadLine()!;

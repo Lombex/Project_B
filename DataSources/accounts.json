@@ -1,20 +1,9 @@
 [
   {
     "Id": 1,
-    "EmailAddress": "n@b.c",
-    "Password": "xyz",
-    "FullName": "Nikola Tesla"
-  },
-  {
-    "Id": 2,
-    "EmailAddress": "t@b.c",
-    "Password": "xyz",
-    "FullName": "Thomas Edison"
-  },
-  {
-    "Id": 3,
-    "EmailAddress": "n.drost14@gmail.com",
-    "Password": "kloek",
-    "FullName": "Naud Drost"
+    "EmailAddress": "root@admin",
+    "Password": "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2",
+    "FullName": "root",
+    "IsAdmin": true
   }
 ]

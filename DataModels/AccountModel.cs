@@ -1,6 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-
-
 public class AccountModel
 {
     [JsonPropertyName("Id")]
@@ -15,6 +13,9 @@ public class AccountModel
     [JsonPropertyName("FullName")]
     public string FullName { get; set; }
 
+    [JsonPropertyName("IsAdmin")]
+    public bool IsAdmin { get; set; }
+
     // [JsonPropertyName("hasdisability")]
     // public bool HasDisability { get; set; } // When a person has a disability
 
@@ -24,12 +25,14 @@ public class AccountModel
     // [JsonPropertyName("childamount")]
     // public int ChildAmount { get; set; } // Amount of children getting booked
 
-    public AccountModel(int id, string emailAddress, string password, string fullName)
+    public AccountModel(int id, string emailAddress, string password, string fullName, bool isadmin = false)
     {
         Id = id;
         EmailAddress = emailAddress;
         Password = password;
         FullName = fullName;
+        IsAdmin = isadmin;  
+        //IsAdmin = adminpermissions;
         // HasDisability = hasdisability;
         // HasChildren = haschildren;
         // ChildAmount = childamount;
