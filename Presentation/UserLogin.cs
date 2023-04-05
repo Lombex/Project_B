@@ -23,7 +23,8 @@ static class UserLogin
             Console.Clear();
             Console.WriteLine("Welcome back " + acc.FullName);
             Console.WriteLine("Your email number is " + acc.EmailAddress);
-            Menu.Account();
+            if (acc.IsAdmin) Menu.AdminAccount();
+            else Menu.Account();
         }
     }
     public static void MakeAccount(bool is_admin)
@@ -55,10 +56,7 @@ static class UserLogin
                 dataList.Add(newData);
                 AccountsAccess.WriteAll(dataList);
             }
-            if (!is_admin)
-            {
-                Menu.Account();
-            }
+            if (!is_admin) Menu.Account();
         }
     }
     
