@@ -35,9 +35,9 @@ static class UserLogin
         Console.WriteLine("Please enter your email address");
         string email = Console.ReadLine()!;
         Console.WriteLine("Please enter your password");
-        string password_1 = UserLogin.HidePassword();
+        string password_1 = GetHashedSHA256(UserLogin.HidePassword());
         Console.WriteLine("Please enter your password again");
-        string password_2 = UserLogin.HidePassword();
+        string password_2 = GetHashedSHA256(UserLogin.HidePassword());
 
         if (password_1 != password_2)
         {
