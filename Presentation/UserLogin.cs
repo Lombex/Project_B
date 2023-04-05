@@ -11,8 +11,8 @@ static class UserLogin
         Console.WriteLine("Please enter your email address");
         string email = Console.ReadLine()!;
         Console.WriteLine("Please enter your password");
-        string? password = UserLogin.HidePassword();
-        AccountModel? acc = accountsLogic.CheckLogin(email, GetHashedSHA256(password));
+        string? password = GetHashedSHA256(UserLogin.HidePassword());
+        AccountModel? acc = accountsLogic.CheckLogin(email, password);
         if(acc == null)
         {
             Console.WriteLine("No account found with that email and password");
@@ -24,9 +24,6 @@ static class UserLogin
             Console.WriteLine("Your email number is " + acc.EmailAddress);
             Menu.Account();
         }
-
-        //Write some code to go back to the menu
-        //Menu.Start();
     }
     public static void MakeAccount()
     {
@@ -53,7 +50,7 @@ static class UserLogin
             else
             {
                 int highestId = dataList.Max(data => data.Id);
-                AccountModel newData = new AccountModel(highestId + 1, email, GetHashedSHA256(password_1), full_name);
+                AccountModel newData = new AccountModel(highestId + 1, email, password_1, full_name);
                 dataList.Add(newData);
                 AccountsAccess.WriteAll(dataList);
             }

@@ -46,7 +46,7 @@ class AccountsLogic
 
     public AccountModel? CheckLogin(string email, string? password)
     {
-        if (email == null || password == null) throw new Exception("Both email and password are null");
+        if (email == null || password == null) throw new Exception("Either email or password is null");
         CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password);
         return CurrentAccount;
     }
