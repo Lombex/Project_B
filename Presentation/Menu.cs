@@ -17,9 +17,9 @@ static class Menu
         Console.Clear();
         PrintBanner();
         Console.WriteLine("\n!! In this application, please press the 'Enter' button every time you want to confirm !!");
-        List<string> main_menu_choises = new List<string>() { " Enter 1 to login", " Enter 2 to create account", " Enter 3 to quit" };
+        List<string> main_menu_choices = new List<string>() { " Enter 1 to login", " Enter 2 to create account", " Enter 3 to quit" };
         Console.WriteLine("\n+-------------------------+");
-        foreach (string item in main_menu_choises)
+        foreach (string item in main_menu_choices)
         {
             Console.WriteLine(item);
         }
@@ -49,9 +49,9 @@ static class Menu
     {
         Console.Clear();
         PrintBanner();
-        List<string> main_account_choises = new List<string>() { " Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to log out" };
+        List<string> main_account_choices = new List<string>() { " Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to log out" };
         Console.WriteLine("\n+-------------------------+");
-        foreach (string item in main_account_choises)
+        foreach (string item in main_account_choices)
         {
             Console.WriteLine(item);
         }
@@ -84,7 +84,7 @@ static class Menu
 
         Admin admin = new Admin();  
 
-        List<string> admin_account_choises = new List<string>() { " Enter 1 to create user account", " Enter 2 to check user password", " Enter 3 to change user password", "Enter 4 to log out" };
+        List<string> admin_account_choices = new List<string>() { " Enter 1 to create user account", " Enter 2 to check user password", " Enter 3 to change user password", "Enter 4 to log out" };
 
         string input = Console.ReadLine()!;
         switch (input)
