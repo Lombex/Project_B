@@ -24,7 +24,7 @@ static class UserLogin
             else Menu.Account();
         }
     }
-    
+
     public enum AccountType
     {
         User,
@@ -67,10 +67,10 @@ static class UserLogin
                     Menu.Account();
                     break;
                 case AccountType.Employee:
-                    // Show Employee Menu
+                    Menu.EmployeeAccount();
                     break;
                 case AccountType.Admin:
-                    Menu.AdminAccount(); 
+                    Menu.AdminAccount();
                     break;
             }
         }
