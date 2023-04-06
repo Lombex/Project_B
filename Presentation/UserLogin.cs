@@ -45,21 +45,15 @@ static class UserLogin
             List<AccountModel> dataList = AccountsAccess.LoadAll();
             if (dataList.Any(data => data.EmailAddress == email))
                 Console.WriteLine("An account with the same email address already exists. Please choose a different email address.");
-
             else
             {
                 int highestId = dataList.Max(data => data.Id);
-                AccountModel newData = new AccountModel(highestId + 1, email, password_1, full_name); // admin is automaticly false
+                AccountModel newData = new AccountModel(highestId + 1, email, password_1, full_name, is_admin); // admin is automaticly false
                 dataList.Add(newData);
                 AccountsAccess.WriteAll(dataList);
             }
-            if (!is_admin)
-            {
-                Menu.Account();
-            }
+            if (!is_admin) Menu.Account();        
             else Menu.AdminAccount();
         }
     }
-
-
 }

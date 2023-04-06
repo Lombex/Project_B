@@ -10,7 +10,6 @@ public class Admin : User
 
     // Create new method change flight data
 
-    // Change user password function 
     public void ChangeUserPassword(string EmailAddress, string ChangedPassword)
     {
         foreach (AccountModel User in AccountsAccess.LoadAll())
@@ -27,11 +26,19 @@ public class Admin : User
             }
         }
     }
-
-    // Create new account method 
     public void Create_account()
     {
-        UserLogin.MakeAccount(true);
+        Console.WriteLine("\n+-------------------------+");
+        Console.WriteLine("Choose your option and press enter");
+        Console.WriteLine("1. Create User Account\n2. Create Admin Account");
+        Console.WriteLine("+-------------------------+");
+        int Option = Convert.ToInt32(Console.ReadLine());
+        if (Option == 1) UserLogin.MakeAccount(false);
+        else if (Option == 2) UserLogin.MakeAccount(true);
+        else
+        {
+            Console.WriteLine("This is not an option please choose carefully!");
+            Create_account();
+        }
     }
-
 }
