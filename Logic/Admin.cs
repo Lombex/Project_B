@@ -30,11 +30,11 @@ public class Admin : User
     {
         Console.WriteLine("\n+-------------------------+");
         Console.WriteLine("Choose your option and press enter");
-        Console.WriteLine("1. Create User Account\n2. Create Admin Account");
+        Console.WriteLine("1. Create User Account\n2. Create Employee Account");
         Console.WriteLine("+-------------------------+");
         int Option = Convert.ToInt32(Console.ReadLine());
-        if (Option == 1) UserLogin.MakeAccount(false);
-        else if (Option == 2) UserLogin.MakeAccount(true);
+        if (Option == 1) UserLogin.MakeAccount(UserLogin.AccountType.User);
+        else if (Option == 2) UserLogin.MakeAccount(UserLogin.AccountType.Employee);
         else
         {
             Console.WriteLine("This is not an option please choose carefully!");

@@ -24,7 +24,14 @@ static class UserLogin
             else Menu.Account();
         }
     }
-    public static void MakeAccount(bool is_admin)
+    
+    public enum AccountType
+    {
+        User,
+        Employee,
+        Admin
+    }
+    public static void MakeAccount(AccountType type)
     {
         Console.WriteLine("Please enter your full name");
         string full_name = Console.ReadLine()!;
@@ -38,7 +45,7 @@ static class UserLogin
         if (password_1 != password_2)
         {
             Console.WriteLine("Password is not the same, please try again..");
-            UserLogin.MakeAccount(false);
+            UserLogin.MakeAccount(type);
         }
         else
         {
@@ -48,12 +55,24 @@ static class UserLogin
             else
             {
                 int highestId = dataList.Max(data => data.Id);
-                AccountModel newData = new AccountModel(highestId + 1, email, password_1, full_name, is_admin); // admin is automaticly false
+                bool IsEmployee = false;
+                if (type == AccountType.Employee) IsEmployee = true;
+                AccountModel newData = new AccountModel(highestId + 1, email, password_1, full_name, IsEmployee);
                 dataList.Add(newData);
                 AccountsAccess.WriteAll(dataList);
             }
-            if (!is_admin) Menu.Account();        
-            else Menu.AdminAccount();
+            switch (type)
+            {
+                case AccountType.User:
+                    Menu.Account();
+                    break;
+                case AccountType.Employee:
+                    // Show Employee Menu
+                    break;
+                case AccountType.Admin:
+                    Menu.AdminAccount(); 
+                    break;
+            }
         }
     }
 }
