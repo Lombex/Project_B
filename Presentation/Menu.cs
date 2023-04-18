@@ -77,7 +77,7 @@ static class Menu
 
         Admin admin = new Admin();
 
-        List<string> admin_account_choices = new List<string>() { " Enter 1 to create user/employee account", " Enter 2 to change user password", " Enter 3 to log out" };
+        List<string> admin_account_choices = new List<string>() { " Enter 1 to create user/employee account", " Enter 2 to change user password"," Enter 3 for flight management", " Enter 5 to log out" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in admin_account_choices) Console.WriteLine(item);
 
@@ -97,6 +97,10 @@ static class Menu
                 admin.ChangeUserPassword(email_address!, password!);
                 break;
             case "3":
+                Console.WriteLine("Add flight:");
+                admin.Add_flight();
+                break;
+            case "5":
                 Menu.Start();
                 break;
             default:

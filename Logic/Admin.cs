@@ -43,4 +43,33 @@ public class Admin : User
             Create_account();
         }
     }
+
+    public void Add_flight()
+    {
+        Console.WriteLine("Enter flight number\n>>");
+        string flight_number = Console.ReadLine();
+        Console.WriteLine("Enter Aircraft\n>>");
+        string aircraft = Console.ReadLine();
+        Console.WriteLine("Enter origin\n>>");
+        string origin = Console.ReadLine();
+        Console.WriteLine("Enter destination\n>>");
+        string destination = Console.ReadLine();
+        Console.WriteLine("Enter Date\n>>");
+        string date = Console.ReadLine();
+        Console.WriteLine("Enter flighttime (in hours)\n>>");
+        double flighttime = Convert.ToDouble(Console.ReadLine());
+        Console.WriteLine("Enter depart time (local)\n>>");
+        string departtime = Console.ReadLine();
+        Console.WriteLine("Enter arrival time (local)\n>>");
+        string arrivaltime = Console.ReadLine();
+        Console.WriteLine("Enter gate\n>>");
+        string gate = Console.ReadLine();
+
+        List<FlightInfoModel> dataList = FlightInfoAccess.LoadAll();
+        FlightInfoModel newFlight = new FlightInfoModel(flight_number, aircraft, origin, destination, date, flighttime, departtime, arrivaltime, gate);
+        dataList.Add(newFlight);
+        FlightInfoAccess.WriteAll(dataList);
+
+        Menu.AdminAccount();
+    }
 }
