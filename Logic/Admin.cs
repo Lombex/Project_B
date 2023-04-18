@@ -35,8 +35,8 @@ public class Admin : User
         Console.Write("1. Create User Account\n2. Create Employee Account\n>> ");
         Console.WriteLine("+-------------------------+");
         int Option = Convert.ToInt32(Console.ReadLine());
-        if (Option == 1) UserLogin.MakeAccount(UserLogin.AccountType.User);
-        else if (Option == 2) UserLogin.MakeAccount(UserLogin.AccountType.Employee);
+        if (Option == 1) UserLogin.MakeAccount(UserLogin.AccountType.User, false);
+        else if (Option == 2) UserLogin.MakeAccount(UserLogin.AccountType.Employee, false);
         else
         {
             Console.WriteLine("This is not an option please choose carefully!");

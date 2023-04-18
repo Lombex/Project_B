@@ -31,7 +31,7 @@ static class UserLogin
         Employee,
         Admin
     }
-    public static void MakeAccount(AccountType type)
+    public static void MakeAccount(AccountType type, bool back_to_menu)
     {
 
         Console.Write("Please enter your full name\n>> ");
@@ -46,7 +46,7 @@ static class UserLogin
         if (password_1 != password_2)
         {
             Console.WriteLine("Password is not the same, please try again..");
-            UserLogin.MakeAccount(type);
+            UserLogin.MakeAccount(type, true);
         }
         else
         {
@@ -60,6 +60,11 @@ static class UserLogin
                 dataList.Add(newData);
                 AccountsAccess.WriteAll(dataList);
             }
+            if (back_to_menu == false)
+            {
+                Menu.AdminAccount();
+            }
+            
             switch (type)
             {
                 case AccountType.User:
