@@ -3,10 +3,10 @@ static class UserLogin
     static private AccountsLogic accountsLogic = new AccountsLogic();
     public static void Start()
     {
-        Console.WriteLine("Welcome to the login page");
-        Console.WriteLine("Please enter your email address");
+        Console.Write("Welcome to the login page\n");
+        Console.Write("Please enter your email address\n>> ");
         string email = Console.ReadLine()!;
-        Console.WriteLine("Please enter your password");
+        Console.Write("Please enter your password\n>> ");
         string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
         AccountModel? acc = accountsLogic.CheckLogin(email, password);
         if (acc == null)
@@ -33,13 +33,14 @@ static class UserLogin
     }
     public static void MakeAccount(AccountType type)
     {
-        Console.WriteLine("Please enter your full name");
+
+        Console.Write("Please enter your full name\n>> ");
         string full_name = Console.ReadLine()!;
-        Console.WriteLine("Please enter your email address");
+        Console.Write("Please enter your email address\n>> ");
         string email = Console.ReadLine()!;
-        Console.WriteLine("Please enter your password");
+        Console.Write("Please enter your password\n>> ");
         string password_1 = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
-        Console.WriteLine("Please enter your password again");
+        Console.Write("Please enter your password again\n>> ");
         string password_2 = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
 
         if (password_1 != password_2)
@@ -55,9 +56,7 @@ static class UserLogin
             else
             {
                 int highestId = dataList.Max(data => data.Id);
-                bool IsEmployee = false;
-                if (type == AccountType.Employee) IsEmployee = true;
-                AccountModel newData = new AccountModel(highestId + 1, email, password_1, full_name, IsEmployee);
+                AccountModel newData = new AccountModel(highestId + 1, email, password_1, full_name); // admin is automatically false
                 dataList.Add(newData);
                 AccountsAccess.WriteAll(dataList);
             }
