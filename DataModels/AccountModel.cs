@@ -16,6 +16,9 @@ public class AccountModel
     [JsonPropertyName("IsAdmin")]
     public bool IsAdmin { get; set; }
 
+    [JsonPropertyName("IsEmployee")]
+    public bool IsEmployee { get; set; }
+
     // [JsonPropertyName("hasdisability")]
     // public bool HasDisability { get; set; } // When a person has a disability
 
@@ -25,17 +28,16 @@ public class AccountModel
     // [JsonPropertyName("childamount")]
     // public int ChildAmount { get; set; } // Amount of children getting booked
 
-    public AccountModel(int id, string emailAddress, string password, string fullName, bool isadmin = false)
+    public AccountModel(int id, string emailAddress, string password, string fullName, bool isemployee = false)
     {
         Id = id;
         EmailAddress = emailAddress;
         Password = password;
         FullName = fullName;
-        IsAdmin = isadmin;  
+        IsEmployee = isemployee;
         //IsAdmin = adminpermissions;
         // HasDisability = hasdisability;
         // HasChildren = haschildren;
         // ChildAmount = childamount;
     }
 }
-

@@ -1,4 +1,3 @@
-using System.Text;
 public class AccountFunctionality
 {
     public static void Menu()

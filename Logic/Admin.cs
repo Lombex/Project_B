@@ -10,7 +10,6 @@ public class Admin : User
 
     // Create new method change flight data
 
-    // Change user password function 
     public void ChangeUserPassword(string EmailAddress, string ChangedPassword)
     {
         foreach (AccountModel User in AccountsAccess.LoadAll())
@@ -19,18 +18,29 @@ public class Admin : User
             {
                 User.Password = AccountsLogic.GetHashedSHA256(ChangedPassword);
                 Menu.AdminAccount();
-            } else
+            }
+            else
             {
                 Console.WriteLine("This Account does either not exists or does not match with given input!");
                 Menu.AdminAccount();
             }
         }
     }
-
-    // Create new account method 
-    public void create_account()
+    public void Create_account()
     {
-        UserLogin.MakeAccount(true);
+        Console.Clear();
+        Menu.PrintBanner();
+        Console.WriteLine("\n+-------------------------+");
+        Console.WriteLine("Choose your option and press enter");
+        Console.Write("1. Create User Account\n2. Create Employee Account\n>> ");
+        Console.WriteLine("+-------------------------+");
+        int Option = Convert.ToInt32(Console.ReadLine());
+        if (Option == 1) UserLogin.MakeAccount(UserLogin.AccountType.User);
+        else if (Option == 2) UserLogin.MakeAccount(UserLogin.AccountType.Employee);
+        else
+        {
+            Console.WriteLine("This is not an option please choose carefully!");
+            Create_account();
+        }
     }
-
 }
