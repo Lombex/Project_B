@@ -33,7 +33,6 @@ static class UserLogin
     }
     public static void MakeAccount(AccountType type, bool back_to_menu)
     {
-
         Console.Write("Please enter your full name\n>> ");
         string full_name = Console.ReadLine()!;
         Console.Write("Please enter your email address\n>> ");
@@ -46,7 +45,7 @@ static class UserLogin
         if (password_1 != password_2)
         {
             Console.WriteLine("Password is not the same, please try again..");
-            UserLogin.MakeAccount(type, true);
+            UserLogin.MakeAccount(type, back_to_menu);
         }
         else
         {

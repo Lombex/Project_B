@@ -32,8 +32,8 @@ public class Admin : User
         Menu.PrintBanner();
         Console.WriteLine("\n+-------------------------+");
         Console.WriteLine("Choose your option and press enter");
-        Console.Write("1. Create User Account\n2. Create Employee Account\n>> ");
-        Console.WriteLine("+-------------------------+");
+        Console.Write("1. Create User Account\n2. Create Employee Account");
+        Console.WriteLine("+-------------------------+\n>> ");
         int Option = Convert.ToInt32(Console.ReadLine());
         if (Option == 1) UserLogin.MakeAccount(UserLogin.AccountType.User, false);
         else if (Option == 2) UserLogin.MakeAccount(UserLogin.AccountType.Employee, false);
@@ -46,23 +46,23 @@ public class Admin : User
     }
     public void Add_flight()
     {
-        Console.WriteLine("Enter flight number\n>>");
+        Console.Write("Enter flight number\n>>");
         string flight_number = Console.ReadLine()!;
-        Console.WriteLine("Enter Aircraft\n>>");
+        Console.Write("Enter Aircraft\n>>");
         string aircraft = Console.ReadLine()!;
-        Console.WriteLine("Enter origin\n>>");
+        Console.Write("Enter origin\n>>");
         string origin = Console.ReadLine()!;
-        Console.WriteLine("Enter destination\n>>");
+        Console.Write("Enter destination\n>>");
         string destination = Console.ReadLine()!;
-        Console.WriteLine("Enter Date\n>>");
+        Console.Write("Enter Date\n>>");
         string date = Console.ReadLine()!;
-        Console.WriteLine("Enter flighttime (in hours)\n>>");
+        Console.Write("Enter flighttime (in hours)\n>>");
         double flighttime = Convert.ToDouble(Console.ReadLine());
-        Console.WriteLine("Enter depart time (local)\n>>");
+        Console.Write("Enter depart time (local)\n>>");
         string departtime = Console.ReadLine()!;
-        Console.WriteLine("Enter arrival time (local)\n>>");
+        Console.Write("Enter arrival time (local)\n>>");
         string arrivaltime = Console.ReadLine()!;
-        Console.WriteLine("Enter gate\n>>");
+        Console.Write("Enter gate\n>>");
         string gate = Console.ReadLine()!;
 
         List<FlightInfoModel> dataList = FlightInfoAccess.LoadAll();
