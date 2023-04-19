@@ -37,33 +37,33 @@ public class Admin : User
         int Option = Convert.ToInt32(Console.ReadLine());
         if (Option == 1) UserLogin.MakeAccount(UserLogin.AccountType.User, false);
         else if (Option == 2) UserLogin.MakeAccount(UserLogin.AccountType.Employee, false);
+        else if (Option == 3) UserLogin.MakeAccount(UserLogin.AccountType.Admin, false);
         else
         {
             Console.WriteLine("This is not an option please choose carefully!");
             Create_account();
         }
     }
-
     public void Add_flight()
     {
         Console.WriteLine("Enter flight number\n>>");
-        string flight_number = Console.ReadLine();
+        string flight_number = Console.ReadLine()!;
         Console.WriteLine("Enter Aircraft\n>>");
-        string aircraft = Console.ReadLine();
+        string aircraft = Console.ReadLine()!;
         Console.WriteLine("Enter origin\n>>");
-        string origin = Console.ReadLine();
+        string origin = Console.ReadLine()!;
         Console.WriteLine("Enter destination\n>>");
-        string destination = Console.ReadLine();
+        string destination = Console.ReadLine()!;
         Console.WriteLine("Enter Date\n>>");
-        string date = Console.ReadLine();
+        string date = Console.ReadLine()!;
         Console.WriteLine("Enter flighttime (in hours)\n>>");
         double flighttime = Convert.ToDouble(Console.ReadLine());
         Console.WriteLine("Enter depart time (local)\n>>");
-        string departtime = Console.ReadLine();
+        string departtime = Console.ReadLine()!;
         Console.WriteLine("Enter arrival time (local)\n>>");
-        string arrivaltime = Console.ReadLine();
+        string arrivaltime = Console.ReadLine()!;
         Console.WriteLine("Enter gate\n>>");
-        string gate = Console.ReadLine();
+        string gate = Console.ReadLine()!;
 
         List<FlightInfoModel> dataList = FlightInfoAccess.LoadAll();
         FlightInfoModel newFlight = new FlightInfoModel(flight_number, aircraft, origin, destination, date, flighttime, departtime, arrivaltime, gate);
