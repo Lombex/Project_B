@@ -3,14 +3,41 @@ static class Menu
     //This shows the menu. You can call back to this method to show the menu again
     //after another presentation method is completed.
     //You could edit this to show different menus depending on the user's role
-    static public void PrintBanner()
+    static public int banner_number = 1;
+    static public void PrintBanner(bool print_all_options = false)
     {
-        Console.WriteLine(" _____       _   _               _                            _      _ _  ");
-        Console.WriteLine("|  __ \\     | | | |             | |                     /\\   (_)    | (_) ");
-        Console.WriteLine("| |__) |___ | |_| |_ ___ _ __ __| | __ _ _ __ ___      /  \\   _ _ __| |_ _ __   ___  ___ ");
-        Console.WriteLine("|  _  // _ \\| __| __/ _ \\ '__/ _` |/ _` | '_ ` _ \\    / /\\ \\ | | '__| | | '_ \\ / _ \\/ __|");
-        Console.WriteLine("| | \\ \\ (_) | |_| ||  __/ | | (_| | (_| | | | | | |  / ____ \\| | |  | | | | | |  __/\\_  \\");
-        Console.WriteLine("|_|  \\_\\___/ \\__|\\__\\___|_|  \\__,_|\\__,_|_| |_| |_| /_/    \\_\\_|_|  |_|_|_| |_|\\___||___/");
+        List<string> banner_options = new List<string>();
+        banner_options.Add(" _____       _   _               _                            _      _ _  \n|  __ \\     | | | |             | |                     /\\   (_)    | (_) \n| |__) |___ | |_| |_ ___ _ __ __| | __ _ _ __ ___      /  \\   _ _ __| |_ _ __   ___  ___ \n|  _  // _ \\| __| __/ _ \\ '__/ _` |/ _` | '_ ` _ \\    / /\\ \\ | | '__| | | '_ \\ / _ \\/ __|\n| | \\ \\ (_) | |_| ||  __/ | | (_| | (_| | | | | | |  / ____ \\| | |  | | | | | |  __/\\_  \\\n|_|  \\_\\___/ \\__|\\__\\___|_|  \\__,_|\\__,_|_| |_| |_| /_/    \\_\\_|_|  |_|_|_| |_|\\___||___/\n");
+        banner_options.Add("TEST banner 2");
+        banner_options.Add("TEST banner 3");
+        banner_options.Add("TEST banner 4");
+
+        if (print_all_options)
+        {
+            foreach(string banner in banner_options)
+            {
+                Console.WriteLine(banner);
+            }
+
+            Console.WriteLine("\n\nCurrent Banner: ");
+        }
+
+        switch (banner_number)
+        {
+            case 1:
+                Console.WriteLine(banner_options[0]);
+                break;
+            case 2:
+                Console.WriteLine(banner_options[1]);
+                break;
+            case 3: 
+                Console.WriteLine(banner_options[2]);
+                break;
+            case 4:
+                Console.WriteLine(banner_options[3]);
+                break;
+        }
+        
     }
     static public void Start()
     {
@@ -77,7 +104,7 @@ static class Menu
 
         Admin admin = new Admin();
 
-        List<string> admin_account_choices = new List<string>() { " Enter 1 to create user/employee account", " Enter 2 to change user password"," Enter 3 for flight management", " Enter 5 to log out" };
+        List<string> admin_account_choices = new List<string>() { " Enter 1 to create user/employee account", " Enter 2 to change user password"," Enter 3 for flight management", " Enter 4 to change banner/logo", " Enter 5 to log out" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in admin_account_choices) Console.WriteLine(item);
 
@@ -99,6 +126,15 @@ static class Menu
             case "3":
                 Console.WriteLine("Add flight:");
                 admin.Add_flight();
+                break;
+            case "4":
+                Console.WriteLine("This are all available banners: ");
+                PrintBanner(true);
+                Console.WriteLine("Choose a banner, type the number of the banner you want: \n>>");
+                int banner_choise = Convert.ToInt32(Console.ReadLine());
+                banner_number = banner_choise;
+                PrintBanner();
+                AdminAccount();
                 break;
             case "5":
                 Menu.Start();
