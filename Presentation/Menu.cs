@@ -72,7 +72,8 @@ static class Menu
     {
         Console.Clear();
         PrintBanner();
-        List<string> main_account_choices = new List<string>() { " Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to log out" };
+        Console.WriteLine("ACCOUNT MENU:");
+        List<string> main_account_choices = new List<string>() {" Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to log out" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_account_choices) Console.WriteLine(item);
 
@@ -101,6 +102,7 @@ static class Menu
     {
         Console.Clear();
         PrintBanner();
+        Console.WriteLine("ADMIN MENU:");
 
         Admin admin = new Admin();
 
@@ -149,6 +151,7 @@ static class Menu
     {
         Console.Clear();
         PrintBanner();
+        Console.WriteLine("EMPLOYEE MENU:");
 
         // Employee employee = new Employee();
 
