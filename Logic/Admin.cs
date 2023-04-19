@@ -32,7 +32,7 @@ public class Admin : User
         Menu.PrintBanner();
         Console.WriteLine("\n+-------------------------+");
         Console.WriteLine("Choose your option and press enter");
-        Console.Write("1. Create User Account\n2. Create Employee Account\n>> ");
+        Console.Write("1. Create User Account\n2. Create Employee Account\n3. Create Admin Account\n>> ");
         Console.WriteLine("+-------------------------+");
         int Option = Convert.ToInt32(Console.ReadLine());
         if (Option == 1) UserLogin.MakeAccount(UserLogin.AccountType.User, false);
