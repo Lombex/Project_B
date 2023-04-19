@@ -2,11 +2,7 @@
 {
     public static class Program
     {
-        public static void Main(string[] args)
-        {
-            Menu.Start();  
-
-        }
+        public static void Main(string[] args) => Menu.Start();
     }
 }
 

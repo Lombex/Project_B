@@ -44,7 +44,6 @@ public class Admin : User
             Create_account();
         }
     }
-
     public void Add_flight()
     {
         Console.WriteLine("Enter flight number\n>>");
