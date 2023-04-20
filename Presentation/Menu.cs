@@ -27,23 +27,10 @@ static class Menu
 
             Console.WriteLine("\nCurrent Banner: ");
         }
+        Console.WriteLine(banner_options[banner_number]);
 
-        switch (banner_number)
-        {
-            case 1:
-                Console.WriteLine(banner_options[0]);
-                break;
-            case 2:
-                Console.WriteLine(banner_options[1]);
-                break;
-            case 3: 
-                Console.WriteLine(banner_options[2]);
-                break;
-            case 4:
-                Console.WriteLine(banner_options[3]);
-                break;
-        }
-        
+
+
     }
     static public void Start()
     {
@@ -104,6 +91,7 @@ static class Menu
                 break;
         }
     }
+
     public static void AdminAccount()
     {
         Console.Clear();
