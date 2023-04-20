@@ -11,10 +11,10 @@ static class FlightInfoAccess
     }
 
 
-    public static void WriteAll(List<FlightInfoModel> accounts)
+    public static void WriteAll(List<FlightInfoModel> flights)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
-        string json = JsonSerializer.Serialize(accounts, options);
+        string json = JsonSerializer.Serialize(flights, options);
         File.WriteAllText(path, json);
     }
 

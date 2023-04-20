@@ -4,9 +4,19 @@ public class ViewFlights
     public static void Menu()
     {
         Console.WriteLine("Welcome to Book a flight!");
-        ConsoleTable Table = new ConsoleTable("Column 1", "Column 2", "Column 3");
-        Table.AddRow(1, 2, 3).AddRow("Test1", "Test2", "Test3");
-        Console.WriteLine(Table);
+        ConsoleTableOptions options = new ConsoleTableOptions
+        {
+            EnableCount = false
+        };
+        ConsoleTable Table = new ConsoleTable("Row", "A", "B", "", "C", "D", "", "E", "F");
+        Table.Options.EnableCount = options.EnableCount;
+        for (int row = 1; row < 31; row++)
+        {
+            Table.AddRow("Seat Number", row, row, "", row, row, "", row, row);
+        }
+
+        Console.WriteLine(Table.ToString());
+
     }
     // Create method filter flight by catagory
 
