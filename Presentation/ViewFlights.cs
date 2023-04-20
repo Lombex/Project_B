@@ -9,11 +9,11 @@ public class ViewFlights
         {
             EnableCount = false
         };
-        ConsoleTable Table = new ConsoleTable("Row", "A", "B", "", "C", "D", "", "E", "F");
+        ConsoleTable Table = new ConsoleTable("Row", "", "", "", "", "", "", "", "");
         Table.Options.EnableCount = options.EnableCount;
         for (int row = 1; row < 31; row++)
         {
-            Table.AddRow("Seat Number", row, row, "", row, row, "", row, row);
+            Table.AddRow("", "A" + row, "B" + row, "", "C" + row, "D" + row, "", "E" + row, "F" + row);
         }
 
         Console.WriteLine(Table.ToString());
