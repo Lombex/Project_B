@@ -1,1 +1,46 @@
-[]
+[
+    {
+        "Flight-number": "AA123",
+        "Aircraft": "Boeing 737",
+        "Origin": "New York",
+        "Destination": "Los Angeles",
+        "Date": "2023-05-01",
+        "FlightTime": 6.5,
+        "DepartTime": "10:00",
+        "ArrivalTime": "16:30",
+        "Gate": "A1"
+    },
+    {
+        "Flight-number": "KL1234",
+        "Aircraft": "Boeing 737-800",
+        "Origin": "Rotterdam",
+        "Destination": "Barcelona",
+        "Date": "2023-05-15",
+        "FlightTime": 2.5,
+        "DepartTime": "12:30",
+        "ArrivalTime": "15:00",
+        "Gate": "B3"
+    },
+    {
+        "Flight-number": "HV5678",
+        "Aircraft": "Airbus A320",
+        "Origin": "Rotterdam",
+        "Destination": "Ibiza",
+        "Date": "2023-06-20",
+        "FlightTime": 3.0,
+        "DepartTime": "14:45",
+        "ArrivalTime": "18:15",
+        "Gate": "C2"
+    },
+    {
+        "Flight-number": "KL5678",
+        "Aircraft": "Boeing 747-400",
+        "Origin": "Rotterdam",
+        "Destination": "New York",
+        "Date": "2023-07-01",
+        "FlightTime": 8.5,
+        "DepartTime": "10:15",
+        "ArrivalTime": "19:45",
+        "Gate": "A1"
+    }
+]
