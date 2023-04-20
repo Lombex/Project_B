@@ -21,7 +21,7 @@ public class Admin : User
             }
             else
             {
-                Console.WriteLine("This Account does either not exists or does not match with given input!");
+                Console.WriteLine("This Account does either not exist or does not match with given input!");
                 Menu.AdminAccount();
             }
         }
@@ -32,8 +32,8 @@ public class Admin : User
         Menu.PrintBanner();
         Console.WriteLine("\n+-------------------------+");
         Console.WriteLine("Choose your option and press enter");
-        Console.Write("1. Create User Account\n2. Create Employee Account\n3. Create Admin Account");
-        Console.WriteLine("+-------------------------+\n>> ");
+        Console.Write("1. Create User Account\n2. Create Employee Account\n3. Create Admin Account\n");
+        Console.Write("+-------------------------+\n>> ");
         int Option = Convert.ToInt32(Console.ReadLine());
         if (Option == 1) UserLogin.MakeAccount(UserLogin.AccountType.User, false);
         else if (Option == 2) UserLogin.MakeAccount(UserLogin.AccountType.Employee, false);
