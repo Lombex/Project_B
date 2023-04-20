@@ -4,6 +4,7 @@ public class ViewFlights
     public static void Menu()
     {
         Console.WriteLine("Welcome to Book a flight!");
+
         ConsoleTableOptions options = new ConsoleTableOptions
         {
             EnableCount = false
