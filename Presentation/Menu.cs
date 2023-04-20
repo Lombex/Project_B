@@ -27,6 +27,7 @@ static class Menu
 
     static public void Start()
     {
+        Console.Clear();
         PrintBanner();
         Console.WriteLine("\n!! In this application, please press the 'Enter' button every time you want to confirm !!");
         List<string> main_menu_choices = new List<string>() { " Enter 1 to login", " Enter 2 to create account", " Enter 3 to quit" };

@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Security.Cryptography;
+using System.Data;
 
 //This class is not static so later on we can use inheritance and interfaces
 class AccountsLogic
@@ -16,6 +17,11 @@ class AccountsLogic
     static public AccountModel? CurrentAccount { get; private set; }
 
     public AccountsLogic()
+    {
+        _accounts = AccountsAccess.LoadAll();
+    }
+
+    private void Update()
     {
         _accounts = AccountsAccess.LoadAll();
     }
@@ -58,12 +64,11 @@ class AccountsLogic
     public AccountModel? CheckLogin(string email, string? password)
     {
         if (email == null || password == null) throw new Exception("Either email or password is null");
+        Update();
         CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password);
         return CurrentAccount;
     }
 
 }
-
-
 
 

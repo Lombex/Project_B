@@ -31,6 +31,7 @@ static class UserLogin
         Employee,
         Admin
     }
+
     public static void MakeAccount(AccountType type, bool back_to_menu)
     {
         Console.Write("Please enter your full name\n>> ");
