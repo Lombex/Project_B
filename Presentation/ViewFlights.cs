@@ -29,6 +29,7 @@ public class ViewFlights
             FlightTable.AddRow(_flights[count].FlightNumber, _flights[count].Aircraft, _flights[count].Origin, _flights[count].Destination, _flights[count].Date, _flights[count].FlightTime,
             _flights[count].DepartTime, _flights[count].ArrivalTime, _flights[count].Gate);
         }
+        Console.WriteLine("All available flights: \n");
         Console.WriteLine(FlightTable.ToString());
 
 

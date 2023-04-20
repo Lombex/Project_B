@@ -28,14 +28,14 @@ public class AccountModel
     // [JsonPropertyName("childamount")]
     // public int ChildAmount { get; set; } // Amount of children getting booked
 
-    public AccountModel(int id, string emailAddress, string password, string fullName, bool isemployee = false)
+    public AccountModel(int id, string emailAddress, string password, string fullName, bool isemployee = false, bool isadmin = false)
     {
         Id = id;
         EmailAddress = emailAddress;
         Password = password;
         FullName = fullName;
         IsEmployee = isemployee;
-        //IsAdmin = adminpermissions;
+        IsAdmin = isadmin;
         // HasDisability = hasdisability;
         // HasChildren = haschildren;
         // ChildAmount = childamount;

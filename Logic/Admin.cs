@@ -12,20 +12,20 @@ public class Admin : User
 
     public void ChangeUserPassword(string EmailAddress, string ChangedPassword)
     {
-        foreach (AccountModel User in AccountsAccess.LoadAll())
+        List<AccountModel> account_list = AccountsAccess.LoadAll();
+        foreach (AccountModel User in account_list)
         {
             if (User.EmailAddress == EmailAddress)
             {
                 User.Password = AccountsLogic.GetHashedSHA256(ChangedPassword);
-                Menu.AdminAccount();
-            }
-            else
-            {
-                Console.WriteLine("This Account does either not exist or does not match with given input!\npress Enter to confirm.");
-                Console.ReadLine(); 
-                Menu.AdminAccount();
+                AccountsAccess.WriteAll(account_list);
+                return; 
             }
         }
+        Console.WriteLine("This Account does either not exist or does not match with given input!\npress Enter to confirm.");
+        Console.ReadLine(); 
+        Menu.AdminAccount();
+            
     }
     public void Create_account()
     {
