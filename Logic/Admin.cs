@@ -21,7 +21,8 @@ public class Admin : User
             }
             else
             {
-                Console.WriteLine("This Account does either not exist or does not match with given input!");
+                Console.WriteLine("This Account does either not exist or does not match with given input!\nPress Enter to confirm.");
+                Console.ReadLine(); 
                 Menu.AdminAccount();
             }
         }

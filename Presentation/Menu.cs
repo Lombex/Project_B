@@ -28,10 +28,9 @@ static class Menu
             Console.WriteLine("\nCurrent Banner: ");
         }
         Console.WriteLine(banner_options[banner_number]);
-
-
-
     }
+
+
     static public void Start()
     {
         PrintBanner();
@@ -65,7 +64,7 @@ static class Menu
     {
         Console.Clear();
         PrintBanner();
-        Console.WriteLine("ACCOUNT MENU:");
+        Console.WriteLine("\nACCOUNT MENU:");
         List<string> main_account_choices = new List<string>() {" Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to log out" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_account_choices) Console.WriteLine(item);
@@ -136,8 +135,8 @@ static class Menu
                 Menu.Start();
                 break;
             default:
-                Console.WriteLine("Invalid input, please try again");
-                Account();
+                Console.WriteLine("Invalid input, please try again, press Enter to confirm.");
+                AdminAccount();
                 break;
         }
     }
