@@ -14,20 +14,14 @@ static class Menu
 
         if (print_all_options)
         {
-            for(int i = 0; i < banner_options.Count(); i++)
+            for (int i = 0; i < banner_options.Count(); i++)
             {
                 Console.WriteLine($"Banner {i + 1}:\n{banner_options[i]}\n\n");
             }
 
-
-            //foreach(string banner in banner_options)
-            //{
-            //    Console.WriteLine(banner, '\n');
-            //}
-
             Console.WriteLine("\nCurrent Banner: ");
         }
-        Console.WriteLine(banner_options[banner_number]);
+        Console.WriteLine(banner_options[banner_number - 1]);
     }
 
 
@@ -65,7 +59,7 @@ static class Menu
         Console.Clear();
         PrintBanner();
         Console.WriteLine("\nACCOUNT MENU:");
-        List<string> main_account_choices = new List<string>() {" Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to log out" };
+        List<string> main_account_choices = new List<string>() { " Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to log out" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_account_choices) Console.WriteLine(item);
 
@@ -99,7 +93,7 @@ static class Menu
 
         Admin admin = new Admin();
 
-        List<string> admin_account_choices = new List<string>() { " Enter 1 to create user/employee account", " Enter 2 to change user password"," Enter 3 to create/edit/delete flights", " Enter 4 to change banner/logo", " Enter 5 to log out" };
+        List<string> admin_account_choices = new List<string>() { " Enter 1 to create user/employee account", " Enter 2 to change user password", " Enter 3 to create/edit/delete flights", " Enter 4 to change banner/logo", " Enter 5 to log out" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in admin_account_choices) Console.WriteLine(item);
 
