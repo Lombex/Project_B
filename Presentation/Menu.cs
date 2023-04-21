@@ -109,9 +109,7 @@ static class Menu
             case "2":
                 Console.Write("Please enter an email\n>> ");
                 var email_address = Console.ReadLine();
-                Console.Write("Please enter a new password\n>> ");
-                var new_password = Console.ReadLine();
-                admin.ChangeUserPassword(email_address!, new_password!);
+                admin.ChangeUserPassword(email_address!);
                 Menu.AdminAccount();
                 break;
             case "3":

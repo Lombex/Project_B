@@ -10,14 +10,25 @@ public class Admin : User
 
     // Create new method change flight data
 
-    public void ChangeUserPassword(string EmailAddress, string ChangedPassword)
+    public void ChangeUserPassword(string EmailAddress)
     {
         List<AccountModel> account_list = AccountsAccess.LoadAll();
         foreach (AccountModel User in account_list)
         {
             if (User.EmailAddress == EmailAddress)
             {
-                User.Password = AccountsLogic.GetHashedSHA256(ChangedPassword);
+                Console.Write("Please enter a new password\n>> ");
+                var Password1 = Console.ReadLine();
+                Console.Write("Please enter it again\n>> ");
+                var Password2 = Console.ReadLine();
+                while (Password1 != Password2)
+                {
+                    Console.Write("Passwords didn't match. Please enter a new password.\n>> ");
+                    Password1 = AccountFunctionality.HidePassword();
+                    Console.Write("Please enter it again\n>> ");
+                    Password2 = AccountFunctionality.HidePassword();
+                }
+                User.Password = AccountsLogic.GetHashedSHA256(Password1!);
                 AccountsAccess.WriteAll(account_list);
                 return; 
             }
