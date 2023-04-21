@@ -18,9 +18,9 @@ public class Admin : User
             if (User.EmailAddress == EmailAddress)
             {
                 Console.Write("Please enter a new password\n>> ");
-                var Password1 = Console.ReadLine();
+                var Password1 = AccountFunctionality.HidePassword();
                 Console.Write("Please enter it again\n>> ");
-                var Password2 = Console.ReadLine();
+                var Password2 = AccountFunctionality.HidePassword();
                 while (Password1 != Password2)
                 {
                     Console.Write("Passwords didn't match. Please enter a new password.\n>> ");
@@ -30,7 +30,7 @@ public class Admin : User
                 }
                 User.Password = AccountsLogic.GetHashedSHA256(Password1!);
                 AccountsAccess.WriteAll(account_list);
-                return; 
+                return;
             }
         }
         Console.WriteLine("This Account does either not exist or does not match with given input!\npress Enter to confirm.");
