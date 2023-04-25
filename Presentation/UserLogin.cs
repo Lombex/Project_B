@@ -25,6 +25,17 @@ static class UserLogin
         }
     }
 
+    public static bool PasswordCheck(string password)
+    {
+        string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
+        if (password.Length < 8 || password.Length > 50 || password == null) return false;
+        if (!password.Any(char.IsUpper) && !password.Any(char.IsLower)) return false;
+        if (!password.Contains(" ")) return false;
+        char[] specialCh = specialCharacters.ToCharArray();
+        foreach (char ch in specialCharacters) if (!password.Contains(ch)) return false;
+        return true;  
+    }
+
     public enum AccountType
     {
         User,
