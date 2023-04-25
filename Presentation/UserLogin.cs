@@ -67,7 +67,19 @@ static class UserLogin
             else
             {
                 int highestId = dataList.Max(data => data.Id);
-                AccountModel newData = new AccountModel(highestId + 1, email, password_1, full_name); // admin is automatically false
+                AccountModel newData;
+                switch (type)
+                {
+                    case AccountType.Admin:
+                        newData = new AccountModel(highestId + 1, email, password_1, full_name, false, true); // admin is automatically false
+                        break;
+                    case AccountType.Employee:
+                        newData = new AccountModel(highestId + 1, email, password_1, full_name, true, false); // admin is automatically false
+                        break;
+                    default:
+                        newData = new AccountModel(highestId + 1, email, password_1, full_name); // admin is automatically false
+                        break;
+                }
                 dataList.Add(newData);
                 AccountsAccess.WriteAll(dataList);
             }
