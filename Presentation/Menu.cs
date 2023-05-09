@@ -94,7 +94,9 @@ static class Menu
 
         Admin admin = new Admin();
 
-        List<string> admin_account_choices = new List<string>() { " Enter 1 to create an account", " Enter 2 to change user password", " Enter 3 to create/edit/delete flights", " Enter 4 to change banner/logo", " Enter 5 to log out" };
+        // edit/delete flights should be in a submenu in 3, but for now this name is more accurate
+        List<string> admin_account_choices = new List<string>() { " Enter 1 to create an account", " Enter 2 to change user password", " Enter 3 to create a flight", " Enter 4 to change banner/logo", " Enter 5 to log out" };
+        
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in admin_account_choices) Console.WriteLine(item);
 

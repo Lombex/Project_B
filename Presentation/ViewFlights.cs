@@ -11,9 +11,9 @@ public class ViewFlights
         }
         FlightInfoLogic Fil = new FlightInfoLogic();
         Console.WriteLine("Add Filter (Yes or No)?");
-        string input = Console.ReadLine()!;
+        string input = Console.ReadLine().ToLower()!;
 
-        if (input == "Yes")
+        if (input == "yes" || input == "y")
         {
 
             List<string> main_account_choices = new List<string>() { " Enter 1 to filter on Flightnumber", " Enter 2 to filter on Aircraft", " Enter 3 to filter on Origin",
@@ -28,7 +28,7 @@ public class ViewFlights
             switch (filter_choice)
             {
                 case "1":
-                    Console.WriteLine("On which FlightNumber you want to filter");
+                    Console.WriteLine("On which FlightNumber do you want to filter");
                     string Flightnumber = Console.ReadLine()!;
                     Fil.GetByFlightNumber(Flightnumber);
                     break;
@@ -52,7 +52,7 @@ public class ViewFlights
                     break;
             }
         }
-        else if (input == "No")
+        else if (input == "no" || input == "n")
         {
             FlightSchedule();
         }
