@@ -11,7 +11,7 @@ public class ViewFlights
         }
         FlightInfoLogic Fil = new FlightInfoLogic();
         Console.WriteLine("Add Filter (Yes or No)?");
-        string input = Console.ReadLine().ToLower()!;
+        string input = Console.ReadLine()!.ToLower();
 
         if (input == "yes" || input == "y")
         {

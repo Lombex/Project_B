@@ -33,7 +33,7 @@ static class UserLogin
         if (!password.Contains(" ")) return false;
         char[] specialCh = specialCharacters.ToCharArray();
         foreach (char ch in specialCharacters) if (!password.Contains(ch)) return false;
-        return true;  
+        return true;
     }
 
     public enum AccountType
@@ -58,7 +58,8 @@ static class UserLogin
         {
             Console.WriteLine("Password is not the same, please try again..");
             UserLogin.MakeAccount(type, back_to_menu);
-        } else if (PasswordCheck(password_1))
+        }
+        else if (PasswordCheck(password_1))
         {
             List<AccountModel> dataList = AccountsAccess.LoadAll();
             if (dataList.Any(data => data.EmailAddress == email))
@@ -86,7 +87,7 @@ static class UserLogin
             {
                 Menu.AdminAccount();
             }
-            
+
             switch (type)
             {
                 case AccountType.User:
@@ -99,10 +100,11 @@ static class UserLogin
                     Menu.AdminAccount();
                     break;
             }
-        } else
+        }
+        else
         {
             Console.WriteLine("Password does not contain the standard requirements.");
-            Console.WriteLine("- Needs atleast 6 characters.\n- Needs atleast 1 symbole\n - Needs atleast 1 upper and lower case letter\n- Needs an number");
+            Console.WriteLine("- Needs atleast 6 characters.\n- Needs atleast 1 symbol\n- Needs atleast 1 upper and lower case letter\n- Needs a number");
         }
     }
 }
