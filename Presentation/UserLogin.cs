@@ -28,7 +28,7 @@ static class UserLogin
     public static bool PasswordCheck(string password)
     {
         string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
-        if (password.Length < 8 || password.Length > 50 || password == null) return false;
+        if (password.Length < 6 || password.Length > 50 || password == null) return false;
         if (!password.Any(char.IsUpper) && !password.Any(char.IsLower)) return false;
         if (!password.Contains(" ")) return false;
         char[] specialCh = specialCharacters.ToCharArray();
@@ -58,8 +58,7 @@ static class UserLogin
         {
             Console.WriteLine("Password is not the same, please try again..");
             UserLogin.MakeAccount(type, back_to_menu);
-        }
-        else
+        } else if (PasswordCheck(password_1))
         {
             List<AccountModel> dataList = AccountsAccess.LoadAll();
             if (dataList.Any(data => data.EmailAddress == email))
@@ -100,6 +99,10 @@ static class UserLogin
                     Menu.AdminAccount();
                     break;
             }
+        } else
+        {
+            Console.WriteLine("Password does not contain the standard requirements.");
+            Console.WriteLine("- Needs atleast 6 characters.\n- Needs atleast 1 symbole\n - Needs atleast 1 upper and lower case letter\n- Needs an number");
         }
     }
 }
