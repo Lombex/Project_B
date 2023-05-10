@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using System.Linq;
+
 static class UserLogin
 {
     static private AccountsLogic accountsLogic = new AccountsLogic();
@@ -24,25 +27,22 @@ static class UserLogin
             else Menu.Account();
         }
     }
-
     public static bool PasswordCheck(string password)
     {
         string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
-        if (password.Length < 6 || password.Length > 50 || password == null) return false;
-        if (!password.Any(char.IsUpper) && !password.Any(char.IsLower)) return false;
-        if (!password.Contains(" ")) return false;
-        char[] specialCh = specialCharacters.ToCharArray();
-        foreach (char ch in specialCharacters) if (!password.Contains(ch)) return false;
+        if (password.Length < 6 || password.Length > 50) return false;
+        if (!(password.Any(char.IsUpper) && password.Any(char.IsLower))) return false;
+        if (password.Contains(" ")) return false;
+        if (!password.Any(ch => specialCharacters.Contains(ch))) return false;
+        if (!password.Any(char.IsNumber)) return false;
         return true;
     }
-
     public enum AccountType
     {
         User,
         Employee,
         Admin
     }
-
     public static void MakeAccount(AccountType type, bool back_to_menu)
     {
         Console.Write("Please enter your full name\n>> ");
@@ -50,7 +50,8 @@ static class UserLogin
         Console.Write("Please enter your email address\n>> ");
         string email = Console.ReadLine()!;
         Console.Write("Please enter your password\n>> ");
-        string password_1 = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
+        string UnhashedPassword = AccountFunctionality.HidePassword();
+        string password_1 = AccountsLogic.GetHashedSHA256(UnhashedPassword);
         Console.Write("Please enter your password again\n>> ");
         string password_2 = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
 
@@ -59,7 +60,7 @@ static class UserLogin
             Console.WriteLine("Password is not the same, please try again..");
             UserLogin.MakeAccount(type, back_to_menu);
         }
-        else if (PasswordCheck(password_1))
+        else if (PasswordCheck(UnhashedPassword))
         {
             List<AccountModel> dataList = AccountsAccess.LoadAll();
             if (dataList.Any(data => data.EmailAddress == email))
