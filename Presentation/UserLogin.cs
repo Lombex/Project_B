@@ -88,7 +88,6 @@ static class UserLogin
             {
                 Menu.AdminAccount();
             }
-
             switch (type)
             {
                 case AccountType.User:
@@ -106,6 +105,7 @@ static class UserLogin
         {
             Console.WriteLine("Password does not contain the standard requirements.");
             Console.WriteLine("- Needs atleast 6 characters.\n- Needs atleast 1 symbol\n- Needs atleast 1 upper and lower case letter\n- Needs a number");
+            MakeAccount(type, back_to_menu);
         }
     }
 }
