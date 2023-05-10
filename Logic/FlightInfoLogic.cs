@@ -16,15 +16,15 @@ public class FlightInfoLogic
         _flightinfo = FlightInfoAccess.LoadAll();
     }
 
-    public FlightInfoModel? GetByFlightNumber(string searchTerm) => _flightinfo.Find(i => i.FlightNumber == searchTerm);
-    public FlightInfoModel? GetByAircraft(string searchTerm) => _flightinfo.Find(i => i.Aircraft == searchTerm);
-    public FlightInfoModel? GetByOrigin(string searchTerm) => _flightinfo.Find(i => i.Origin == searchTerm);
-    public FlightInfoModel? GetByDestination(string searchTerm) => _flightinfo.Find(i => i.Destination == searchTerm);
-    public FlightInfoModel? GetByDate(string searchTerm) => _flightinfo.Find(i => i.Date == searchTerm);
-    public FlightInfoModel? GetByFlightTime(double searchTerm) => _flightinfo.Find(i => i.FlightTime == searchTerm);
-    public FlightInfoModel? GetByDepartTime(string searchTerm) => _flightinfo.Find(i => i.DepartTime == searchTerm);
-    public FlightInfoModel? GetByArrivalTime(string searchTerm) => _flightinfo.Find(i => i.ArrivalTime == searchTerm);
-    public FlightInfoModel? GetByGate(string searchTerm) => _flightinfo.Find(i => i.Gate == searchTerm);
+    public List<FlightInfoModel>? SortByFlightNumber() => _flightinfo.OrderBy(i => i.FlightNumber).ToList();
+    public List<FlightInfoModel>? SortByAircraft() => _flightinfo.OrderBy(i => i.Aircraft).ToList();
+    public List<FlightInfoModel>? SortByOrigin() => _flightinfo.OrderBy(i => i.Origin).ToList();
+    public List<FlightInfoModel>? SortByDestination() => _flightinfo.OrderBy(i => i.Destination).ToList();
+    public List<FlightInfoModel>? SortByDate() => _flightinfo.OrderBy(i => i.Date).ToList();
+    public List<FlightInfoModel>? SortByFlightTime() => _flightinfo.OrderBy(i => i.FlightTime).ToList();
+    public List<FlightInfoModel>? SortByDepartTime() => _flightinfo.OrderBy(i => i.DepartTime).ToList();
+    public List<FlightInfoModel>? SortByArrivalTime() => _flightinfo.OrderBy(i => i.ArrivalTime).ToList();
+    public List<FlightInfoModel>? SortByGate() => _flightinfo.OrderBy(i => i.Gate).ToList();
 
 
 
