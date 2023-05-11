@@ -25,6 +25,7 @@ static class UserLogin
             Console.WriteLine("Welcome back " + acc.FullName);
             Console.WriteLine("Your email address is " + acc.EmailAddress);
             if (acc.IsAdmin) Menu.AdminAccount();
+            if (acc.IsEmployee) Menu.EmployeeAccount();
             else Menu.Account();
         }
     }
