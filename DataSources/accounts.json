@@ -6,5 +6,13 @@
     "FullName": "root",
     "IsAdmin": true,
     "IsEmployee": false
+  },
+  {
+    "Id": 2,
+    "EmailAddress": "a",
+    "Password": "45439ad6ed1ef31291d24965a5c68ab4e95aae3df87ddd1ddefbd26a8f1eff92",
+    "FullName": "Lucas",
+    "IsAdmin": false,
+    "IsEmployee": false
   }
 ]

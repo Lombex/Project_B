@@ -83,7 +83,7 @@ public class ViewFlights
     public static void FlightSchedule()
     {
 
-        ConsoleTable FlightTable = new ConsoleTable("Flight Number",
+        ConsoleTable FlightTable = new ConsoleTable("FlightID", "Flight Number",
         "Aircraft",
         "Origin",
         "Destination",
@@ -95,19 +95,19 @@ public class ViewFlights
         FlightTable.Options.EnableCount = options.EnableCount;
         for (int count = 0; count < _flights!.Count; count++)
         {
-            FlightTable.AddRow(_flights[count].FlightNumber, _flights[count].Aircraft, _flights[count].Origin, _flights[count].Destination, _flights[count].Date, _flights[count].FlightTime,
+            FlightTable.AddRow(count + 1, _flights[count].FlightNumber, _flights[count].Aircraft, _flights[count].Origin, _flights[count].Destination, _flights[count].Date, _flights[count].FlightTime,
             _flights[count].DepartTime, _flights[count].ArrivalTime, _flights[count].Gate);
         }
         Console.Clear();
         Console.WriteLine("All available flights: \n");
         Console.WriteLine(FlightTable.ToString());
-        Console.WriteLine("Do you want to sort for easier viewing");
+        Console.WriteLine("Would you like to enable sorting for a more organized viewing?");
         Console.Write(">> ");
         string sorting = Console.ReadLine()!.ToLower();
         if (sorting == "yes" || sorting == "y") SortingMenu();
         else if (sorting == "no" || sorting == "n")
         {
-            Console.WriteLine("Which flight do you want to fly on?");
+            Console.WriteLine("What is the flight ID of the flight you will be taking?");
             Console.Write(">> ");
             string flight_picker = Console.ReadLine()!;
             LayoutPlane();
