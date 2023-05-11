@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 static class UserLogin
 {
@@ -37,6 +38,14 @@ static class UserLogin
         if (!password.Any(char.IsNumber)) return false;
         return true;
     }
+    public static string SanitizeEmailValidator(string email)
+    {
+        const string emailRegex = @"^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+        string sanitizedEmail = Regex.Replace(email, @"[^a-zA-Z0-9.@+-]", "");
+        if (Regex.IsMatch(sanitizedEmail, emailRegex)) return sanitizedEmail;
+        else throw new ArgumentException("Invalid email address");
+    }
+
     public enum AccountType
     {
         User,
