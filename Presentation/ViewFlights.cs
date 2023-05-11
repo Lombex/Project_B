@@ -31,42 +31,49 @@ public class ViewFlights
         Console.Write(">> ");
         string sort_choice = Console.ReadLine()!;
         FlightInfoLogic flight = new();
+        bool ascending = true;
+
+        Console.WriteLine("Enter 'asc' for ascending or 'desc' for descending:");
+        string sort_preference = Console.ReadLine()!;
+        if (sort_preference.ToLower() == "desc")
+            ascending = false;
+
         switch (sort_choice)
         {
             case "1":
-                _flights = flight.SortByFlightNumber();
+                _flights = flight.SortByFlightNumber(ascending);
                 FlightSchedule();
                 break;
             case "2":
-                _flights = flight.SortByAircraft();
+                _flights = flight.SortByAircraft(ascending);
                 FlightSchedule();
                 break;
             case "3":
-                _flights = flight.SortByOrigin();
+                _flights = flight.SortByOrigin(ascending);
                 FlightSchedule();
                 break;
             case "4":
-                _flights = flight.SortByDestination();
+                _flights = flight.SortByDestination(ascending);
                 FlightSchedule();
                 break;
             case "5":
-                _flights = flight.SortByDate();
+                _flights = flight.SortByDate(ascending);
                 FlightSchedule();
                 break;
             case "6":
-                _flights = flight.SortByFlightTime();
+                _flights = flight.SortByFlightTime(ascending);
                 FlightSchedule();
                 break;
             case "7":
-                _flights = flight.SortByDepartTime();
+                _flights = flight.SortByDepartTime(ascending);
                 FlightSchedule();
                 break;
             case "8":
-                _flights = flight.SortByArrivalTime();
+                _flights = flight.SortByArrivalTime(ascending);
                 FlightSchedule();
                 break;
             case "9":
-                _flights = flight.SortByGate();
+                _flights = flight.SortByGate(ascending);
                 FlightSchedule();
                 break;
             default:
