@@ -19,6 +19,9 @@ public class AccountModel
     [JsonPropertyName("IsEmployee")]
     public bool IsEmployee { get; set; }
 
+    [JsonPropertyName("BookedFlights")]
+    public List<List<string>> BookedFlights { get; set; }
+
     // [JsonPropertyName("hasdisability")]
     // public bool HasDisability { get; set; } // When a person has a disability
 
@@ -28,6 +31,8 @@ public class AccountModel
     // [JsonPropertyName("childamount")]
     // public int ChildAmount { get; set; } // Amount of children getting booked
 
+
+
     public AccountModel(int id, string emailAddress, string password, string fullName, bool isemployee = false, bool isadmin = false)
     {
         Id = id;
@@ -36,6 +41,7 @@ public class AccountModel
         FullName = fullName;
         IsEmployee = isemployee;
         IsAdmin = isadmin;
+        BookedFlights = new List<List<string>>();
         // HasDisability = hasdisability;
         // HasChildren = haschildren;
         // ChildAmount = childamount;

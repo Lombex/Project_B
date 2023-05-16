@@ -16,6 +16,9 @@ public class ViewFlights
         }
         FlightInfoLogic Fil = new FlightInfoLogic();
         FlightSchedule();
+        LayoutPlane();
+        Console.WriteLine("Choose a seat you would like");
+        string SeatPicker = Console.ReadLine()!;
     }
 
     public static void SortingMenu()
@@ -110,7 +113,7 @@ public class ViewFlights
             Console.WriteLine("What is the flight ID of the flight you will be taking?");
             Console.Write(">> ");
             string flight_picker = Console.ReadLine()!;
-            LayoutPlane();
+
         }
         else FlightSchedule();
     }
