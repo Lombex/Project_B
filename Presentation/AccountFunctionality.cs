@@ -1,9 +1,5 @@
 public class AccountFunctionality
 {
-    public static void Menu()
-    {
-        Console.WriteLine("Welcome to general account information, see bookings: ");
-    }
     public static string HidePassword()
     {
         string password = "";
@@ -32,6 +28,7 @@ public class AccountFunctionality
         return password;
     }
 
+
     public static string GetInput(string prompt = "")
     {
         Console.Write(prompt + "\n>> ");
@@ -43,7 +40,7 @@ public class AccountFunctionality
         Console.Clear();
         PrintBanner();
         Console.WriteLine("\nInvalid input, please try again.\n(Press Enter to continue)");
-
+        Console.ReadLine();
     }
     public static void ErrorMessage(string message)
     {
@@ -52,6 +49,7 @@ public class AccountFunctionality
         Console.WriteLine("\n" + message + "\n(Press Enter to continue)");
         Console.ReadLine();
     }
+
 
     static private int banner_number = 1;
     static public void PrintBanner(bool print_all_options = false)

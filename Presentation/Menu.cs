@@ -56,7 +56,8 @@ static class Menu
                 ViewFlights.Menu();
                 break;
             case "2":
-                AccountFunctionality.Menu();
+                AccountFunctionality.ErrorMessage("wip, this hasn't been implemented yet.");
+                Account();
                 break;
             case "3":
                 Start();

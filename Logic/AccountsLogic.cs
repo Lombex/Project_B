@@ -38,7 +38,6 @@ class AccountsLogic
             _accounts.Add(acc);
         }
         AccountsAccess.WriteAll(_accounts);
-
     }
 
     public AccountModel? GetById(int id)
