@@ -4,7 +4,7 @@ public class Admin : User
 
     // Create new method edit customer account data
 
-    // Edit, remove, add booking 
+    // Edit, remove, add booking
 
     // Create new method add and remove flights
 
@@ -68,7 +68,7 @@ public class Admin : User
         string destination = Console.ReadLine()!;
         Console.Write("Enter Date\n>> ");
         string date = Console.ReadLine()!;
-        Console.Write("Enter flighttime (in hours)\n>> ");
+        Console.Write("Enter flighttime (in hours) [ format: 0.1 ]\n>> ");
         double flighttime = Convert.ToDouble(Console.ReadLine());
         Console.Write("Enter depart time (local)\n>> ");
         string departtime = Console.ReadLine()!;
@@ -84,4 +84,5 @@ public class Admin : User
 
         Menu.AdminAccount();
     }
+    public void ViewFlightList() => ViewFlights.Menu();
 }

@@ -4,9 +4,6 @@ static class Menu
     //after another presentation method is completed.
     //You could edit this to show different menus depending on the user's role
 
-
-
-
     static public void Start()
     {
         Console.Clear();
@@ -78,7 +75,7 @@ static class Menu
         Admin admin = new Admin();
 
         // edit/delete flights should be in a submenu in 3, but for now this name is more accurate
-        List<string> admin_account_choices = new List<string>() { " Enter 1 to create an account", " Enter 2 to change user password", " Enter 3 to create a flight", " Enter 4 to change banner/logo", " Enter 5 to log out" };
+        List<string> admin_account_choices = new List<string>() { " Enter 1 to create an account", " Enter 2 to change user password", " Enter 3 to create a flight", " Enter 4 to view all flights ", " Enter 5 to change banner/logo", " Enter 6 to log out" };
 
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in admin_account_choices) Console.WriteLine(item);
@@ -100,13 +97,16 @@ static class Menu
                 admin.Add_flight();
                 break;
             case "4":
+                admin.ViewFlightList();
+                break;
+            case "5":
                 Console.WriteLine("These are all available banners: ");
                 AccountFunctionality.PrintBanner(true);
                 int banner_choice = Convert.ToInt32(AccountFunctionality.GetInput("Choose a banner, and type the number of the banner you want: "));
                 AccountFunctionality.ChangeBanner(banner_choice);
                 AdminAccount();
-                break;
-            case "5":
+                break;      
+            case "6":
                 Menu.Start();
                 break;
             default:

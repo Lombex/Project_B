@@ -13,15 +13,13 @@ public class ViewFlights
 
     public static void Menu()
     {
-        if (_flights == null)
-        {
-            _flights = FlightInfoAccess.LoadAll();
-        }
+        if (_flights == null) _flights = FlightInfoAccess.LoadAll();
         FlightInfoLogic Fil = new FlightInfoLogic();
         FlightSchedule();
         LayoutPlane();
         Console.WriteLine("Choose a seat you would like");
         string SeatPicker = Console.ReadLine()!;
+        // Menu has be able to pick seats | Menu has to be able to go back to its respective menu
     }
 
     public static void SortingMenu()
