@@ -41,7 +41,7 @@ public class Admin : User
     public void Create_account()
     {
         Console.Clear();
-        Menu.PrintBanner();
+        AccountFunctionality.PrintBanner();
         Console.WriteLine("\n+-------------------------+");
         Console.WriteLine("Choose your option and press enter");
         Console.Write("1. Create User Account\n2. Create Employee Account\n3. Create Admin Account\n");
