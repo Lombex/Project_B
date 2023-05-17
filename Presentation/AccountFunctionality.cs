@@ -31,4 +31,10 @@ public class AccountFunctionality
         Console.WriteLine();
         return password;
     }
+
+    public static string GetInput()
+    {
+        Console.Write(">> ");
+        return Console.ReadLine();
+    }
 }
