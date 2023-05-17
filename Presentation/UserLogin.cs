@@ -16,7 +16,7 @@ static class UserLogin
         if (acc == null)
         {
             Console.Clear();
-            AccountFunctionality.ErrorMessage("No account found with that email and password, please try again");
+            AccountFunctionality.ErrorMessage("No account found with that email and password, please try again.");
             Menu.Start();
         }
         else
@@ -71,7 +71,7 @@ static class UserLogin
 
         if (password_1 != password_2)
         {
-            AccountFunctionality.ErrorMessage("Passwords don't match, please try again");
+            AccountFunctionality.ErrorMessage("Passwords don't match, please try again.");
             UserLogin.MakeAccount(type, back_to_menu);
         }
         else if (PasswordCheck(UnhashedPassword))
