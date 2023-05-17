@@ -13,8 +13,7 @@ static class Menu
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_menu_choices) Console.WriteLine(item);
         Console.WriteLine("+-------------------------+");
-        Console.Write(">> ");
-        string input = Console.ReadLine()!;
+        string input = AccountFunctionality.GetInput()!;
 
         switch (input)
         {
@@ -39,7 +38,7 @@ static class Menu
         Console.Clear();
         AccountFunctionality.PrintBanner();
         Console.WriteLine("\nACCOUNT MENU:");
-        List<string> main_account_choices = new List<string>() { " Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to log out" };
+        List<string> main_account_choices = new List<string>() { " Enter 1 to book a flight", " Enter 2 to see bookings", "Enter 3 to change your information", " Enter 4 to log out" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_account_choices) Console.WriteLine(item);
 
@@ -57,6 +56,8 @@ static class Menu
                 Account();
                 break;
             case "3":
+                AccountFunctionality.
+            case "4":
                 Start();
                 break;
             default:
@@ -119,12 +120,12 @@ static class Menu
     {
         Console.Clear();
         AccountFunctionality.PrintBanner();
-        Console.WriteLine("EMPLOYEE MENU:");
+        Console.WriteLine("\nEMPLOYEE MENU:");
 
-        // Employee employee = new Employee();
+        Employee employee = new Employee();
 
         List<string> employee_account_choices = new List<string>() { " Enter 1 to create user account", " Enter 2 to change user password", " Enter 3 to log out" };
-        Console.WriteLine("\n+-------------------------+");
+        Console.WriteLine("+-------------------------+");
         foreach (string item in employee_account_choices) Console.WriteLine(item);
 
         Console.WriteLine("+-------------------------+");
@@ -136,11 +137,8 @@ static class Menu
                 break;
             case "2":
                 var email_address = AccountFunctionality.GetInput("Please enter an email");
-                // vv  this isn't how we should be doing this  vv
-                var password = AccountFunctionality.GetInput("Please enter a password");
-
-                // vv why is this commented out?
-                // employee.ChangeUserPassword(email_address!, password!);
+                employee.ChangeUserPassword(email_address!);
+                Menu.AdminAccount();
                 break;
             case "3":
                 Menu.Start();

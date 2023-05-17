@@ -1,5 +1,5 @@
 using Newtonsoft.Json;
-public class Admin : User
+public static class Admin : Employee
 {
 
     // Create new method edit customer account data
@@ -10,7 +10,7 @@ public class Admin : User
 
     // Create new method change flight data
 
-    public void ChangeUserPassword(string EmailAddress)
+    public override void ChangeUserPassword(string EmailAddress)
     {
         List<AccountModel> account_list = AccountsAccess.LoadAll();
         foreach (AccountModel User in account_list)
@@ -36,7 +36,6 @@ public class Admin : User
         Console.WriteLine("This Account does either not exist or does not match with given input!\npress Enter to confirm.");
         Console.ReadLine(); 
         Menu.AdminAccount();
-            
     }
     public void Create_account()
     {

@@ -1,10 +1,23 @@
-public class User
+public static class User
 {
-    // Create method for edit own account data
+    public static void ChangeMyPassword(int id)
+    {
+        List<AccountModel> account_list = AccountsAccess.LoadAll();
 
-    // Create method cancel booking 
-
-    // Create method book flight 
-
-    // Create method see reservation information
+        Console.Write("Please enter a new password\n>> ");
+        var Password1 = AccountFunctionality.HidePassword();
+        Console.Write("Please enter it again\n>> ");
+        var Password2 = AccountFunctionality.HidePassword();
+        while (Password1 != Password2)
+        {
+            AccountFunctionality.GetInput("Passwords didn't match. Please enter a new password.");
+            Password1 = AccountFunctionality.HidePassword();
+            AccountFunctionality.GetInput("Please enter it again.");
+            Password2 = AccountFunctionality.HidePassword();
+        }
+        while(!UserLogin.PasswordCheck(Password1))
+        user.Password = AccountsLogic.GetHashedSHA256(Password1!);
+        AccountsAccess.WriteAll(account_list);
+        return;
+    }
 }
