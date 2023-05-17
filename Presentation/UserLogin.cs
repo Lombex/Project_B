@@ -29,6 +29,8 @@ static class UserLogin
             else Menu.Account();
         }
     }
+
+    // vv can be made private possibly?
     public static bool PasswordCheck(string password)
     {
         string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
@@ -39,6 +41,8 @@ static class UserLogin
         if (!password.Any(char.IsNumber)) return false;
         return true;
     }
+
+    // vv no references??
     public static string SanitizeEmailValidator(string email)
     {
         const string emailRegex = @"^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";

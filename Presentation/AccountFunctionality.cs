@@ -32,9 +32,15 @@ public class AccountFunctionality
         return password;
     }
 
-    public static string GetInput()
+    public static string GetInput(string prompt = "")
     {
-        Console.Write(">> ");
+        Console.Write(prompt + "\n>> ");
         return Console.ReadLine();
+    }
+
+    public static void ErrorMessage(string message)
+    {
+        Console.WriteLine(message);
+        Console.ReadLine();
     }
 }

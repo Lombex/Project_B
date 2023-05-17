@@ -4,7 +4,7 @@ public class User
 
     // Create method cancel booking 
 
-    // Create mehtod book flight 
+    // Create method book flight 
 
     // Create method see reservation information
 }

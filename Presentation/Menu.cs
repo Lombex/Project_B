@@ -3,7 +3,9 @@ static class Menu
     //This shows the menu. You can call back to this method to show the menu again
     //after another presentation method is completed.
     //You could edit this to show different menus depending on the user's role
-    static public int banner_number = 1;
+
+    // why is this int public? it's only used in PrintBanner()
+    static private int banner_number = 1;
     static public void PrintBanner(bool print_all_options = false)
     {
         List<string> banner_options = new List<string>();
@@ -64,9 +66,9 @@ static class Menu
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_account_choices) Console.WriteLine(item);
 
+        // we need a function to write those lines probably
         Console.WriteLine("+-------------------------+");
-        Console.Write(">> ");
-        string input = Console.ReadLine()!;
+        string input = AccountFunctionality.GetInput();
 
         switch (input)
         {
@@ -101,16 +103,14 @@ static class Menu
         foreach (string item in admin_account_choices) Console.WriteLine(item);
 
         Console.WriteLine("+-------------------------+");
-        Console.Write(">> ");
-        string input = Console.ReadLine()!;
+        string input = AccountFunctionality.GetInput();
         switch (input)
         {
             case "1":
                 admin.Create_account();
                 break;
             case "2":
-                Console.Write("Please enter an email\n>> ");
-                var email_address = Console.ReadLine();
+                var email_address = AccountFunctionality.GetInput("Please enter an email");
                 admin.ChangeUserPassword(email_address!);
                 Menu.AdminAccount();
                 break;
@@ -121,9 +121,8 @@ static class Menu
             case "4":
                 Console.WriteLine("These are all available banners: ");
                 PrintBanner(true);
-                Console.Write("Choose a banner, and type the number of the banner you want: \n>> ");
-                int banner_choise = Convert.ToInt32(Console.ReadLine());
-                banner_number = banner_choise;
+                int banner_choice = Convert.ToInt32(AccountFunctionality.GetInput("Choose a banner, and type the number of the banner you want: "));
+                banner_number = banner_choice;
                 PrintBanner();
                 AdminAccount();
                 break;
@@ -131,7 +130,7 @@ static class Menu
                 Menu.Start();
                 break;
             default:
-                Console.WriteLine("Invalid input, please try again, press Enter to confirm.");
+                AccountFunctionality.ErrorMessage("Invalid input, please try again, press Enter to confirm.");
                 AdminAccount();
                 break;
         }
@@ -149,18 +148,18 @@ static class Menu
         foreach (string item in employee_account_choices) Console.WriteLine(item);
 
         Console.WriteLine("+-------------------------+");
-        Console.Write(">> ");
-        string input = Console.ReadLine()!;
+        string input = AccountFunctionality.GetInput();
         switch (input)
         {
             case "1":
                 // employee.Create_account();
                 break;
             case "2":
-                Console.Write("Please enter an email\n>> ");
-                var email_address = Console.ReadLine();
-                Console.WriteLine("Please enter an password\n>> ");
-                var password = Console.ReadLine();
+                var email_address = AccountFunctionality.GetInput("Please enter an email");
+                // vv  this isn't how we should be doing this  vv
+                var password = AccountFunctionality.GetInput("Please enter a password");
+
+                // vv why is this commented out?
                 // employee.ChangeUserPassword(email_address!, password!);
                 break;
             case "3":

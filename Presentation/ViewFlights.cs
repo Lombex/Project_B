@@ -1,4 +1,7 @@
 using ConsoleTables;
+
+
+// everything is static, can we just make the class static?
 public class ViewFlights
 {
     private static List<FlightInfoModel>? _flights;
