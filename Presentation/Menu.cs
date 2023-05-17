@@ -104,7 +104,6 @@ static class Menu
                 AccountFunctionality.PrintBanner(true);
                 int banner_choice = Convert.ToInt32(AccountFunctionality.GetInput("Choose a banner, and type the number of the banner you want: "));
                 AccountFunctionality.ChangeBanner(banner_choice);
-                AccountFunctionality.PrintBanner();
                 AdminAccount();
                 break;
             case "5":
