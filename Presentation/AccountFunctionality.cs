@@ -32,7 +32,7 @@ public class AccountFunctionality
     public static string GetInput(string prompt = "")
     {
         Console.Write(prompt + "\n>> ");
-        return Console.ReadLine();
+        return Console.ReadLine()!;
     }
 
     public static void ErrorMessage()
@@ -75,11 +75,11 @@ public class AccountFunctionality
 
     public static void ChangeBanner(int id)
     {
-        if(id > banner_options.Count)
+        if (id > banner_options.Count)
         {
             banner_number = banner_options.Count;
         }
-        else if(id <= 0)
+        else if (id <= 0)
         {
             banner_number = 1;
         }

@@ -29,6 +29,9 @@ public class FlightInfoModel
     [JsonPropertyName("Gate")]
     public string Gate { get; set; }
 
+    // [JsonPropertyName("SeatAvailability")]
+    // public List<string> SeatAvailability { get; set; }
+
     public FlightInfoModel(string flightnumber, string aircraft, string origin, string destination, string date, double flighttime, string departtime, string arrivaltime, string gate = "A1")
     {
         FlightNumber = flightnumber;
@@ -40,5 +43,14 @@ public class FlightInfoModel
         DepartTime = departtime;
         ArrivalTime = arrivaltime;
         Gate = gate;
+        // SeatAvailability = new List<string>();
+        // for (int row = 1; row <= 30; row++)
+        // {
+        //     for (char seat = 'A'; seat <= 'F'; seat++)
+        //     {
+        //         string seatCode = $"{seat}{row}"; // e.g., "A1", "B2", etc.
+        //         SeatAvailability.Add(seatCode);
+        //     }
+        // }
     }
 }

@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 static class UserLogin
@@ -30,25 +28,36 @@ static class UserLogin
         }
     }
 
-    // vv can be made private possibly?
-    public static bool PasswordCheck(string password)
+    private static bool PasswordCheck(string password)
     {
-        string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
-        if (password.Length < 6 || password.Length > 50) return false;
-        if (!(password.Any(char.IsUpper) && password.Any(char.IsLower))) return false;
-        if (password.Contains(" ")) return false;
-        if (!password.Any(ch => specialCharacters.Contains(ch))) return false;
-        if (!password.Any(char.IsNumber)) return false;
+        string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-""";
+
+        if (password.Length < 6 || password.Length > 50 ||
+            !(password.Any(char.IsUpper) && password.Any(char.IsLower)) ||
+            password.Contains(" ") ||
+            !password.Any(ch => specialCharacters.Contains(ch)) ||
+            !password.Any(char.IsNumber))
+        {
+            Console.WriteLine("Password does not meet the standard requirements.");
+            Console.WriteLine("Password needs at least:\n- 6 characters\n- 1 symbol\n- 1 upper and lower case letter\n- a number");
+            return false;
+        }
+
         return true;
     }
 
-    // vv no references??
-    public static string SanitizeEmailValidator(string email)
+    private static bool SanitizeEmailValidator(string email)
     {
         const string emailRegex = @"^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
         string sanitizedEmail = Regex.Replace(email, @"[^a-zA-Z0-9.@+-]", "");
-        if (Regex.IsMatch(sanitizedEmail, emailRegex)) return sanitizedEmail;
-        else throw new ArgumentException("Invalid email address");
+
+        if (!Regex.IsMatch(sanitizedEmail, emailRegex))
+        {
+            Console.WriteLine("Email Address does not meet the standard requirements.");
+            Console.WriteLine("Please check the following conditions:\n- The email format should be 'example@example.com'");
+            return false;
+        }
+        return true;
     }
 
     public enum AccountType
@@ -72,9 +81,9 @@ static class UserLogin
         if (password_1 != password_2)
         {
             AccountFunctionality.ErrorMessage("Passwords don't match, please try again.");
-            UserLogin.MakeAccount(type, back_to_menu);
+            MakeAccount(type, back_to_menu);
         }
-        else if (PasswordCheck(UnhashedPassword))
+        else if (PasswordCheck(UnhashedPassword) && SanitizeEmailValidator(email))
         {
             List<AccountModel> dataList = AccountsAccess.LoadAll();
             if (dataList.Any(data => data.EmailAddress == email))
@@ -117,10 +126,7 @@ static class UserLogin
         }
         else
         {
-            Console.WriteLine("Password does not meet the standard requirements.");
-            Console.WriteLine("- Needs atleast 6 characters.\n- Needs atleast 1 symbol\n- Needs atleast 1 upper and lower case letter\n- Needs a number");
             MakeAccount(type, back_to_menu);
-
         }
     }
 }
