@@ -38,8 +38,7 @@ static class UserLogin
             !password.Any(ch => specialCharacters.Contains(ch)) ||
             !password.Any(char.IsNumber))
         {
-            Console.WriteLine("Password does not meet the standard requirements.");
-            Console.WriteLine("Password needs at least:\n- 6 characters\n- 1 symbol\n- 1 upper and lower case letter\n- a number");
+            AccountFunctionality.ErrorMessage("Password does not meet the standard requirements.\nPassword needs at least:\n- 6 characters\n- 1 symbol\n- 1 upper and lower case letter\n- a number");
             return false;
         }
 
@@ -53,8 +52,7 @@ static class UserLogin
 
         if (!Regex.IsMatch(sanitizedEmail, emailRegex))
         {
-            Console.WriteLine("Email Address does not meet the standard requirements.");
-            Console.WriteLine("Please check the following conditions:\n- The email format should be 'example@example.com'");
+            AccountFunctionality.ErrorMessage("Email Address does not meet the standard requirements.\nPlease check the following conditions:\n- The email format should be 'example@example.com'");
             return false;
         }
         return true;
@@ -87,7 +85,7 @@ static class UserLogin
         {
             List<AccountModel> dataList = AccountsAccess.LoadAll();
             if (dataList.Any(data => data.EmailAddress == email))
-                Console.WriteLine("An account with the same email address already exists. Please choose a different email address.");
+                AccountFunctionality.ErrorMessage("An account with the same email address already exists. Please choose a different email address.");
             else
             {
                 int highestId = dataList.Max(data => data.Id);
