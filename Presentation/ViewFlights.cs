@@ -19,6 +19,27 @@ public class ViewFlights
         LayoutPlane();
         Console.WriteLine("Choose a seat you would like");
         string SeatPicker = Console.ReadLine()!;
+        
+        // Set all needed items in book json :
+        /*
+            - Account ID
+            - Account Name
+            - Account Email
+            - Book Time
+            - Booked Airplane
+            - Booked Seat
+            - Booked Destination
+            - Booked Gate
+            - Flight Takeoff
+            - Flight Arrival
+        */
+
+        // Check which class seat it has to be
+
+        // Check if User has an disability or has children for discount.
+
+        // Make sure to ask for confirmation 
+
         // Menu has be able to pick seats | Menu has to be able to go back to its respective menu
     }
 
