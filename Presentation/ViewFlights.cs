@@ -1,4 +1,5 @@
 using ConsoleTables;
+using DataModels;
 
 
 // everything is static, can we just make the class static?
@@ -11,6 +12,8 @@ public class ViewFlights
         EnableCount = false
     };
 
+    public static string? FlightID { get; private set; } 
+
     public static void Menu()
     {
         if (_flights == null) _flights = FlightInfoAccess.LoadAll();
@@ -18,14 +21,23 @@ public class ViewFlights
         FlightSchedule();
         LayoutPlane();
         Console.WriteLine("Choose a seat you would like");
+        AccountModel? AccountInfo = UserLogin.AccountInfo;
+        string? FlightId = FlightID;
         string SeatPicker = Console.ReadLine()!;
+
+
 
         // Set all needed items in book json :
         /*
+        This is by AccountInfo
+        ----------------------------------
             - Account ID
             - Account Name
             - Account Email
             - Book Time
+
+        This is lookedup by the flight id
+        ----------------------------------- 
             - Booked Airplane
             - Booked Seat
             - Booked Destination
@@ -134,8 +146,7 @@ public class ViewFlights
         {
             Console.WriteLine("What is the flight ID of the flight you will be taking?");
             Console.Write(">> ");
-            string flight_picker = Console.ReadLine()!;
-
+            FlightID = Console.ReadLine()!;
         }
         else FlightSchedule();
     }
