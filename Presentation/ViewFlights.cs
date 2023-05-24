@@ -19,7 +19,7 @@ public class ViewFlights
         LayoutPlane();
         Console.WriteLine("Choose a seat you would like");
         string SeatPicker = Console.ReadLine()!;
-        
+
         // Set all needed items in book json :
         /*
             - Account ID

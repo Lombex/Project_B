@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 static class UserLogin
 {
     static private AccountsLogic accountsLogic = new AccountsLogic();
+
+    public static AccountModel? AccountInfo { get; private set; } // AccountInformation
+
     public static void Start()
     {
         Console.Write("Welcome to the login page\n");
@@ -22,6 +25,7 @@ static class UserLogin
             Console.Clear();
             Console.WriteLine("Welcome back " + acc.FullName);
             Console.WriteLine("Your email address is " + acc.EmailAddress);
+            AccountInfo = acc;
             if (acc.IsAdmin) Menu.AdminAccount();
             if (acc.IsEmployee) Menu.EmployeeAccount();
             else Menu.Account();
@@ -103,6 +107,7 @@ static class UserLogin
                         break;
                 }
                 dataList.Add(newData);
+                AccountInfo = newData;
                 AccountsAccess.WriteAll(dataList);
             }
             if (back_to_menu == false)
