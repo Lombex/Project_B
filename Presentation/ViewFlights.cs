@@ -12,7 +12,7 @@ public class ViewFlights
         EnableCount = false
     };
 
-    public static string? FlightID { get; private set; } 
+    public static int FlightID { get; private set; }
 
     public static void Menu()
     {
@@ -21,10 +21,23 @@ public class ViewFlights
         FlightSchedule();
         LayoutPlane();
         Console.WriteLine("Choose a seat you would like");
-        AccountModel? AccountInfo = UserLogin.AccountInfo;
-        string? FlightId = FlightID;
+        AccountModel AccountInfo = UserLogin.AccountInfo!;
+        int FlightId = FlightID - 1;
         string SeatPicker = Console.ReadLine()!;
 
+        var FilterByFlightID = from s in _flights
+                               where s.FlightID == FlightId
+                               select s;
+
+        _flights = FilterByFlightID.ToList();
+
+        int highestId = FilterByFlightID.Max(data => data.FlightID);
+        BookHistoryModel newData = new BookHistoryModel(AccountInfo.Id, AccountInfo.FullName, AccountInfo.EmailAddress,
+        DateTime.Now, _flights[0].FlightNumber, SeatPicker, _flights[0].Destination, _flights[0].Gate, _flights[0].DepartTime, _flights[0].ArrivalTime);
+
+        List<BookHistoryModel> dataList = BookHistoryAccess.LoadAll();
+        dataList.Add(newData);
+        BookHistoryAccess.WriteAll(dataList);
 
 
         // Set all needed items in book json :
@@ -146,7 +159,15 @@ public class ViewFlights
         {
             Console.WriteLine("What is the flight ID of the flight you will be taking?");
             Console.Write(">> ");
-            FlightID = Console.ReadLine()!;
+            try
+            {
+                FlightID = Convert.ToInt32(Console.ReadLine()!);
+            }
+            catch
+            {
+                Console.WriteLine("FlightID can only be a number!");
+                FlightSchedule();
+            }
         }
         else FlightSchedule();
     }

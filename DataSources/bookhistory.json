@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "AccountID": 2,
+    "Account-Name": "Lucas",
+    "Account-Email": "example@gmail.com",
+    "BookTime": "2023-05-24T15:13:40.9557838+02:00",
+    "Booked-Airplane": "KL1234",
+    "Booked-Seat": "B23",
+    "Booked-Destination": "Barcelona",
+    "Booked-Gate": "B3",
+    "DepartTime": "12:30",
+    "ArrivalTime": "15:00"
+  }
+]

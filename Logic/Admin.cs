@@ -34,9 +34,9 @@ public class Admin : User
             }
         }
         Console.WriteLine("This Account does either not exist or does not match with given input!\npress Enter to confirm.");
-        Console.ReadLine(); 
+        Console.ReadLine();
         Menu.AdminAccount();
-            
+
     }
     public void Create_account()
     {
@@ -78,7 +78,8 @@ public class Admin : User
         string gate = Console.ReadLine()!;
 
         List<FlightInfoModel> dataList = FlightInfoAccess.LoadAll();
-        FlightInfoModel newFlight = new FlightInfoModel(flight_number, aircraft, origin, destination, date, flighttime, departtime, arrivaltime, gate);
+        int highestId = dataList.Max(data => data.FlightID);
+        FlightInfoModel newFlight = new FlightInfoModel(highestId + 1, flight_number, aircraft, origin, destination, date, flighttime, departtime, arrivaltime, gate);
         dataList.Add(newFlight);
         FlightInfoAccess.WriteAll(dataList);
 

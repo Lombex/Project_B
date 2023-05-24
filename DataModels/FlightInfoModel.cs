@@ -2,6 +2,9 @@ using System.Text.Json.Serialization;
 
 public class FlightInfoModel
 {
+    [JsonPropertyName("Flight-ID")]
+    public int FlightID { get; set; }
+
     [JsonPropertyName("Flight-number")]
     public string FlightNumber { get; set; }
 
@@ -32,8 +35,9 @@ public class FlightInfoModel
     // [JsonPropertyName("SeatAvailability")]
     // public List<string> SeatAvailability { get; set; }
 
-    public FlightInfoModel(string flightnumber, string aircraft, string origin, string destination, string date, double flighttime, string departtime, string arrivaltime, string gate = "A1")
+    public FlightInfoModel(int flightID, string flightnumber, string aircraft, string origin, string destination, string date, double flighttime, string departtime, string arrivaltime, string gate = "A1")
     {
+        FlightID = flightID;
         FlightNumber = flightnumber;
         Aircraft = aircraft;
         Origin = origin;
