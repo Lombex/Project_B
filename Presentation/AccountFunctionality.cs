@@ -32,7 +32,35 @@ public class AccountFunctionality
     public static string GetInput(string prompt = "")
     {
         Console.Write(prompt + "\n>> ");
-        return Console.ReadLine()!;
+        string? GetInput = Console.ReadLine();
+        switch (GetInput)
+        {
+            case "q":
+            case "Q":
+                string input = AccountFunctionality.GetInput("are you sure you want to quit? (y/n)");
+                switch (input)
+                {
+                    case "y":
+                        System.Environment.Exit(0);
+                        break;
+                    case "Y":
+                        System.Environment.Exit(0);
+                        break;
+                    case "N":
+                    default:
+                        break;
+                }
+                break;
+            default:
+                Console.ReadLine();
+                return GetInput;
+                break;
+        }
+
+        if (GetInput == "q" || GetInput == "Q"){
+
+        }
+        return GetInput;
     }
 
     public static void ErrorMessage()

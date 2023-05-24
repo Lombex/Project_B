@@ -13,8 +13,7 @@ static class Menu
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_menu_choices) Console.WriteLine(item);
         Console.WriteLine("+-------------------------+");
-        Console.Write(">> ");
-        string input = Console.ReadLine()!;
+        string input = AccountFunctionality.GetInput();
 
         switch (input)
         {
