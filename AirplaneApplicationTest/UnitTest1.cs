@@ -1,11 +1,25 @@
-namespace AirplaneApplicationTest;
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-[TestClass]
-public class UnitTest1
+namespace AirplaneApplicationTest
 {
-    [TestMethod]
-    public void TestMethod1()
+    [TestClass]
+    public class T1
     {
-        //Implementing first unit tests here: 
+        [TestMethod]
+        public void CheckCreateAccountFunction()
+        {
+            // T1 (REQ F4.1) -> Try to create account with a valid email and password, but also with invalid information. 
+            // Arrange
+
+            // Act 
+
+            // Assert
+            Assert.AreEquel(1.0, 1.0);
+            
+            
+            
+            
+        }
     }
 }

@@ -2,7 +2,7 @@
 using System.Text;
 
 //This class is not static so later on we can use inheritance and interfaces
-class AccountsLogic
+public class AccountsLogic
 {
     private List<AccountModel> _accounts;
 
@@ -61,7 +61,7 @@ class AccountsLogic
         Update();
         CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password);
         return CurrentAccount;
-    }
+    } 
 
 }
 
