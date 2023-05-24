@@ -33,7 +33,7 @@ public class ViewFlights
 
         int highestId = FilterByFlightID.Max(data => data.FlightID);
         BookHistoryModel newData = new BookHistoryModel(AccountInfo.Id, AccountInfo.FullName, AccountInfo.EmailAddress,
-        DateTime.Now, _flights[0].FlightNumber, SeatPicker, _flights[0].Destination, _flights[0].Gate, _flights[0].DepartTime, _flights[0].ArrivalTime);
+        DateTime.Now, FlightId, _flights[0].FlightNumber, SeatPicker, _flights[0].Destination, _flights[0].Gate, _flights[0].DepartTime, _flights[0].ArrivalTime);
 
         List<BookHistoryModel> dataList = BookHistoryAccess.LoadAll();
         dataList.Add(newData);
