@@ -41,7 +41,7 @@ public class AccountFunctionality
             case "":
                 return GetInput(prompt);
             default:
-                return input;
+                return input!;
         }
 
     }

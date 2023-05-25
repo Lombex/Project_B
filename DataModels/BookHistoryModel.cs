@@ -12,7 +12,7 @@ public class BookHistoryModel
     public string? AccountEmail { get; set; }
 
     [JsonPropertyName("BookTime")]
-    public DateTime BookTime { get; set; }
+    public string BookTime { get; set; }
 
     [JsonPropertyName("Booked-FlightID")]
     public int BookedFlightID { get; set; }
@@ -35,7 +35,7 @@ public class BookHistoryModel
     [JsonPropertyName("ArrivalTime")]
     public string ArrivalTime { get; set; }
 
-    public BookHistoryModel(int accountId, string accountname, string accountemail, DateTime booktime, int bookedFlightID, string bookedairplane, string bookedseat, string bookeddestination,
+    public BookHistoryModel(int accountId, string accountname, string accountemail, string booktime, int bookedFlightID, string bookedairplane, string bookedseat, string bookeddestination,
         string bookedgate, string departtime, string arrivaltime)
     {
         AccountID = accountId;

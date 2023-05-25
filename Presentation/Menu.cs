@@ -49,7 +49,7 @@ static class Menu
         switch (input)
         {
             case "1":
-                ViewFlights.Menu();
+                ViewFlights.FlightMenu();
                 break;
             case "2":
                 AccountFunctionality.ErrorMessage("wip, this hasn't been implemented yet.");
@@ -104,7 +104,7 @@ static class Menu
                 int banner_choice = Convert.ToInt32(AccountFunctionality.GetInput("Choose a banner, and type the number of the banner you want: "));
                 AccountFunctionality.ChangeBanner(banner_choice);
                 AdminAccount();
-                break;      
+                break;
             case "6":
                 Menu.Start();
                 break;

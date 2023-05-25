@@ -14,7 +14,7 @@ public class ViewFlights
 
     public static int FlightID { get; private set; }
 
-    public static void Menu()
+    public static void FlightMenu()
     {
         if (_flights == null) _flights = FlightInfoAccess.LoadAll();
         FlightInfoLogic Fil = new FlightInfoLogic();
@@ -33,40 +33,63 @@ public class ViewFlights
 
         int highestId = FilterByFlightID.Max(data => data.FlightID);
         BookHistoryModel newData = new BookHistoryModel(AccountInfo.Id, AccountInfo.FullName, AccountInfo.EmailAddress,
-        DateTime.Now, FlightId, _flights[0].FlightNumber, SeatPicker, _flights[0].Destination, _flights[0].Gate, _flights[0].DepartTime, _flights[0].ArrivalTime);
+        DateTime.Now.ToString(), FlightId, _flights[0].FlightNumber, SeatPicker, _flights[0].Destination, _flights[0].Gate, _flights[0].DepartTime, _flights[0].ArrivalTime);
 
         List<BookHistoryModel> dataList = BookHistoryAccess.LoadAll();
         dataList.Add(newData);
         BookHistoryAccess.WriteAll(dataList);
 
 
-        // Set all needed items in book json :
-        /*
-        This is by AccountInfo
-        ----------------------------------
-            - Account ID
-            - Account Name
-            - Account Email
-            - Book Time
-
-        This is lookedup by the flight id
-        ----------------------------------- 
-            - Booked Airplane
-            - Booked Seat
-            - Booked Destination
-            - Booked Gate
-            - Flight Takeoff
-            - Flight Arrival
-        */
-
-        // Check which class seat it has to be
-
-        // Check if User has an disability or has children for discount.
-
-        // Make sure to ask for confirmation 
-
-        // Menu has be able to pick seats | Menu has to be able to go back to its respective menu
+        List<AccountModel> accountList = AccountsAccess.LoadAll();
+        AccountModel? updatedAccount = accountList.FirstOrDefault(a => a.Id == AccountInfo.Id);
+        if (updatedAccount != null)
+        {
+            List<string> updatedBookedFlights = new List<string>
+            {
+                FlightId.ToString(),
+                _flights[0].FlightNumber,
+                DateTime.Now.ToString(),
+                SeatPicker,
+                _flights[0].Origin,
+                _flights[0].Destination,
+                _flights[0].DepartTime.ToString(),
+                _flights[0].ArrivalTime.ToString(),
+                _flights[0].Gate,
+            };
+            updatedAccount.BookedFlights.Add(updatedBookedFlights);
+            AccountsAccess.WriteAll(accountList);
+        }
+        Menu.Account();
     }
+
+
+    // Set all needed items in book json :
+    /*
+    This is by AccountInfo
+    ----------------------------------
+        - Account ID
+        - Account Name
+        - Account Email
+        - Book Time
+
+    This is lookedup by the flight id
+    ----------------------------------- 
+        - Booked Airplane
+        - Booked Seat
+        - Booked Destination
+        - Booked Gate
+        - Flight Takeoff
+        - Flight Arrival
+    */
+
+    // Check which class seat it has to be
+
+    // Check if User has an disability or has children for discount.
+
+    // Make sure to ask for confirmation 
+
+    // Menu has be able to pick seats | Menu has to be able to go back to its respective menu
+
 
     public static void SortingMenu()
     {

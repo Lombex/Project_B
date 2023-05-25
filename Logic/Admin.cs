@@ -85,5 +85,5 @@ public class Admin : User
 
         Menu.AdminAccount();
     }
-    public void ViewFlightList() => ViewFlights.Menu();
+    public void ViewFlightList() => ViewFlights.FlightMenu();
 }
