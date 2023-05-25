@@ -29,11 +29,14 @@ public class ViewFlights
                                where s.FlightID == FlightId
                                select s;
 
-        _flights = FilterByFlightID.ToList();
+        List<FlightInfoModel> _flight = FilterByFlightID.ToList();
+
+        _flight[0].SeatsTaken.Add(SeatPicker);
+        FlightInfoAccess.WriteAll(_flights);
 
         int highestId = FilterByFlightID.Max(data => data.FlightID);
         BookHistoryModel newData = new BookHistoryModel(AccountInfo.Id, AccountInfo.FullName, AccountInfo.EmailAddress,
-        DateTime.Now.ToString(), FlightId, _flights[0].FlightNumber, SeatPicker, _flights[0].Destination, _flights[0].Gate, _flights[0].DepartTime, _flights[0].ArrivalTime);
+        DateTime.Now.ToString(), FlightId, _flight[0].FlightNumber, SeatPicker, _flight[0].Destination, _flight[0].Gate, _flight[0].DepartTime, _flight[0].ArrivalTime);
 
         List<BookHistoryModel> dataList = BookHistoryAccess.LoadAll();
         dataList.Add(newData);
