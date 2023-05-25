@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-static class UserLogin
+static public class UserLogin
 {
     static private AccountsLogic accountsLogic = new AccountsLogic();
     public static void Start()
@@ -80,7 +80,7 @@ static class UserLogin
             if (dataList.Any(data => data.EmailAddress == email))
                 Console.WriteLine("An account with the same email address already exists. Please choose a different email address.");
             else
-            {
+            {  
                 int highestId = dataList.Max(data => data.Id);
                 AccountModel newData;
                 switch (type)
