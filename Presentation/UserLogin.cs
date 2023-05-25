@@ -2,8 +2,6 @@ using System.Text.RegularExpressions;
 
 static class UserLogin
 {
-    static private AccountsLogic accountsLogic = new AccountsLogic();
-
     public static AccountModel? AccountInfo { get; private set; } // AccountInformation
 
     public static void Start()
