@@ -24,6 +24,15 @@ public class AccountFunctionality
             }
             info = Console.ReadKey(true);
         }
+        if (password == "q")
+        {
+            if (!Quit())
+            {
+                Console.Clear();
+                Console.Write("Please enter your password\n>> ");
+                password = HidePassword();
+            }
+        }
         Console.WriteLine();
         return password;
     }
@@ -48,7 +57,7 @@ public class AccountFunctionality
 
     private static bool Quit()
     {
-        string Quit = GetInput("are you sure you want to quit? (y/n)");
+        string Quit = GetInput("\nAre you sure you want to quit? (y/n)");
         switch (Quit)
         {
             case "y":

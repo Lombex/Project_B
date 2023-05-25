@@ -1,3 +1,6 @@
+using System.Diagnostics.Metrics;
+using System.Net;
+using System.Numerics;
 using System.Text.RegularExpressions;
 
 static class UserLogin
@@ -6,12 +9,10 @@ static class UserLogin
 
     public static void Start()
     {
-        Console.Write("Welcome to the login page\n");
-        Console.Write("Please enter your email address\n>> ");
-        string email = Console.ReadLine()!;
+        string email = AccountFunctionality.GetInput("Welcome to the login page\nPlease enter your email address.");
         Console.Write("Please enter your password\n>> ");
         string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
-        AccountModel? acc = accountsLogic.CheckLogin(email, password);
+        AccountModel? acc = AccountsLogic.CheckLogin(email, password);
         if (acc == null)
         {
             Console.Clear();
@@ -68,10 +69,8 @@ static class UserLogin
     }
     public static void MakeAccount(AccountType type, bool back_to_menu)
     {
-        Console.Write("Please enter your full name\n>> ");
-        string full_name = Console.ReadLine()!;
-        Console.Write("Please enter your email address\n>> ");
-        string email = Console.ReadLine()!;
+        string full_name = AccountFunctionality.GetInput("Please enter your full name");
+        string email = AccountFunctionality.GetInput("Please enter your email address");
         Console.Write("Please enter your password\n>> ");
         string UnhashedPassword = AccountFunctionality.HidePassword();
         string password_1 = AccountsLogic.GetHashedSHA256(UnhashedPassword);

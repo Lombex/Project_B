@@ -11,7 +11,7 @@ static class AccountsLogic
     //private set, so this can only be set by the class itself
     public static AccountModel? CurrentAccount { get; private set; }
 
-    public static AccountsLogic()
+    static AccountsLogic()
     {
         _accounts = AccountsAccess.LoadAll();
     }
