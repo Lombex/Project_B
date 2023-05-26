@@ -52,8 +52,7 @@ static class Menu
                 ViewFlights.FlightMenu();
                 break;
             case "2":
-                AccountFunctionality.ErrorMessage("wip, this hasn't been implemented yet.");
-                Account();
+                ViewFlights.SeeBookings(false, false);
                 break;
             case "3":
                 Start();
@@ -149,5 +148,36 @@ static class Menu
                 Account();
                 break;
         }
+    }
+
+    public static void MangeBookings()
+    {
+        Console.Clear();
+        AccountFunctionality.PrintBanner();
+        Console.WriteLine("Mange Bookings Menu");
+        List<string> manage_booking_choices = new List<string>() { " Enter 1 to delete a booking", " Enter 2 to change your seat", " Enter 3 to go back" };
+        
+        Console.WriteLine("\n+-------------------------+");
+        foreach (string item in manage_booking_choices) Console.WriteLine(item);
+
+        Console.WriteLine("+-------------------------+");
+        string input = AccountFunctionality.GetInput();
+        switch (input)
+        {
+            case "1":
+                ViewFlights.SeeBookings(true, false);
+                break;
+            case "2":
+                ViewFlights.SeeBookings(false, true);
+                break;
+            case "3": 
+                Menu.Account();
+                break;
+            default: 
+                AccountFunctionality.ErrorMessage();
+                Menu.MangeBookings();
+                break;
+        }
+
     }
 }
