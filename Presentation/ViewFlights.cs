@@ -34,6 +34,7 @@ public class ViewFlights
         List<FlightInfoModel> _flight = FilterByFlightID.ToList();
 
         _flight[0].SeatsTaken.Add(SeatPicker);
+        _flights[FlightID] = _flight[0];
         FlightInfoAccess.WriteAll(_flights);
 
         int highestId = FilterByFlightID.Max(data => data.FlightID);
@@ -257,20 +258,34 @@ public class ViewFlights
                 Console.WriteLine("Enter your flight ID you want to delete");
                 string removed_flight_id = Console.ReadLine()!;
 
+                var FilterByFlightID = from s in _flights
+                                       where s.FlightID == Convert.ToInt32(removed_flight_id)
+                                       select s;
+
+                List<FlightInfoModel> remove_flight = FilterByFlightID.ToList();
+
                 foreach (List<string> flight in flight_account_info)
                 {
                     if (flight.Contains(removed_flight_id))
                     {
+                        // Flight section
+                        remove_flight[0].SeatsTaken.Remove(flight[3]);
+                        _flights![Convert.ToInt32(removed_flight_id)] = remove_flight[0];
+                        FlightInfoAccess.WriteAll(_flights);
+
+                        // Account section
                         List<List<string>> list_flight_account_info = flight_account_info.ToList();
                         list_flight_account_info.RemoveAll(innerList => innerList.Contains(removed_flight_id));
                         UserLogin.AccountInfo.BookedFlights = list_flight_account_info;
                         AccountsAccess.WriteAll(accountList);
+
+
+
+                        // Impelement code to remove flight from json (by flightID)! 
+
+                        Console.WriteLine("Flight deleted successfully!");
                     }
                 }
-
-                // Impelement code to remove flight from json (by flightID)! 
-
-                Console.WriteLine("Flight deleted successfully!");
             }
             else if (change_seat == true)
             {
@@ -286,16 +301,16 @@ public class ViewFlights
         Console.WriteLine("Press any key + enter to go back to menu");
         Console.ReadLine();
         Menu.Account();
+
+
+
+
+
+
+
+
+        // Create method filter flight by catagory
+
+        // Create mehtod view flight information
     }
-
-
-
-
-
-
-
-
-    // Create method filter flight by catagory
-
-    // Create mehtod view flight information
 }
