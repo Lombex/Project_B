@@ -154,9 +154,9 @@ static class Menu
     {
         Console.Clear();
         AccountFunctionality.PrintBanner();
-        Console.WriteLine("Mange Bookings Menu");
+        Console.WriteLine("\nManage Bookings Menu");
         List<string> manage_booking_choices = new List<string>() { " Enter 1 to delete a booking", " Enter 2 to change your seat", " Enter 3 to go back" };
-        
+
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in manage_booking_choices) Console.WriteLine(item);
 
@@ -170,10 +170,10 @@ static class Menu
             case "2":
                 ViewFlights.SeeBookings(false, true);
                 break;
-            case "3": 
+            case "3":
                 Menu.Account();
                 break;
-            default: 
+            default:
                 AccountFunctionality.ErrorMessage();
                 Menu.MangeBookings();
                 break;

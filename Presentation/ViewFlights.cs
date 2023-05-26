@@ -7,6 +7,8 @@ public class ViewFlights
 {
     private static List<FlightInfoModel>? _flights;
 
+    public static List<AccountModel> accountList = AccountsAccess.LoadAll();
+
     public static ConsoleTableOptions options = new ConsoleTableOptions
     {
         EnableCount = false
@@ -43,23 +45,24 @@ public class ViewFlights
         BookHistoryAccess.WriteAll(dataList);
 
 
-        List<AccountModel> accountList = AccountsAccess.LoadAll();
+
         AccountModel? updatedAccount = accountList.FirstOrDefault(a => a.Id == AccountInfo.Id);
         if (updatedAccount != null)
         {
             List<string> updatedBookedFlights = new List<string>
             {
                 FlightId.ToString(),
-                _flights[0].FlightNumber,
+                _flight[0].FlightNumber,
                 DateTime.Now.ToString(),
                 SeatPicker,
-                _flights[0].Origin,
-                _flights[0].Destination,
-                _flights[0].DepartTime.ToString(),
-                _flights[0].ArrivalTime.ToString(),
-                _flights[0].Gate,
+                _flight[0].Origin,
+                _flight[0].Destination,
+                _flight[0].DepartTime.ToString(),
+                _flight[0].ArrivalTime.ToString(),
+                _flight[0].Gate,
             };
             updatedAccount.BookedFlights.Add(updatedBookedFlights);
+            UserLogin.AccountInfo = updatedAccount;
             AccountsAccess.WriteAll(accountList);
         }
         Menu.Account();
@@ -215,7 +218,7 @@ public class ViewFlights
     {
         int AmountOfFlights = UserLogin.AccountInfo!.BookedFlights.Count;
         List<List<string>> flight_account_info = new List<List<string>>(UserLogin.AccountInfo.BookedFlights);
-        
+
 
         if (AmountOfFlights == 0)
         {
@@ -232,7 +235,7 @@ public class ViewFlights
             "ArrivalTime",
             "Gate");
             Bookingtable.Options.EnableCount = options.EnableCount;
-            foreach(List<string> booking in flight_account_info)
+            foreach (List<string> booking in flight_account_info)
             {
                 Bookingtable.AddRow(booking[0], booking[1], booking[2], booking[3], booking[4], booking[5], booking[6], booking[7], booking[8]);
             }
@@ -243,7 +246,7 @@ public class ViewFlights
             if (delete_flight == false && change_seat == false)
             {
                 Console.WriteLine("Do you want to manage your flights? Enter Y/y/Yes/yes");
-                string user_input = Console.ReadLine();
+                string user_input = Console.ReadLine()!;
                 if (user_input == "Y" || user_input == "y" || user_input == "Yes" || user_input == "yes")
                 {
                     Menu.MangeBookings();
@@ -252,7 +255,18 @@ public class ViewFlights
             else if (delete_flight == true)
             {
                 Console.WriteLine("Enter your flight ID you want to delete");
-                int removed_flight_id = Convert.ToInt32(Console.ReadLine());
+                string removed_flight_id = Console.ReadLine()!;
+
+                foreach (List<string> flight in flight_account_info)
+                {
+                    if (flight.Contains(removed_flight_id))
+                    {
+                        List<List<string>> list_flight_account_info = flight_account_info.ToList();
+                        list_flight_account_info.RemoveAll(innerList => innerList.Contains(removed_flight_id));
+                        UserLogin.AccountInfo.BookedFlights = list_flight_account_info;
+                        AccountsAccess.WriteAll(accountList);
+                    }
+                }
 
                 // Impelement code to remove flight from json (by flightID)! 
 

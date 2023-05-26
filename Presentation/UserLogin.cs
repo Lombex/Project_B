@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 static class UserLogin
 {
-    public static AccountModel? AccountInfo { get; private set; } // AccountInformation
+    public static AccountModel? AccountInfo { get; set; } // AccountInformation
 
     public static void Start()
     {
