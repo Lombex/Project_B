@@ -2,8 +2,6 @@ using System.Data;
 using ConsoleTables;
 using DataModels;
 
-
-// everything is static, can we just make the class static?
 public class ViewFlights
 {
     private static List<FlightInfoModel>? _flights;
@@ -16,58 +14,66 @@ public class ViewFlights
     };
 
     public static int FlightID { get; private set; }
-
     public static void FlightMenu()
     {
         if (_flights == null) _flights = FlightInfoAccess.LoadAll();
         FlightInfoLogic Fil = new FlightInfoLogic();
         FlightSchedule();
         LayoutPlane();
-        Console.WriteLine("Choose a seat you would like");
-        AccountModel AccountInfo = UserLogin.AccountInfo!;
         int FlightId = FlightID - 1;
-        string SeatPicker = Console.ReadLine()!;
 
-        var FilterByFlightID = from s in _flights
-                               where s.FlightID == FlightId
-                               select s;
-
-        List<FlightInfoModel> _flight = FilterByFlightID.ToList();
-
-        _flight[0].SeatsTaken.Add(SeatPicker);
-        _flights[FlightId] = _flight[0];
-        FlightInfoAccess.WriteAll(_flights);
-
-        int highestId = FilterByFlightID.Max(data => data.FlightID);
-        BookHistoryModel newData = new BookHistoryModel(AccountInfo.Id, AccountInfo.FullName, AccountInfo.EmailAddress,
-        DateTime.Now.ToString(), FlightId, _flight[0].FlightNumber, SeatPicker, _flight[0].Destination, _flight[0].Gate, _flight[0].DepartTime, _flight[0].ArrivalTime);
-
-        List<BookHistoryModel> dataList = BookHistoryAccess.LoadAll();
-        dataList.Add(newData);
-        BookHistoryAccess.WriteAll(dataList);
-
-
-
-        AccountModel? updatedAccount = accountList.FirstOrDefault(a => a.Id == AccountInfo.Id);
-        if (updatedAccount != null)
+        if (FlightID <= 0 || FlightID > _flights.Count)
         {
-            List<string> updatedBookedFlights = new List<string>
-            {
-                FlightId.ToString(),
-                _flight[0].FlightNumber,
-                DateTime.Now.ToString(),
-                SeatPicker,
-                _flight[0].Origin,
-                _flight[0].Destination,
-                _flight[0].DepartTime.ToString(),
-                _flight[0].ArrivalTime.ToString(),
-                _flight[0].Gate,
-            };
-            updatedAccount.BookedFlights.Add(updatedBookedFlights);
-            UserLogin.AccountInfo = updatedAccount;
-            AccountsAccess.WriteAll(accountList);
+            Console.WriteLine("This Flight ID Does not exist please try again...");
+            Console.Write("Press Enter to continue...");
+            Console.ReadLine();
+            FlightMenu();
         }
-        Menu.Account();
+        else 
+        {
+            Console.WriteLine("Choose a seat you would like");
+            AccountModel AccountInfo = UserLogin.AccountInfo!;
+            string SeatPicker = Console.ReadLine()!;
+
+            var FilterByFlightID = from s in _flights
+                                   where s.FlightID == FlightId
+                                   select s;
+
+            List<FlightInfoModel> _flight = FilterByFlightID.ToList();
+
+            _flight[0].SeatsTaken.Add(SeatPicker);
+            _flights[FlightId] = _flight[0];
+            FlightInfoAccess.WriteAll(_flights);
+
+            int highestId = FilterByFlightID.Max(data => data.FlightID);
+            BookHistoryModel newData = new BookHistoryModel(AccountInfo.Id, AccountInfo.FullName, AccountInfo.EmailAddress,
+            DateTime.Now.ToString(), FlightId, _flight[0].FlightNumber, SeatPicker, _flight[0].Destination, _flight[0].Gate, _flight[0].DepartTime, _flight[0].ArrivalTime);
+
+            List<BookHistoryModel> dataList = BookHistoryAccess.LoadAll();
+            dataList.Add(newData);
+            BookHistoryAccess.WriteAll(dataList);
+
+            AccountModel? updatedAccount = accountList.FirstOrDefault(a => a.Id == AccountInfo.Id);
+            if (updatedAccount != null)
+            {
+                List<string> updatedBookedFlights = new List<string> {
+                    FlightId.ToString(),
+                    _flight[0].FlightNumber,
+                    DateTime.Now.ToString(),
+                    SeatPicker,
+                    _flight[0].Origin,
+                    _flight[0].Destination,
+                    _flight[0].DepartTime.ToString(),
+                    _flight[0].ArrivalTime.ToString(),
+                    _flight[0].Gate,
+                };
+
+                updatedAccount.BookedFlights.Add(updatedBookedFlights);
+                UserLogin.AccountInfo = updatedAccount;
+                AccountsAccess.WriteAll(accountList);
+            }
+            Menu.Account();
+        }
     }
 
 
