@@ -26,6 +26,10 @@ static class Menu
                 break;
             case "3":
                 Console.WriteLine("Quitting application");
+                System.Environment.Exit(0);
+                break;
+            case "4":
+                ViewFlights.LayoutPlane();
                 break;
             default:
                 AccountFunctionality.ErrorMessage();

@@ -7,5 +7,14 @@
     "IsAdmin": true,
     "IsEmployee": false,
     "BookedFlights": []
+  },
+  {
+    "Id": 2,
+    "EmailAddress": "user@gmail.com",
+    "Password": "bc5848f227cc161eb5f68dfe98cb13110a9c843ce69e953a88107d865583d397",
+    "FullName": "user",
+    "IsAdmin": false,
+    "IsEmployee": false,
+    "BookedFlights": []
   }
 ]
