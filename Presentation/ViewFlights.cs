@@ -34,7 +34,7 @@ public class ViewFlights
         List<FlightInfoModel> _flight = FilterByFlightID.ToList();
 
         _flight[0].SeatsTaken.Add(SeatPicker);
-        _flights[FlightID] = _flight[0];
+        _flights[FlightId] = _flight[0];
         FlightInfoAccess.WriteAll(_flights);
 
         int highestId = FilterByFlightID.Max(data => data.FlightID);
