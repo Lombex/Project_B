@@ -76,26 +76,6 @@ public class ViewFlights
         }
     }
 
-
-    // Set all needed items in book json :
-    /*
-    This is by AccountInfo
-    ----------------------------------
-        - Account ID
-        - Account Name
-        - Account Email
-        - Book Time
-
-    This is lookedup by the flight id
-    ----------------------------------- 
-        - Booked Airplane
-        - Booked Seat
-        - Booked Destination
-        - Booked Gate
-        - Flight Takeoff
-        - Flight Arrival
-    */
-
     // Check which class seat it has to be
 
     // Check if User has an disability or has children for discount.
@@ -221,7 +201,7 @@ public class ViewFlights
 
         Console.WriteLine("Enter a flight number");
         string current_flight_id = Console.ReadLine()!;
-
+        // This is not working and needs error handling
 
         var FilterByFlightID = from s in _flights
                                where s.FlightID == Convert.ToInt32(current_flight_id) - 1
