@@ -207,30 +207,23 @@ public class ViewFlights
         if (_flights == null) _flights = FlightInfoAccess.LoadAll();
         DataTable Table = new DataTable("Row");
 
-        DataColumn rowA = new DataColumn("A", typeof(string));
-        DataColumn rowB = new DataColumn("B", typeof(string));
-        DataColumn rowC = new DataColumn("C", typeof(string));
-        DataColumn rowD = new DataColumn("D", typeof(string));
-        DataColumn rowE = new DataColumn("E", typeof(string));
-        DataColumn rowF = new DataColumn("F", typeof(string));
-        Table.Columns.Add(rowA);
-        Table.Columns.Add(rowB);
-        Table.Columns.Add(rowC);
-        Table.Columns.Add(rowD);
-        Table.Columns.Add(rowE);
-        Table.Columns.Add(rowF);
+        for (char columnChar = 'A'; columnChar <= 'F'; columnChar++)
+        {
+            DataColumn column = new DataColumn(columnChar.ToString(), typeof(string));
+            Table.Columns.Add(column);
+        }
 
         Console.WriteLine("Enter a flight number");
-        string current_flight_id = Console.ReadLine();
+        string current_flight_id = Console.ReadLine()!;
 
 
         var FilterByFlightID = from s in _flights
-                                where s.FlightID == Convert.ToInt32(current_flight_id) - 1
-                                select s;
+                               where s.FlightID == Convert.ToInt32(current_flight_id) - 1
+                               select s;
 
         List<FlightInfoModel> remove_flight = FilterByFlightID.ToList();
         List<string> taken_seats = remove_flight[0].SeatsTaken;
-        
+
 
 
         DataRow table_row;
@@ -243,52 +236,34 @@ public class ViewFlights
             table_row["D"] = row;
             table_row["E"] = row;
             table_row["F"] = row;
-            
+
             Table.Rows.Add(table_row);
-            
-            foreach(string seat in taken_seats)
+
+            foreach (string seat in taken_seats)
             {
-                if (seat[0] == Convert.ToChar("A"))
+                char columnChar = seat[0];
+                string rowNumber = seat.Substring(1);
+
+                switch (columnChar)
                 {
-                    if (Convert.ToString(row) == seat.Substring(1))
-                    {
-                        table_row["A"] = "X";
-                    }
-                }
-                else if (seat[0] == Convert.ToChar("B"))
-                {
-                    if (Convert.ToString(row) == seat.Substring(1))
-                    {
-                        table_row["B"] = "X";
-                    }
-                }
-                else if (seat[0] == Convert.ToChar("C"))
-                {
-                    if (Convert.ToString(row) == seat.Substring(1))
-                    {
-                        table_row["C"] = "X";
-                    }
-                }
-                else if (seat[0] == Convert.ToChar("D"))
-                {
-                    if (Convert.ToString(row) == seat.Substring(1))
-                    {
-                        table_row["D"] = "X";
-                    }
-                }
-                else if (seat[0] == Convert.ToChar("E"))
-                {
-                    if (Convert.ToString(row) == seat.Substring(1))
-                    {
-                        table_row["E"] = "X";
-                    }
-                }
-                else if (seat[0] == Convert.ToChar("F"))
-                {
-                    if (Convert.ToString(row) == seat.Substring(1))
-                    {
-                        table_row["F"] = "X";
-                    }
+                    case 'A':
+                        table_row["A"] = rowNumber == Convert.ToString(row) ? "X" : table_row["A"];
+                        break;
+                    case 'B':
+                        table_row["B"] = rowNumber == Convert.ToString(row) ? "X" : table_row["B"];
+                        break;
+                    case 'C':
+                        table_row["C"] = rowNumber == Convert.ToString(row) ? "X" : table_row["C"];
+                        break;
+                    case 'D':
+                        table_row["D"] = rowNumber == Convert.ToString(row) ? "X" : table_row["D"];
+                        break;
+                    case 'E':
+                        table_row["E"] = rowNumber == Convert.ToString(row) ? "X" : table_row["E"];
+                        break;
+                    case 'F':
+                        table_row["F"] = rowNumber == Convert.ToString(row) ? "X" : table_row["F"];
+                        break;
                 }
             }
 
@@ -381,13 +356,44 @@ public class ViewFlights
             }
             else if (change_seat == true)
             {
+                if (_flights == null) _flights = FlightInfoAccess.LoadAll();
                 Console.WriteLine("Enter your flight ID you want to change seats on");
                 int changed_seat_flightID = Convert.ToInt32(Console.ReadLine());
 
-                // Implement code for changing seat (by flightID)! 
+                Console.WriteLine("Enter your old seat you want to change seats on");
+                string old_seat = Console.ReadLine()!;
 
-                Console.WriteLine("Seat changed successfully");
+                Console.WriteLine("Enter your new seat you want to change seats on");
+                string new_seat = Console.ReadLine()!;
 
+                var FilterByFlightID = from s in _flights
+                                       where s.FlightID == Convert.ToInt32(changed_seat_flightID)
+                                       select s;
+
+                List<FlightInfoModel> ChangeSeatFlight = FilterByFlightID.ToList();
+
+                foreach (List<string> flight in flight_account_info)
+                {
+                    if (flight.Contains(old_seat))
+                    {
+                        // Flight section
+                        ChangeSeatFlight[0].SeatsTaken.Remove(old_seat);
+                        ChangeSeatFlight[0].SeatsTaken.Add(new_seat);
+                        _flights[changed_seat_flightID] = ChangeSeatFlight[0];
+                        FlightInfoAccess.WriteAll(_flights);
+
+                        // Account section
+                        List<List<string>> list_flight_account_info = flight_account_info.ToList();
+                        flight[3] = new_seat;
+                        UserLogin.AccountInfo.BookedFlights = list_flight_account_info;
+                        AccountsAccess.WriteAll(accountList);
+
+                        // Implement code for changing seat (by flightID)! 
+
+                        Console.WriteLine("Seat changed successfully");
+
+                    }
+                }
             }
         }
         Console.WriteLine("Press any key + enter to go back to menu");
@@ -403,6 +409,6 @@ public class ViewFlights
 
         // Create method filter flight by catagory
 
-        // Create mehtod view flight information
+        // Create method view flight information
     }
 }
