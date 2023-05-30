@@ -1,3 +1,4 @@
+using System.Data;
 using ConsoleTables;
 using DataModels;
 
@@ -203,15 +204,106 @@ public class ViewFlights
     }
     public static void LayoutPlane()
     {
-        ConsoleTable Table = new ConsoleTable("Row", "", "", "", "", "", "", "", "");
-        Table.Options.EnableCount = options.EnableCount;
+        if (_flights == null) _flights = FlightInfoAccess.LoadAll();
+        DataTable Table = new DataTable("Row");
+
+        DataColumn rowA = new DataColumn("A", typeof(string));
+        DataColumn rowB = new DataColumn("B", typeof(string));
+        DataColumn rowC = new DataColumn("C", typeof(string));
+        DataColumn rowD = new DataColumn("D", typeof(string));
+        DataColumn rowE = new DataColumn("E", typeof(string));
+        DataColumn rowF = new DataColumn("F", typeof(string));
+        Table.Columns.Add(rowA);
+        Table.Columns.Add(rowB);
+        Table.Columns.Add(rowC);
+        Table.Columns.Add(rowD);
+        Table.Columns.Add(rowE);
+        Table.Columns.Add(rowF);
+
+        Console.WriteLine("Enter a flight number");
+        string current_flight_id = Console.ReadLine();
+
+
+        var FilterByFlightID = from s in _flights
+                                where s.FlightID == Convert.ToInt32(current_flight_id) - 1
+                                select s;
+
+        List<FlightInfoModel> remove_flight = FilterByFlightID.ToList();
+        List<string> taken_seats = remove_flight[0].SeatsTaken;
+        
+
+
+        DataRow table_row;
         for (int row = 1; row < 31; row++)
         {
-            Table.AddRow("", "A" + row, "B" + row, "", "C" + row, "D" + row, "", "E" + row, "F" + row);
+            table_row = Table.NewRow();
+            table_row["A"] = row;
+            table_row["B"] = row;
+            table_row["C"] = row;
+            table_row["D"] = row;
+            table_row["E"] = row;
+            table_row["F"] = row;
+            
+            Table.Rows.Add(table_row);
+            
+            foreach(string seat in taken_seats)
+            {
+                if (seat[0] == Convert.ToChar("A"))
+                {
+                    if (Convert.ToString(row) == seat.Substring(1))
+                    {
+                        table_row["A"] = "X";
+                    }
+                }
+                else if (seat[0] == Convert.ToChar("B"))
+                {
+                    if (Convert.ToString(row) == seat.Substring(1))
+                    {
+                        table_row["B"] = "X";
+                    }
+                }
+                else if (seat[0] == Convert.ToChar("C"))
+                {
+                    if (Convert.ToString(row) == seat.Substring(1))
+                    {
+                        table_row["C"] = "X";
+                    }
+                }
+                else if (seat[0] == Convert.ToChar("D"))
+                {
+                    if (Convert.ToString(row) == seat.Substring(1))
+                    {
+                        table_row["D"] = "X";
+                    }
+                }
+                else if (seat[0] == Convert.ToChar("E"))
+                {
+                    if (Convert.ToString(row) == seat.Substring(1))
+                    {
+                        table_row["E"] = "X";
+                    }
+                }
+                else if (seat[0] == Convert.ToChar("F"))
+                {
+                    if (Convert.ToString(row) == seat.Substring(1))
+                    {
+                        table_row["F"] = "X";
+                    }
+                }
+            }
+
         }
-        Console.Clear();
-        Console.WriteLine("The Layout of the plane: \n");
-        Console.WriteLine(Table.ToString());
+
+        // Print Table
+        Console.WriteLine("Plane Layout");
+        foreach (DataRow row in Table.Rows)
+        {
+            foreach (DataColumn col in Table.Columns)
+            {
+                Console.Write("\t " + row[col].ToString());
+            }
+            Console.WriteLine();
+        };
     }
 
 
