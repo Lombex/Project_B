@@ -303,7 +303,7 @@ public class ViewFlights
                 string user_input = Console.ReadLine()!;
                 if (user_input == "Y" || user_input == "y" || user_input == "Yes" || user_input == "yes")
                 {
-                    Menu.MangeBookings();
+                    Menu.ManageBookings();
                 }
             }
             else if (delete_flight == true)

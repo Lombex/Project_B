@@ -1,3 +1,5 @@
+using Project.Presentation;
+
 static class Menu
 {
     //This shows the menu. You can call back to this method to show the menu again
@@ -154,7 +156,7 @@ static class Menu
         }
     }
 
-    public static void MangeBookings()
+    public static void ManageBookings()
     {
         Console.Clear();
         AccountFunctionality.PrintBanner();
@@ -179,7 +181,7 @@ static class Menu
                 break;
             default:
                 AccountFunctionality.ErrorMessage();
-                Menu.MangeBookings();
+                Menu.ManageBookings();
                 break;
         }
 
