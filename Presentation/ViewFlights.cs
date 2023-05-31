@@ -199,12 +199,8 @@ public class ViewFlights
             Table.Columns.Add(column);
         }
 
-        Console.WriteLine("Enter a flight number");
-        string current_flight_id = Console.ReadLine()!;
-        // This is not working and needs error handling
-
         var FilterByFlightID = from s in _flights
-                               where s.FlightID == Convert.ToInt32(current_flight_id) - 1
+                               where s.FlightID == FlightID - 1
                                select s;
 
         List<FlightInfoModel> remove_flight = FilterByFlightID.ToList();
