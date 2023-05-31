@@ -52,30 +52,21 @@ public class Admin : User
         else if (Option == 3) UserLogin.MakeAccount(UserLogin.AccountType.Admin, false);
         else
         {
-            Console.WriteLine("This is not an option please choose carefully!");
+            AccountFunctionality.ErrorMessage("This is not an option please choose carefully!");
             Create_account();
         }
     }
     public void Add_flight()
     {
-        Console.Write("Enter flight number\n>> ");
-        string flight_number = Console.ReadLine()!;
-        Console.Write("Enter Aircraft\n>> ");
-        string aircraft = Console.ReadLine()!;
-        Console.Write("Enter origin\n>> ");
-        string origin = Console.ReadLine()!;
-        Console.Write("Enter destination\n>> ");
-        string destination = Console.ReadLine()!;
-        Console.Write("Enter Date\n>> ");
-        string date = Console.ReadLine()!;
-        Console.Write("Enter flighttime (in hours) [ format: 0.1 ]\n>> ");
-        double flighttime = Convert.ToDouble(Console.ReadLine());
-        Console.Write("Enter depart time (local)\n>> ");
-        string departtime = Console.ReadLine()!;
-        Console.Write("Enter arrival time (local)\n>> ");
-        string arrivaltime = Console.ReadLine()!;
-        Console.Write("Enter gate\n>> ");
-        string gate = Console.ReadLine()!;
+        string flight_number = AccountFunctionality.GetInput("Enter flight number")!;
+        string aircraft      = AccountFunctionality.GetInput("Enter Aircraft");
+        string origin        = AccountFunctionality.GetInput("Enter origin");
+        string destination   = AccountFunctionality.GetInput("Enter destination");
+        string date          = AccountFunctionality.GetInput("Enter Date");
+        double flighttime    = Convert.ToDouble(AccountFunctionality.GetInput("Enter flighttime (in hours) [ format: 0.1 ]"));
+        string departtime    = AccountFunctionality.GetInput("Enter depart time (local)");
+        string arrivaltime   = AccountFunctionality.GetInput("Enter arrival time (local)");
+        string gate          = AccountFunctionality.GetInput("Enter gate")!;
 
         List<FlightInfoModel> dataList = FlightInfoAccess.LoadAll();
         int highestId = dataList.Max(data => data.FlightID);

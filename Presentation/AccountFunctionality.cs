@@ -64,8 +64,8 @@ public class AccountFunctionality
             case "Y":
                 Console.WriteLine("Bye!");
                 System.Environment.Exit(0);
-                // unnecessary because it'll have shut down but the compiler whines on
                 return true;
+                // unnecessary return because it'll have shut down but the compiler whines on
             default:
                 return false;
         }
