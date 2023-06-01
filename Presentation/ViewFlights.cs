@@ -69,7 +69,8 @@ public class ViewFlights
             {
                 if (taken_seat == SeatPicker)
                 {
-                    Console.WriteLine("This seat is already taken, please try again");
+                    Console.WriteLine("This seat is already taken, please wait and try again in 5 seconds");
+                    Thread.Sleep(5000);
                     ViewFlights.FlightMenu();
                 }
             }
