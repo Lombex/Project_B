@@ -29,7 +29,7 @@ public class ViewFlights
             Console.ReadLine();
             FlightMenu();
         }
-        else 
+        else
         {
             Console.WriteLine("Choose a seat you would like");
             AccountModel AccountInfo = UserLogin.AccountInfo!;
@@ -191,13 +191,8 @@ public class ViewFlights
     public static void LayoutPlane()
     {
         if (_flights == null) _flights = FlightInfoAccess.LoadAll();
-        DataTable Table = new DataTable("Row");
-
-        for (char columnChar = 'A'; columnChar <= 'F'; columnChar++)
-        {
-            DataColumn column = new DataColumn(columnChar.ToString(), typeof(string));
-            Table.Columns.Add(column);
-        }
+        var Table = new ConsoleTable("Row", "A", "B", "C", "D", "E", "F");
+        Table.Options.EnableCount = options.EnableCount;
 
         var FilterByFlightID = from s in _flights
                                where s.FlightID == FlightID - 1
@@ -206,61 +201,23 @@ public class ViewFlights
         List<FlightInfoModel> remove_flight = FilterByFlightID.ToList();
         List<string> taken_seats = remove_flight[0].SeatsTaken;
 
-
-
-        DataRow table_row;
         for (int row = 1; row < 31; row++)
         {
-            table_row = Table.NewRow();
-            table_row["A"] = row;
-            table_row["B"] = row;
-            table_row["C"] = row;
-            table_row["D"] = row;
-            table_row["E"] = row;
-            table_row["F"] = row;
+            var table_row = new List<string> { row.ToString() };
 
-            Table.Rows.Add(table_row);
-
-            foreach (string seat in taken_seats)
+            for (char columnChar = 'A'; columnChar <= 'F'; columnChar++)
             {
-                char columnChar = seat[0];
-                string rowNumber = seat.Substring(1);
-
-                switch (columnChar)
-                {
-                    case 'A':
-                        table_row["A"] = rowNumber == Convert.ToString(row) ? "X" : table_row["A"];
-                        break;
-                    case 'B':
-                        table_row["B"] = rowNumber == Convert.ToString(row) ? "X" : table_row["B"];
-                        break;
-                    case 'C':
-                        table_row["C"] = rowNumber == Convert.ToString(row) ? "X" : table_row["C"];
-                        break;
-                    case 'D':
-                        table_row["D"] = rowNumber == Convert.ToString(row) ? "X" : table_row["D"];
-                        break;
-                    case 'E':
-                        table_row["E"] = rowNumber == Convert.ToString(row) ? "X" : table_row["E"];
-                        break;
-                    case 'F':
-                        table_row["F"] = rowNumber == Convert.ToString(row) ? "X" : table_row["F"];
-                        break;
-                }
+                string seat = $"{columnChar}{row}";
+                string value = taken_seats.Contains(seat) ? "X" : "";
+                table_row.Add(value);
             }
 
+            Table.AddRow(table_row.ToArray());
         }
 
-        // Print Table
-        Console.WriteLine("Plane Layout");
-        foreach (DataRow row in Table.Rows)
-        {
-            foreach (DataColumn col in Table.Columns)
-            {
-                Console.Write("\t " + row[col].ToString());
-            }
-            Console.WriteLine();
-        };
+        Console.Clear();
+        Console.WriteLine("The Layout of the plane: \n");
+        Table.Write();
     }
 
 
