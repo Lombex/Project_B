@@ -156,6 +156,22 @@ public class FlightInfoLogic
 
         return sortedList;
     }
+    
+
+    public List<FlightInfoModel> SearchByName(string possible_destination)
+    {
+        List<FlightInfoModel> possible_flights= new List<FlightInfoModel>();
+
+        foreach(FlightInfoModel item in _flightinfo)
+        {
+            if (item.Destination == possible_destination)
+            {
+                possible_flights.Add(item);
+            }
+        }
+
+        return possible_flights;
+    }
 
 
 

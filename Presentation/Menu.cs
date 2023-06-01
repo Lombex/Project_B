@@ -31,7 +31,7 @@ static class Menu
                 System.Environment.Exit(0);
                 break;
             case "4":
-                ViewFlights.LayoutPlane();
+                ViewFlights.FlightSchedule();
                 break;
             default:
                 AccountFunctionality.ErrorMessage();
@@ -65,7 +65,7 @@ static class Menu
                 break;
             default:
                 AccountFunctionality.ErrorMessage();
-                Account();
+                Menu.Account();
                 break;
         }
     }

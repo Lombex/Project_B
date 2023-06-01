@@ -181,7 +181,8 @@ public class ViewFlights
                 break;
         }
     }
-    public static void FlightSchedule()
+
+    public static void PrintFlightTable(List<FlightInfoModel> flight_list)
     {
         ConsoleTable FlightTable = new ConsoleTable("FlightID", "Flight Number",
         "Aircraft",
@@ -193,20 +194,36 @@ public class ViewFlights
         "ArrivalTime",
         "Gate");
         FlightTable.Options.EnableCount = options.EnableCount;
-        for (int count = 0; count < _flights!.Count; count++)
+        for (int count = 0; count < flight_list!.Count; count++)
         {
-            FlightTable.AddRow(_flights[count].FlightID + 1, _flights[count].FlightNumber, _flights[count].Aircraft, _flights[count].Origin, _flights[count].Destination, _flights[count].Date, _flights[count].FlightTime,
-            _flights[count].DepartTime, _flights[count].ArrivalTime, _flights[count].Gate);
+            FlightTable.AddRow(flight_list[count].FlightID + 1, flight_list[count].FlightNumber, flight_list[count].Aircraft, flight_list[count].Origin, flight_list[count].Destination, flight_list[count].Date, flight_list[count].FlightTime,
+            flight_list[count].DepartTime, flight_list[count].ArrivalTime, flight_list[count].Gate);
         }
         Console.Clear();
         Console.WriteLine("All available flights: \n");
         Console.WriteLine(FlightTable.ToString());
+    }
+    public static void FlightSchedule()
+    {
+        PrintFlightTable(_flights);
         Console.WriteLine("Would you like to enable sorting for a more organized viewing?");
         Console.Write(">> ");
         string sorting = Console.ReadLine()!.ToLower();
-        if (sorting == "yes" || sorting == "y") SortingMenu();
+
+        if (sorting == "yes" || sorting == "y") 
+        {
+            SortingMenu();
+        }
         else if (sorting == "no" || sorting == "n")
         {
+            Console.WriteLine("Please enter your preferred destination");
+            Console.Write(">> ");
+            string possible_destination = Console.ReadLine()!;
+            FlightInfoLogic Fil = new FlightInfoLogic();
+            List<FlightInfoModel> possible_flights = Fil.SearchByName(possible_destination);
+
+            PrintFlightTable(possible_flights);
+
             Console.WriteLine("What is the flight ID of the flight you will be taking?");
             Console.Write(">> ");
             try
@@ -221,6 +238,7 @@ public class ViewFlights
         }
         else FlightSchedule();
     }
+    
 
     public static void LayoutPlane()
     {
