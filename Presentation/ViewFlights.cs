@@ -12,6 +12,7 @@ public class ViewFlights
     {
         EnableCount = false
     };
+    public static string SeatPicker;
 
     public static int FlightID { get; private set; }
     public static void FlightMenu()
@@ -31,15 +32,47 @@ public class ViewFlights
         }
         else 
         {
-            Console.WriteLine("Choose a seat you would like");
             AccountModel AccountInfo = UserLogin.AccountInfo!;
-            string SeatPicker = Console.ReadLine()!;
+            bool valid_seat = false;
+            while (valid_seat == false)
+            {
+                Console.WriteLine("Choose a seat you would like");
+                string seat_pciker = Console.ReadLine()!;
 
+                if (seat_pciker[0] == Convert.ToChar("A") || seat_pciker[0] == Convert.ToChar("B")  || seat_pciker[0] == Convert.ToChar("C") || seat_pciker[0] == Convert.ToChar("D") || seat_pciker[0] == Convert.ToChar("E")|| seat_pciker[0] == Convert.ToChar("F"))
+                {     
+                    if(Convert.ToInt32(seat_pciker[1..]) >= 1 && Convert.ToInt32(seat_pciker[1..]) <= 30)
+                    {
+                        valid_seat = true;
+                        SeatPicker = seat_pciker;
+                    }
+                    else 
+                    {
+                        Console.WriteLine("This seat is not available, please try again");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("This seat is not available, please try again");
+                }
+            }
+
+            if (_flights == null) _flights = FlightInfoAccess.LoadAll();
             var FilterByFlightID = from s in _flights
                                    where s.FlightID == FlightId
                                    select s;
 
             List<FlightInfoModel> _flight = FilterByFlightID.ToList();
+            List<string> taken_seats = _flight[0].SeatsTaken;
+
+            foreach (string taken_seat in taken_seats)
+            {
+                if (taken_seat == SeatPicker)
+                {
+                    Console.WriteLine("This seat is already taken, please try again");
+                    ViewFlights.FlightMenu();
+                }
+            }
 
             _flight[0].SeatsTaken.Add(SeatPicker);
             _flights[FlightId] = _flight[0];
@@ -149,7 +182,6 @@ public class ViewFlights
     }
     public static void FlightSchedule()
     {
-
         ConsoleTable FlightTable = new ConsoleTable("FlightID", "Flight Number",
         "Aircraft",
         "Origin",
@@ -188,6 +220,7 @@ public class ViewFlights
         }
         else FlightSchedule();
     }
+
     public static void LayoutPlane()
     {
         if (_flights == null) _flights = FlightInfoAccess.LoadAll();
