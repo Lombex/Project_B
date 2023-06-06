@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using ConsoleTables;
 using DataModels;
@@ -38,8 +39,8 @@ public class ViewFlights
             {
                 Console.WriteLine("Choose a seat you would like");
                 string seat_picker = Console.ReadLine()!;
-
-                if (seat_picker[0] == Convert.ToChar("A") || seat_picker[0] == Convert.ToChar("B") || seat_picker[0] == Convert.ToChar("C") || seat_picker[0] == Convert.ToChar("D") || seat_picker[0] == Convert.ToChar("E") || seat_picker[0] == Convert.ToChar("F"))
+                List<char> PlaneRows = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F' };
+                if (PlaneRows.Contains(seat_picker[0])) 
                 {
                     if (Convert.ToInt32(seat_picker[1..]) >= 1 && Convert.ToInt32(seat_picker[1..]) <= 30)
                     {
@@ -48,12 +49,12 @@ public class ViewFlights
                     }
                     else
                     {
-                        Console.WriteLine("This seat is not available, please try again");
+                        AccountFunctionality.ErrorMessage("This seat is not available, please try again");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("This seat is not available, please try again");
+                    AccountFunctionality.ErrorMessage("This seat is not available, please try again");
                 }
             }
 
