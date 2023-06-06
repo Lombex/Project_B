@@ -31,7 +31,7 @@ static class UserLogin
         }
     }
 
-    private static bool PasswordCheck(string password)
+    public static bool PasswordCheck(string password)
     {
         string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-""";
 

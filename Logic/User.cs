@@ -70,11 +70,33 @@ public class User
     }
     private static void ChangePassword()
     {
-
+        Console.Write("Please enter your old password: ");
+        string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
+        AccountModel? acc = AccountsLogic.CheckLogin(UserLogin.AccountInfo!.EmailAddress, password);
+        if (acc == null)
+        {
+            Console.WriteLine("This account does not exits");
+            ChangePassword();
+        }
+        Console.Write("Enter new password: ");
+        string? NewPassword = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
+        Console.Write("Confirm your password: ");
+        string? ConfirmedPassword = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
+        if (NewPassword == ConfirmedPassword && UserLogin.PasswordCheck(NewPassword))
+        {
+            Console.WriteLine($"Password has been successfully changed");
+            UserLogin.AccountInfo.Password = NewPassword;
+            ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
+            AccountsAccess.WriteAll(ViewFlights.accountList);
+        }
+        else
+        {
+            Console.WriteLine("The password given dont match");
+            ChangePassword();
+        }
     }
     private static void ChangeEmail()
-    {
-
+    {   
     }
 
 }
