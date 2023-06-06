@@ -205,35 +205,62 @@ public class ViewFlights
     }
     public static void FlightSchedule()
     {
-        PrintFlightTable(_flights);
-        Console.WriteLine("Would you like to enable sorting for a more organized viewing?");
-        Console.Write(">> ");
-        string sorting = Console.ReadLine()!.ToLower();
-
-        if (sorting == "yes" || sorting == "y")
+        List<String> possible_destinations = new List<string>();
+        foreach(FlightInfoModel flight in _flights)
         {
-            SortingMenu();
+            possible_destinations.Add(flight.Destination);
         }
-        else if (sorting == "no" || sorting == "n")
+        Console.WriteLine("Possible destinations: ");
+        foreach(string destination in possible_destinations)
         {
-            Console.WriteLine("Please enter your preferred destination");
-            Console.Write(">> ");
-            string possible_destination = Console.ReadLine()!;
-            FlightInfoLogic Fil = new FlightInfoLogic();
-            List<FlightInfoModel> possible_flights = Fil.SearchByName(possible_destination);
+            Console.WriteLine($"- {destination}");
+        }
 
-            PrintFlightTable(possible_flights);
+        //PrintFlightTable(_flights);
+        //Console.WriteLine("Would you like to enable sorting for a more organized viewing?");
+        //Console.Write(">> ");
+        //string sorting = Console.ReadLine()!.ToLower();
 
-            Console.WriteLine("What is the flight ID of the flight you will be taking?");
-            Console.Write(">> ");
-            try
+        // if (sorting == "yes" || sorting == "y")
+        // {
+        //     SortingMenu();
+        // }
+        //else if (sorting == "no" || sorting == "n")
+        if (true)
+        {
+            while(true)
             {
-                FlightID = Convert.ToInt32(Console.ReadLine()!);
-            }
-            catch
-            {
-                Console.WriteLine("FlightID can only be a number!");
-                FlightSchedule();
+                Console.WriteLine("Please enter your preferred destination");
+                Console.Write(">> ");
+                string possible_destination = Console.ReadLine()!;
+
+                if (possible_destinations.Contains(possible_destination))
+                {
+                    FlightInfoLogic Fil = new FlightInfoLogic();
+                    List<FlightInfoModel> possible_flights = Fil.SearchByName(possible_destination);
+
+                    PrintFlightTable(possible_flights);
+
+                    Console.WriteLine("What is the flight ID of the flight you will be taking?");
+                    Console.Write(">> ");
+                    try
+                    {
+                        FlightID = Convert.ToInt32(Console.ReadLine()!);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("FlightID can only be a number!");
+                        FlightSchedule();
+                    }
+                    break; 
+                }
+                Console.Clear();
+                Console.WriteLine("This destination does not exists, please try again!");
+                Console.WriteLine("Possible destinations: ");
+                foreach(string destination in possible_destinations)
+                {
+                Console.WriteLine($"- {destination}");
+                }
             }
         }
         else FlightSchedule();
