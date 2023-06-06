@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 public class User
 {
     // Create method for edit own account data
@@ -8,7 +10,7 @@ public class User
 
     // Create method see reservation information
 
-    public void UserEditMenu()
+    public static void UserEditMenu()
     {
         List<string> Options = new List<string> { "Enter 1 to change name", "Enter 2 to change password", "Enter 3 to change email", "Enter 4 to go back" };
         Console.WriteLine("\n+-------------------------+");
@@ -38,17 +40,42 @@ public class User
                 break; 
         }
     }
-
-    private void ChangeName() 
+    private static void ChangeName() 
     {
-        Console.WriteLine("What name do you want");
+        Console.Write("Please enter your password: ");   
+        string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
+        AccountModel? acc = AccountsLogic.CheckLogin(UserLogin.AccountInfo!.EmailAddress, password);
+        if (acc == null)
+        {
+            Console.WriteLine("This account does not exits");
+            ChangeName();
+        }
+        Console.Write("What name do you want use? ");
+        string NewUsername = Console.ReadLine()!;
+        Console.WriteLine("Confirm your name.");
+        string ConfirmUsername = Console.ReadLine()!;
+        if (NewUsername == ConfirmUsername)
+        {
+            Console.WriteLine($"Username has been changed to {NewUsername}");
+            string JsonData = File.ReadAllText("accounts.json");
+            AccountModel data = JsonConvert.DeserializeObject<AccountModel>(JsonData)!;
+            data.FullName = NewUsername;
+            string updatedJsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
+            File.WriteAllText("accounts.json", updatedJsonData);
+            UserLogin.AccountInfo.FullName = NewUsername;
+        }
+        else
+        {
+            Console.WriteLine("The usernames given dont match");
+            ChangeName();
+        }
 
     }
-    private void ChangePassword() 
+    private static void ChangePassword() 
     {
 
     }
-    private void ChangeEmail() 
+    private static void ChangeEmail() 
     {
 
     }

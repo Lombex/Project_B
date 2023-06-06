@@ -44,7 +44,7 @@ static class Menu
         Console.Clear();
         AccountFunctionality.PrintBanner();
         Console.WriteLine("\nACCOUNT MENU:");
-        List<string> main_account_choices = new List<string>() { " Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to log out" };
+        List<string> main_account_choices = new List<string>() { " Enter 1 to book a flight", " Enter 2 to see bookings", "Enter 3 to change account info", "Enter 4 to log out" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_account_choices) Console.WriteLine(item);
 
@@ -61,6 +61,9 @@ static class Menu
                 ViewFlights.SeeBookings(false, false);
                 break;
             case "3":
+                User.UserEditMenu();
+                break;
+            case "4":
                 Start();
                 break;
             default:
