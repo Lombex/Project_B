@@ -296,7 +296,7 @@ public class ViewFlights
             Bookingtable.Options.EnableCount = options.EnableCount;
             foreach (List<string> booking in flight_account_info)
             {
-                Bookingtable.AddRow(booking[0], booking[1], booking[2], booking[3], booking[4], booking[5], booking[6], booking[7], booking[8]);
+                Bookingtable.AddRow(Convert.ToInt32(booking[0]) + 1, booking[1], booking[2], booking[3], booking[4], booking[5], booking[6], booking[7], booking[8]);
             }
             Console.Clear();
             Console.WriteLine("All booked flights: \n");
@@ -313,8 +313,9 @@ public class ViewFlights
             }
             else if (delete_flight == true)
             {
+                if (_flights == null) _flights = FlightInfoAccess.LoadAll();
                 Console.WriteLine("Enter your flight ID you want to delete");
-                string removed_flight_id = Console.ReadLine()!;
+                string removed_flight_id = Convert.ToString(Convert.ToInt32(Console.ReadLine()) - 1);
 
                 var FilterByFlightID = from s in _flights
                                        where s.FlightID == Convert.ToInt32(removed_flight_id)
