@@ -37,16 +37,16 @@ public class ViewFlights
             while (valid_seat == false)
             {
                 Console.WriteLine("Choose a seat you would like");
-                string seat_pciker = Console.ReadLine()!;
+                string seat_picker = Console.ReadLine()!;
 
-                if (seat_pciker[0] == Convert.ToChar("A") || seat_pciker[0] == Convert.ToChar("B")  || seat_pciker[0] == Convert.ToChar("C") || seat_pciker[0] == Convert.ToChar("D") || seat_pciker[0] == Convert.ToChar("E")|| seat_pciker[0] == Convert.ToChar("F"))
-                {     
-                    if(Convert.ToInt32(seat_pciker[1..]) >= 1 && Convert.ToInt32(seat_pciker[1..]) <= 30)
+                if (seat_picker[0] == Convert.ToChar("A") || seat_picker[0] == Convert.ToChar("B") || seat_picker[0] == Convert.ToChar("C") || seat_picker[0] == Convert.ToChar("D") || seat_picker[0] == Convert.ToChar("E") || seat_picker[0] == Convert.ToChar("F"))
+                {
+                    if (Convert.ToInt32(seat_picker[1..]) >= 1 && Convert.ToInt32(seat_picker[1..]) <= 30)
                     {
                         valid_seat = true;
-                        SeatPicker = seat_pciker;
+                        SeatPicker = seat_picker;
                     }
-                    else 
+                    else
                     {
                         Console.WriteLine("This seat is not available, please try again");
                     }
@@ -210,7 +210,7 @@ public class ViewFlights
         Console.Write(">> ");
         string sorting = Console.ReadLine()!.ToLower();
 
-        if (sorting == "yes" || sorting == "y") 
+        if (sorting == "yes" || sorting == "y")
         {
             SortingMenu();
         }
@@ -238,7 +238,7 @@ public class ViewFlights
         }
         else FlightSchedule();
     }
-    
+
 
     public static void LayoutPlane()
     {
@@ -296,7 +296,7 @@ public class ViewFlights
             Bookingtable.Options.EnableCount = options.EnableCount;
             foreach (List<string> booking in flight_account_info)
             {
-                Bookingtable.AddRow(booking[0], booking[1], booking[2], booking[3], booking[4], booking[5], booking[6], booking[7], booking[8]);
+                Bookingtable.AddRow(Convert.ToInt32(booking[0]) + 1, booking[1], booking[2], booking[3], booking[4], booking[5], booking[6], booking[7], booking[8]);
             }
             Console.Clear();
             Console.WriteLine("All booked flights: \n");
@@ -313,8 +313,9 @@ public class ViewFlights
             }
             else if (delete_flight == true)
             {
+                if (_flights == null) _flights = FlightInfoAccess.LoadAll();
                 Console.WriteLine("Enter your flight ID you want to delete");
-                string removed_flight_id = Console.ReadLine()!;
+                string removed_flight_id = Convert.ToString(Convert.ToInt32(Console.ReadLine()) - 1);
 
                 var FilterByFlightID = from s in _flights
                                        where s.FlightID == Convert.ToInt32(removed_flight_id)
