@@ -19,7 +19,7 @@ public class User
 
         Console.Write("Select a option: ");
         string SelectedOption = Console.ReadLine()!;
-        
+
         switch (SelectedOption)
         {
             case "1":
@@ -37,12 +37,12 @@ public class User
             default:
                 Console.WriteLine("This is not a option!");
                 UserEditMenu();
-                break; 
+                break;
         }
     }
-    private static void ChangeName() 
+    private static void ChangeName()
     {
-        Console.Write("Please enter your password: ");   
+        Console.Write("Please enter your password: ");
         string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
         AccountModel? acc = AccountsLogic.CheckLogin(UserLogin.AccountInfo!.EmailAddress, password);
         if (acc == null)
@@ -57,12 +57,9 @@ public class User
         if (NewUsername == ConfirmUsername)
         {
             Console.WriteLine($"Username has been changed to {NewUsername}");
-            string JsonData = File.ReadAllText("accounts.json");
-            AccountModel data = JsonConvert.DeserializeObject<AccountModel>(JsonData)!;
-            data.FullName = NewUsername;
-            string updatedJsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
-            File.WriteAllText("accounts.json", updatedJsonData);
             UserLogin.AccountInfo.FullName = NewUsername;
+            ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
+            AccountsAccess.WriteAll(ViewFlights.accountList);
         }
         else
         {
@@ -71,11 +68,11 @@ public class User
         }
 
     }
-    private static void ChangePassword() 
+    private static void ChangePassword()
     {
 
     }
-    private static void ChangeEmail() 
+    private static void ChangeEmail()
     {
 
     }
