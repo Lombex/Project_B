@@ -37,16 +37,16 @@ public class ViewFlights
             while (valid_seat == false)
             {
                 Console.WriteLine("Choose a seat you would like");
-                string seat_pciker = Console.ReadLine()!;
+                string seat_picker = Console.ReadLine()!;
 
-                if (seat_pciker[0] == Convert.ToChar("A") || seat_pciker[0] == Convert.ToChar("B")  || seat_pciker[0] == Convert.ToChar("C") || seat_pciker[0] == Convert.ToChar("D") || seat_pciker[0] == Convert.ToChar("E")|| seat_pciker[0] == Convert.ToChar("F"))
-                {     
-                    if(Convert.ToInt32(seat_pciker[1..]) >= 1 && Convert.ToInt32(seat_pciker[1..]) <= 30)
+                if (seat_picker[0] == Convert.ToChar("A") || seat_picker[0] == Convert.ToChar("B") || seat_picker[0] == Convert.ToChar("C") || seat_picker[0] == Convert.ToChar("D") || seat_picker[0] == Convert.ToChar("E") || seat_picker[0] == Convert.ToChar("F"))
+                {
+                    if (Convert.ToInt32(seat_picker[1..]) >= 1 && Convert.ToInt32(seat_picker[1..]) <= 30)
                     {
                         valid_seat = true;
-                        SeatPicker = seat_pciker;
+                        SeatPicker = seat_picker;
                     }
-                    else 
+                    else
                     {
                         Console.WriteLine("This seat is not available, please try again");
                     }
@@ -210,7 +210,7 @@ public class ViewFlights
         Console.Write(">> ");
         string sorting = Console.ReadLine()!.ToLower();
 
-        if (sorting == "yes" || sorting == "y") 
+        if (sorting == "yes" || sorting == "y")
         {
             SortingMenu();
         }
@@ -238,7 +238,7 @@ public class ViewFlights
         }
         else FlightSchedule();
     }
-    
+
 
     public static void LayoutPlane()
     {
