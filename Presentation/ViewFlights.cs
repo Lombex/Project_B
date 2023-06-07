@@ -132,7 +132,6 @@ public class ViewFlights
 
     // Menu has be able to pick seats | Menu has to be able to go back to its respective menu
 
-
     public static void SortingMenu()
     {
 
@@ -195,7 +194,6 @@ public class ViewFlights
                 break;
         }
     }
-
     public static void PrintFlightTable(List<FlightInfoModel> flight_list)
     {
         ConsoleTable FlightTable = new ConsoleTable("FlightID", "Flight Number",
@@ -278,8 +276,6 @@ public class ViewFlights
             }
         }
     }
-
-
     public static void LayoutPlane()
     {
         if (_flights == null) _flights = FlightInfoAccess.LoadAll();
@@ -311,8 +307,6 @@ public class ViewFlights
         Console.WriteLine("The Layout of the plane: \n");
         Table.Write();
     }
-
-
     public static void SeeBookings(bool delete_flight, bool change_seat)
     {
         int AmountOfFlights = UserLogin.AccountInfo!.BookedFlights.Count;

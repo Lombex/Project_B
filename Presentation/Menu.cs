@@ -72,7 +72,6 @@ static class Menu
                 break;
         }
     }
-
     public static void AdminAccount()
     {
         Console.Clear();
