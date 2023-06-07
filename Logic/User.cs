@@ -12,13 +12,13 @@ public class User
 
     public static void UserEditMenu()
     {
+        Console.Clear();
         List<string> Options = new List<string> { "Enter 1 to change name", "Enter 2 to change password", "Enter 3 to change email", "Enter 4 to go back" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string option in Options) Console.WriteLine(option);
         Console.WriteLine("+-------------------------+");
 
-        Console.Write("Select a option: ");
-        string SelectedOption = Console.ReadLine()!;
+        string SelectedOption = AccountFunctionality.GetInput();
 
         switch (SelectedOption)
         {
@@ -35,7 +35,7 @@ public class User
                 Menu.Account();
                 break;
             default:
-                Console.WriteLine("This is not a option!");
+                Console.WriteLine("This is not an option!");
                 UserEditMenu();
                 break;
         }
@@ -47,13 +47,13 @@ public class User
         AccountModel? acc = AccountsLogic.CheckLogin(UserLogin.AccountInfo!.EmailAddress, password);
         if (acc == null)
         {
-            Console.WriteLine("This account does not exits");
+            AccountFunctionality.ErrorMessage("Your password was incorrect.");
             ChangeName();
         }
-        Console.Write("What name do you want use? ");
-        string NewUsername = Console.ReadLine()!;
+        Console.Write("What name do you want to use? ");
+        string NewUsername = AccountFunctionality.GetInput();
         Console.WriteLine("Confirm your name.");
-        string ConfirmUsername = Console.ReadLine()!;
+        string ConfirmUsername = AccountFunctionality.GetInput();
         if (NewUsername == ConfirmUsername)
         {
             Console.WriteLine($"Username has been changed to {NewUsername}");
@@ -63,7 +63,7 @@ public class User
         }
         else
         {
-            Console.WriteLine("The usernames given dont match");
+            AccountFunctionality.ErrorMessage("The usernames given don't match, please try again.");
             ChangeName();
         }
 
@@ -75,7 +75,7 @@ public class User
         AccountModel? acc = AccountsLogic.CheckLogin(UserLogin.AccountInfo!.EmailAddress, password);
         if (acc == null)
         {
-            Console.WriteLine("This account does not exits");
+            Console.WriteLine("This account does not exist");
             ChangePassword();
         }
         Console.Write("Enter new password: ");
@@ -91,7 +91,7 @@ public class User
         }
         else
         {
-            Console.WriteLine("The password given dont match");
+            AccountFunctionality.ErrorMessage("The password given don't match, please try again.");
             ChangePassword();
         }
     }
