@@ -9,7 +9,10 @@
     "FlightTime": 6.5,
     "DepartTime": "10:00",
     "ArrivalTime": "16:30",
-    "Gate": "A1"
+    "Gate": "A1",
+    "SeatsTaken": [
+    ],
+    "Price": 399
   },
   {
     "Flight-ID": 1,
@@ -21,7 +24,9 @@
     "FlightTime": 2.5,
     "DepartTime": "12:30",
     "ArrivalTime": "15:00",
-    "Gate": "B3"
+    "Gate": "B3",
+    "SeatsTaken": [],
+    "Price": 298
   },
   {
     "Flight-ID": 2,
@@ -33,7 +38,10 @@
     "FlightTime": 3,
     "DepartTime": "14:45",
     "ArrivalTime": "18:15",
-    "Gate": "C2"
+    "Gate": "C2",
+    "SeatsTaken": [
+    ],
+    "Price": 455
   },
   {
     "Flight-ID": 3,
@@ -45,6 +53,22 @@
     "FlightTime": 8.5,
     "DepartTime": "10:15",
     "ArrivalTime": "19:45",
-    "Gate": "A1"
+    "Gate": "A1",
+    "SeatsTaken": [],
+    "Price": 893
+  },
+  {
+    "Flight-ID": 4,
+    "Flight-number": "KLM111",
+    "Aircraft": "B444",
+    "Origin": "Amsterdam",
+    "Destination": "Rotterdam",
+    "Date": "12-20-2200",
+    "FlightTime": 0.5,
+    "DepartTime": "12:44",
+    "ArrivalTime": "13:11",
+    "Gate": "B88",
+    "SeatsTaken": [],
+    "Price": 334
   }
 ]
