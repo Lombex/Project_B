@@ -67,7 +67,7 @@ static class UserLogin
         string full_name = AccountFunctionality.GetInput("Please enter your full name");
         string email = AccountFunctionality.GetInput("Please enter your email address");
         List<AccountModel> dataList = AccountsAccess.LoadAll();
-        if (dataList.Any(data => data.EmailAddress == email)) 
+        if (dataList.Any(data => data.EmailAddress == email))
         {
             AccountFunctionality.ErrorMessage("An account with the same email address already exists. Please choose a different email address.");
             MakeAccount(type, back_to_menu);
@@ -79,8 +79,6 @@ static class UserLogin
         string password_2 = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
         Console.Write("Do you have a disability\n>> ");
         string hasdisability = Console.ReadLine()!;
-        if (hasdisability == "Y" || hasdisability == "y" || hasdisability == "Yes" || hasdisability == "yes") AccountInfo!.HasDisability = true;
-
 
         if (password_1 != password_2)
         {
@@ -100,7 +98,14 @@ static class UserLogin
                     newData = new AccountModel(highestId + 1, email, password_1, full_name, true, false); // admin is automatically false
                     break;
                 default:
-                    newData = new AccountModel(highestId + 1, email, password_1, full_name); // admin is automatically false
+                    if (hasdisability == "Y" || hasdisability == "y" || hasdisability == "Yes" || hasdisability == "yes")
+                    {
+                        newData = new AccountModel(highestId + 1, email, password_1, full_name, false, false, true); // admin is automatically false
+                    }
+                    else
+                    {
+                        newData = new AccountModel(highestId + 1, email, password_1, full_name, false, false, false); // admin is automatically false
+                    }
                     break;
             }
             dataList.Add(newData);
@@ -120,6 +125,7 @@ static class UserLogin
                     Menu.AdminAccount();
                     break;
             }
-        } else MakeAccount(type, back_to_menu);
+        }
+        else MakeAccount(type, back_to_menu);
     }
 }
