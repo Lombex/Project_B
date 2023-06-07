@@ -219,7 +219,7 @@ public class ViewFlights
     }
     public static void FlightSchedule()
     {
-        List<String> possible_destinations = new List<string>();
+        HashSet<String> possible_destinations = new HashSet<string>();
         foreach(FlightInfoModel flight in _flights)
         {
             possible_destinations.Add(flight.Destination);
@@ -427,8 +427,8 @@ public class ViewFlights
                 }
             }
         }
-        Console.WriteLine("Press any key + enter to go back to menu");
-        Console.ReadLine();
+        Console.WriteLine("Press any key to go back to the menu.");
+        Console.ReadKey();
         Menu.Account();
         // Create method filter flight by catagory
 
