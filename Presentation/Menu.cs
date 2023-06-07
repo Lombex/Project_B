@@ -158,7 +158,6 @@ static class Menu
                 break;
         }
     }
-
     public static void ManageBookings()
     {
         Console.Clear();
@@ -189,7 +188,6 @@ static class Menu
         }
 
     }
-
     public static void UserEditMenu()
     {
         List<string> Options = new List<string> { "Enter 1 to change name", "Enter 2 to change password", "Enter 3 to change email", "Enter 4 to go back" };
