@@ -58,19 +58,6 @@ public class ViewFlights
                 }
             }
 
-            List<string> first_class_seats = new List<string> { "A1", "A2", "B1", "B2", "C1", "C2", "D1", "D2", "E1", "E2", "F1", "F2" };
-            List<string> disabled_seats = new List<string> { "A3", "B3", "C3", "D3", "E3", "F3" };
-            if (first_class_seats.Contains(SeatPicker))
-            {
-                // Price * 2
-            }
-            if (disabled_seats.Contains(SeatPicker))
-            {
-                // Check if person is disabled and then give discount
-            }
-
-
-
             if (_flights == null) _flights = FlightInfoAccess.LoadAll();
             var FilterByFlightID = from s in _flights
                                    where s.FlightID == FlightId
@@ -88,6 +75,47 @@ public class ViewFlights
                     ViewFlights.FlightMenu();
                 }
             }
+
+            List<string> first_class_seats = new List<string> {"A1","A2", "A3", "A4", "A5", "A6", "B1","B2", "B3", "B4", "B5", "B6"};
+            List<string> disabled_seats = new List<string> {"C1","C2", "C3", "C4", "C5", "C6"};
+            double Ticket_Price = _flight[0].Price;
+            if(first_class_seats.Contains(SeatPicker))
+            {
+                double ticket_price =_flight[0].Price * 2;
+                Ticket_Price = ticket_price;
+                
+            }
+            if(disabled_seats.Contains(SeatPicker))
+            {
+                if (UserLogin.AccountInfo.HasDisability)
+                {
+                    double ticket_price = _flight[0].Price;
+                    Ticket_Price = ticket_price;
+                }
+                else
+                {
+                    Console.WriteLine("You have no disability so you cannot choose this seat, please try again!");
+                    FlightMenu();
+                }
+            }
+            Console.Clear();
+            Console.WriteLine("Please confirm your booking!");
+
+            Console.WriteLine($"-----------");
+            Console.WriteLine($"Flight: {_flight[0].FlightNumber} from {_flight[0].Origin} to {_flight[0].Destination}");
+            Console.WriteLine($"Date : {_flight[0].Date} - {_flight[0].DepartTime}");
+            Console.WriteLine($"Total price: {Ticket_Price}");
+            Console.WriteLine($"Booked seat: {SeatPicker}");
+            Console.WriteLine("------------");
+            Console.WriteLine("\n\nEnter Yes to confirm");
+            string user_input  = Console.ReadLine();
+            if (user_input != "Yes" && user_input != "yes" && user_input != "Y" && user_input != "y")
+            {
+                Console.WriteLine("Abort booking, please wait 5 seconds and try again later!");
+                Thread.Sleep(5000);
+                FlightMenu();
+            }
+
 
             _flight[0].SeatsTaken.Add(SeatPicker!);
             _flights[FlightId] = _flight[0];
@@ -113,7 +141,7 @@ public class ViewFlights
                     _flight[0].Destination,
                     _flight[0].DepartTime.ToString(),
                     _flight[0].ArrivalTime.ToString(),
-                    _flight[0].Price.ToString(),
+                    Ticket_Price.ToString(),
                     _flight[0].Gate,
                 };
 
@@ -220,7 +248,7 @@ public class ViewFlights
     public static void FlightSchedule()
     {
         HashSet<String> possible_destinations = new HashSet<string>();
-        foreach (FlightInfoModel flight in _flights)
+        foreach(FlightInfoModel flight in _flights)
         {
             possible_destinations.Add(flight.Destination);
         }

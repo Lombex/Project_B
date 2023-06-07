@@ -6,7 +6,8 @@
     "FullName": "root",
     "IsAdmin": true,
     "IsEmployee": false,
-    "BookedFlights": []
+    "BookedFlights": [],
+    "hasdisability": false
   },
   {
     "Id": 2,
@@ -15,6 +16,7 @@
     "FullName": "user",
     "IsAdmin": false,
     "IsEmployee": false,
-    "BookedFlights": []
+    "BookedFlights": [],
+    "hasdisability": false
   }
 ]
