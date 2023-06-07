@@ -10,15 +10,37 @@ public class User
 
     // Create method see reservation information
 
-    public static void ChangeName()
+    public void ChangeName(bool isAdmin = false)
     {
-        Console.Write("Please enter your password: ");
-        string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
-        AccountModel? acc = AccountsLogic.CheckLogin(UserLogin.AccountInfo!.EmailAddress, password);
-        if (acc == null)
+        if (!isAdmin)
         {
-            Console.WriteLine("This account does not exits");
-            ChangeName();
+            Console.Write("Please enter your password: ");
+            string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
+            AccountModel? acc = AccountsLogic.CheckLogin(UserLogin.AccountInfo!.EmailAddress, password);
+            if (acc == null)
+            {
+                Console.WriteLine("This account does not exits");
+                ChangeName();
+            }
+        } else
+        {
+            List<AccountModel> account_list = AccountsAccess.LoadAll();
+            Console.Write("Give the users email address: ");
+            string EmailAddress = Console.ReadLine()!;
+            foreach (AccountModel account in account_list)
+            {
+                if (account.EmailAddress == EmailAddress)
+                {
+                    Console.WriteLine("Give users new name: ");
+                    string NewName = Console.ReadLine()!;
+                    account.FullName = NewName;
+                    AccountsAccess.WriteAll(account_list);
+                } else
+                {
+                    Console.WriteLine("Coudnt find email please try again!");
+                    ChangeName(true);
+                }
+            }
         }
         Console.Write("What name do you want use? ");
         string NewUsername = Console.ReadLine()!;
@@ -27,7 +49,7 @@ public class User
         if (NewUsername == ConfirmUsername)
         {
             Console.WriteLine($"Username has been changed to {NewUsername}");
-            UserLogin.AccountInfo.FullName = NewUsername;
+            UserLogin.AccountInfo!.FullName = NewUsername;
             ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
             AccountsAccess.WriteAll(ViewFlights.accountList);
             Console.Write("Press Enter to continue...");
@@ -40,7 +62,7 @@ public class User
         }
 
     }
-    public static void ChangePassword()
+    public void ChangePassword()
     {
         Console.Write("Please enter your old password: ");
         string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
@@ -69,17 +91,40 @@ public class User
             ChangePassword();
         }
     }
-    public static void ChangeEmail()
+    public void ChangeEmail(bool isAdmin = false)
     {
-        Console.Write("Please enter your password: ");
-        string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
-        Console.Write("Enter your current Email: ");
-        string CurrentEmail = Console.ReadLine()!;
-        AccountModel? acc = AccountsLogic.CheckLogin(CurrentEmail, password);
-        if (acc == null)
+        if (!isAdmin)
         {
-            Console.WriteLine("This account does not exits");
-            ChangeEmail();
+            Console.Write("Please enter your password: ");
+            string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
+            Console.Write("Enter your current Email: ");
+            string CurrentEmail = Console.ReadLine()!;
+            AccountModel? acc = AccountsLogic.CheckLogin(CurrentEmail, password);
+            if (acc == null)
+            {
+                Console.WriteLine("This account does not exits");
+                ChangeEmail();
+            }
+        } else
+        {
+            List<AccountModel> account_list = AccountsAccess.LoadAll();
+            Console.Write("Give the users email address: ");
+            string EmailAddress = Console.ReadLine()!;
+            foreach (AccountModel account in account_list)
+            {
+                if (account.EmailAddress == EmailAddress)
+                {
+                    Console.WriteLine("Give users new email: ");
+                    string _NewEmail = Console.ReadLine()!;
+                    account.EmailAddress = _NewEmail;
+                    AccountsAccess.WriteAll(account_list);
+                }
+                else
+                {
+                    Console.WriteLine("Coudnt find email please try again!");
+                    ChangeName(true);
+                }
+            }
         }
 
         Console.Write("Enter your new email: ");

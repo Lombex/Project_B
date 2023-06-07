@@ -9,7 +9,8 @@ public class Admin : User
     // Create new method add and remove flights
 
     // Create new method change flight data
-
+    public void ChangeName() => base.ChangeName(true);
+    public void ChangeEmail() => base.ChangeEmail(true);   
     public void ChangeUserPassword(string EmailAddress)
     {
         List<AccountModel> account_list = AccountsAccess.LoadAll();
