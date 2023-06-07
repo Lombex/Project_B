@@ -13,7 +13,7 @@ public class ViewFlights
     {
         EnableCount = false
     };
-    public static string SeatPicker;
+    public static string? SeatPicker;
 
     public static int FlightID { get; private set; }
     public static void FlightMenu()
@@ -40,7 +40,7 @@ public class ViewFlights
                 Console.WriteLine("Choose a seat you would like");
                 string seat_picker = Console.ReadLine()!;
                 List<char> PlaneRows = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F' };
-                if (PlaneRows.Contains(seat_picker[0])) 
+                if (PlaneRows.Contains(seat_picker[0]))
                 {
                     if (Convert.ToInt32(seat_picker[1..]) >= 1 && Convert.ToInt32(seat_picker[1..]) <= 30)
                     {
@@ -89,13 +89,13 @@ public class ViewFlights
                 }
             }
 
-            _flight[0].SeatsTaken.Add(SeatPicker);
+            _flight[0].SeatsTaken.Add(SeatPicker!);
             _flights[FlightId] = _flight[0];
             FlightInfoAccess.WriteAll(_flights);
 
             int highestId = FilterByFlightID.Max(data => data.FlightID);
             BookHistoryModel newData = new BookHistoryModel(AccountInfo.Id, AccountInfo.FullName, AccountInfo.EmailAddress,
-            DateTime.Now.ToString(), FlightId, _flight[0].FlightNumber, SeatPicker, _flight[0].Destination, _flight[0].Gate, _flight[0].DepartTime, _flight[0].ArrivalTime);
+            DateTime.Now.ToString(), FlightId, _flight[0].FlightNumber, SeatPicker!, _flight[0].Destination, _flight[0].Gate, _flight[0].DepartTime, _flight[0].ArrivalTime);
 
             List<BookHistoryModel> dataList = BookHistoryAccess.LoadAll();
             dataList.Add(newData);
@@ -108,11 +108,12 @@ public class ViewFlights
                     FlightId.ToString(),
                     _flight[0].FlightNumber,
                     DateTime.Now.ToString(),
-                    SeatPicker,
+                    SeatPicker!,
                     _flight[0].Origin,
                     _flight[0].Destination,
                     _flight[0].DepartTime.ToString(),
                     _flight[0].ArrivalTime.ToString(),
+                    _flight[0].Price.ToString(),
                     _flight[0].Gate,
                 };
 
@@ -206,12 +207,13 @@ public class ViewFlights
         "FlightTime",
         "DepartTime",
         "ArrivalTime",
+        "Price",
         "Gate");
         FlightTable.Options.EnableCount = options.EnableCount;
         for (int count = 0; count < flight_list!.Count; count++)
         {
             FlightTable.AddRow(flight_list[count].FlightID + 1, flight_list[count].FlightNumber, flight_list[count].Aircraft, flight_list[count].Origin, flight_list[count].Destination, flight_list[count].Date, flight_list[count].FlightTime,
-            flight_list[count].DepartTime, flight_list[count].ArrivalTime, flight_list[count].Gate);
+            flight_list[count].DepartTime, flight_list[count].ArrivalTime, flight_list[count].Price, flight_list[count].Gate);
         }
         Console.Clear();
         Console.WriteLine("All available flights: \n");
@@ -219,13 +221,18 @@ public class ViewFlights
     }
     public static void FlightSchedule()
     {
+<<<<<<< Updated upstream
         HashSet<String> possible_destinations = new HashSet<string>();
         foreach(FlightInfoModel flight in _flights)
+=======
+        List<String> possible_destinations = new List<string>();
+        foreach (FlightInfoModel flight in _flights!)
+>>>>>>> Stashed changes
         {
             possible_destinations.Add(flight.Destination);
         }
         Console.WriteLine("Possible destinations: ");
-        foreach(string destination in possible_destinations)
+        foreach (string destination in possible_destinations)
         {
             Console.WriteLine($"- {destination}");
         }
@@ -242,7 +249,7 @@ public class ViewFlights
         //else if (sorting == "no" || sorting == "n")
         if (true)
         {
-            while(true)
+            while (true)
             {
                 Console.WriteLine("Please enter your preferred destination");
                 Console.Write(">> ");
@@ -266,14 +273,14 @@ public class ViewFlights
                         Console.WriteLine("FlightID can only be a number!");
                         FlightSchedule();
                     }
-                    break; 
+                    break;
                 }
                 Console.Clear();
                 Console.WriteLine("This destination does not exists, please try again!");
                 Console.WriteLine("Possible destinations: ");
-                foreach(string destination in possible_destinations)
+                foreach (string destination in possible_destinations)
                 {
-                Console.WriteLine($"- {destination}");
+                    Console.WriteLine($"- {destination}");
                 }
             }
         }
@@ -332,11 +339,12 @@ public class ViewFlights
             "Destination",
             "DepartTime",
             "ArrivalTime",
+            "Price",
             "Gate");
             Bookingtable.Options.EnableCount = options.EnableCount;
             foreach (List<string> booking in flight_account_info)
             {
-                Bookingtable.AddRow(Convert.ToInt32(booking[0]) + 1, booking[1], booking[2], booking[3], booking[4], booking[5], booking[6], booking[7], booking[8]);
+                Bookingtable.AddRow(Convert.ToInt32(booking[0]) + 1, booking[1], booking[2], booking[3], booking[4], booking[5], booking[6], booking[7], booking[8], booking[9]);
             }
             Console.Clear();
             Console.WriteLine("All booked flights: \n");

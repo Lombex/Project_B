@@ -35,7 +35,10 @@ public class FlightInfoModel
     [JsonPropertyName("SeatsTaken")]
     public List<string> SeatsTaken { get; set; }
 
-    public FlightInfoModel(int flightID, string flightnumber, string aircraft, string origin, string destination, string date, double flighttime, string departtime, string arrivaltime, string gate = "A1")
+    [JsonPropertyName("Price")]
+    public int Price { get; set; }
+
+    public FlightInfoModel(int flightID, string flightnumber, string aircraft, string origin, string destination, string date, double flighttime, string departtime, string arrivaltime, int price, string gate = "A1")
     {
         FlightID = flightID;
         FlightNumber = flightnumber;
@@ -48,5 +51,6 @@ public class FlightInfoModel
         ArrivalTime = arrivaltime;
         Gate = gate;
         SeatsTaken = new List<string>();
+        Price = price;
     }
 }

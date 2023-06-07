@@ -22,8 +22,8 @@ public class AccountModel
     [JsonPropertyName("BookedFlights")]
     public List<List<string>> BookedFlights { get; set; }
 
-    // [JsonPropertyName("hasdisability")]
-    // public bool HasDisability { get; set; } // When a person has a disability
+    [JsonPropertyName("hasdisability")]
+    public bool HasDisability { get; set; } // When a person has a disability
 
     // [JsonPropertyName("haschildren")]
     // public bool HasChildren { get; set; } // Check if user has children
@@ -33,7 +33,7 @@ public class AccountModel
 
 
 
-    public AccountModel(int id, string emailAddress, string password, string fullName, bool isemployee = false, bool isadmin = false)
+    public AccountModel(int id, string emailAddress, string password, string fullName, bool isemployee = false, bool isadmin = false, bool hasdisability = false)
     {
         Id = id;
         EmailAddress = emailAddress;
@@ -42,7 +42,7 @@ public class AccountModel
         IsEmployee = isemployee;
         IsAdmin = isadmin;
         BookedFlights = new List<List<string>>();
-        // HasDisability = hasdisability;
+        HasDisability = hasdisability;
         // HasChildren = haschildren;
         // ChildAmount = childamount;
     }
