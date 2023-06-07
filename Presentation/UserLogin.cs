@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 static class UserLogin
 {
     public static AccountModel? AccountInfo { get; set; } // AccountInformation
-
     public static void Start()
     {
         string email = AccountFunctionality.GetInput("Welcome to the login page\nPlease enter your email address.");
@@ -30,7 +29,6 @@ static class UserLogin
             else Menu.Account();
         }
     }
-
     public static bool PasswordCheck(string password)
     {
         string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-""";
@@ -46,7 +44,6 @@ static class UserLogin
         }
         return true;
     }
-
     private static bool SanitizeEmailValidator(string email)
     {
         const string emailRegex = @"^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
@@ -59,7 +56,6 @@ static class UserLogin
         }
         return true;
     }
-
     public enum AccountType
     {
         User,
@@ -70,6 +66,12 @@ static class UserLogin
     {
         string full_name = AccountFunctionality.GetInput("Please enter your full name");
         string email = AccountFunctionality.GetInput("Please enter your email address");
+        List<AccountModel> dataList = AccountsAccess.LoadAll();
+        if (dataList.Any(data => data.EmailAddress == email)) 
+        {
+            AccountFunctionality.ErrorMessage("An account with the same email address already exists. Please choose a different email address.");
+            MakeAccount(type, back_to_menu);
+        }
         Console.Write("Please enter your password\n>> ");
         string UnhashedPassword = AccountFunctionality.HidePassword();
         string password_1 = AccountsLogic.GetHashedSHA256(UnhashedPassword);
@@ -87,33 +89,25 @@ static class UserLogin
         }
         else if (PasswordCheck(UnhashedPassword) && SanitizeEmailValidator(email))
         {
-            List<AccountModel> dataList = AccountsAccess.LoadAll();
-            if (dataList.Any(data => data.EmailAddress == email))
-                AccountFunctionality.ErrorMessage("An account with the same email address already exists. Please choose a different email address.");
-            else
+            int highestId = dataList.Max(data => data.Id);
+            AccountModel newData;
+            switch (type)
             {
-                int highestId = dataList.Max(data => data.Id);
-                AccountModel newData;
-                switch (type)
-                {
-                    case AccountType.Admin:
-                        newData = new AccountModel(highestId + 1, email, password_1, full_name, false, true); // admin is automatically false
-                        break;
-                    case AccountType.Employee:
-                        newData = new AccountModel(highestId + 1, email, password_1, full_name, true, false); // admin is automatically false
-                        break;
-                    default:
-                        newData = new AccountModel(highestId + 1, email, password_1, full_name, false, false, AccountInfo!.HasDisability); // admin is automatically false
-                        break;
-                }
-                dataList.Add(newData);
-                AccountInfo = newData;
-                AccountsAccess.WriteAll(dataList);
+                case AccountType.Admin:
+                    newData = new AccountModel(highestId + 1, email, password_1, full_name, false, true); // admin is automatically false
+                    break;
+                case AccountType.Employee:
+                    newData = new AccountModel(highestId + 1, email, password_1, full_name, true, false); // admin is automatically false
+                    break;
+                default:
+                    newData = new AccountModel(highestId + 1, email, password_1, full_name); // admin is automatically false
+                    break;
             }
-            if (back_to_menu == false)
-            {
-                Menu.AdminAccount();
-            }
+            dataList.Add(newData);
+            AccountInfo = newData;
+            AccountsAccess.WriteAll(dataList);
+            if (back_to_menu == false) Menu.AdminAccount();
+
             switch (type)
             {
                 case AccountType.User:
@@ -126,10 +120,6 @@ static class UserLogin
                     Menu.AdminAccount();
                     break;
             }
-        }
-        else
-        {
-            MakeAccount(type, back_to_menu);
-        }
+        } else MakeAccount(type, back_to_menu);
     }
 }
