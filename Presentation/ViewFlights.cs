@@ -58,13 +58,13 @@ public class ViewFlights
                 }
             }
 
-            List<string> first_class_seats = new List<string> {"A1","A2", "B1", "B2", "C1", "C2", "D1", "D2", "E1", "E2", "F1", "F2"};
-            List<string> disabled_seats = new List<string> {"A3", "B3", "C3", "D3", "E3", "F3"};
-            if(first_class_seats.Contains(SeatPicker))
+            List<string> first_class_seats = new List<string> { "A1", "A2", "B1", "B2", "C1", "C2", "D1", "D2", "E1", "E2", "F1", "F2" };
+            List<string> disabled_seats = new List<string> { "A3", "B3", "C3", "D3", "E3", "F3" };
+            if (first_class_seats.Contains(SeatPicker))
             {
                 // Price * 2
             }
-            if(disabled_seats.Contains(SeatPicker))
+            if (disabled_seats.Contains(SeatPicker))
             {
                 // Check if person is disabled and then give discount
             }
@@ -221,13 +221,8 @@ public class ViewFlights
     }
     public static void FlightSchedule()
     {
-<<<<<<< Updated upstream
         HashSet<String> possible_destinations = new HashSet<string>();
-        foreach(FlightInfoModel flight in _flights)
-=======
-        List<String> possible_destinations = new List<string>();
-        foreach (FlightInfoModel flight in _flights!)
->>>>>>> Stashed changes
+        foreach (FlightInfoModel flight in _flights)
         {
             possible_destinations.Add(flight.Destination);
         }
@@ -364,6 +359,8 @@ public class ViewFlights
                 if (_flights == null) _flights = FlightInfoAccess.LoadAll();
                 Console.WriteLine("Enter your flight ID you want to delete");
                 string removed_flight_id = Convert.ToString(Convert.ToInt32(Console.ReadLine()) - 1);
+                Console.WriteLine("The seat of the booking you want to delete");
+                string seat = Console.ReadLine()!;
 
                 var FilterByFlightID = from s in _flights
                                        where s.FlightID == Convert.ToInt32(removed_flight_id)
@@ -373,7 +370,7 @@ public class ViewFlights
 
                 foreach (List<string> flight in flight_account_info)
                 {
-                    if (flight.Contains(removed_flight_id))
+                    if (flight.Contains(removed_flight_id) && flight.Contains(seat))
                     {
                         // Flight section
                         remove_flight[0].SeatsTaken.Remove(flight[3]);
@@ -382,7 +379,7 @@ public class ViewFlights
 
                         // Account section
                         List<List<string>> list_flight_account_info = flight_account_info.ToList();
-                        list_flight_account_info.RemoveAll(innerList => innerList.Contains(removed_flight_id));
+                        list_flight_account_info.RemoveAll(innerList => innerList.Contains(removed_flight_id) && innerList.Contains(seat));
                         UserLogin.AccountInfo.BookedFlights = list_flight_account_info;
                         AccountsAccess.WriteAll(accountList);
 
