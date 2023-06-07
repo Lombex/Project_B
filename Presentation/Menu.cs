@@ -44,7 +44,7 @@ static class Menu
         Console.Clear();
         AccountFunctionality.PrintBanner();
         Console.WriteLine("\nACCOUNT MENU:");
-        List<string> main_account_choices = new List<string>() { "Enter 1 to book a flight", "Enter 2 to see bookings", "Enter 3 to change account info", "Enter 4 to log out" };
+        List<string> main_account_choices = new List<string>() { " Enter 1 to book a flight", " Enter 2 to see bookings", " Enter 3 to change account info", " Enter 4 to log out" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_account_choices) Console.WriteLine(item);
 
@@ -61,7 +61,7 @@ static class Menu
                 ViewFlights.SeeBookings(false, false);
                 break;
             case "3":
-                User.UserEditMenu();
+                UserEditMenu();
                 break;
             case "4":
                 Start();
@@ -188,5 +188,39 @@ static class Menu
                 break;
         }
 
+    }
+
+    public static void UserEditMenu()
+    {
+        List<string> Options = new List<string> { "Enter 1 to change name", "Enter 2 to change password", "Enter 3 to change email", "Enter 4 to go back" };
+        Console.WriteLine("\n+-------------------------+");
+        foreach (string option in Options) Console.WriteLine(option);
+        Console.WriteLine("+-------------------------+");
+
+        Console.Write("Select a option: ");
+        string SelectedOption = Console.ReadLine()!;
+
+        switch (SelectedOption)
+        {
+            case "1":
+                User.ChangeName();
+                Account();
+                break;
+            case "2":
+                User.ChangePassword();
+                Account();
+                break;
+            case "3":
+                User.ChangeEmail();
+                Account();
+                break;
+            case "4":
+                Account();
+                break;
+            default:
+                Console.WriteLine("This is not a option!");
+                UserEditMenu();
+                break;
+        }
     }
 }

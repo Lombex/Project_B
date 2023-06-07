@@ -58,6 +58,19 @@ public class ViewFlights
                 }
             }
 
+            List<string> first_class_seats = new List<string> {"A1","A2", "B1", "B2", "C1", "C2", "D1", "D2", "E1", "E2", "F1", "F2"};
+            List<string> disabled_seats = new List<string> {"A3", "B3", "C3", "D3", "E3", "F3"};
+            if(first_class_seats.Contains(SeatPicker))
+            {
+                // Price * 2
+            }
+            if(disabled_seats.Contains(SeatPicker))
+            {
+                // Check if person is disabled and then give discount
+            }
+
+
+
             if (_flights == null) _flights = FlightInfoAccess.LoadAll();
             var FilterByFlightID = from s in _flights
                                    where s.FlightID == FlightId
@@ -264,7 +277,6 @@ public class ViewFlights
                 }
             }
         }
-        else FlightSchedule();
     }
 
 
@@ -411,7 +423,6 @@ public class ViewFlights
                         // Implement code for changing seat (by flightID)! 
 
                         Console.WriteLine("Seat changed successfully");
-
                     }
                 }
             }
@@ -419,14 +430,6 @@ public class ViewFlights
         Console.WriteLine("Press any key to go back to the menu.");
         Console.ReadKey();
         Menu.Account();
-
-
-
-
-
-
-
-
         // Create method filter flight by catagory
 
         // Create method view flight information
