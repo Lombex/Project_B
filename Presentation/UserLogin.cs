@@ -77,6 +77,10 @@ static class UserLogin
         string password_1 = AccountsLogic.GetHashedSHA256(UnhashedPassword);
         Console.Write("Please enter your password again\n>> ");
         string password_2 = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
+        Console.Write("Do you have a disability\n>> ");
+        string hasdisability = Console.ReadLine()!;
+        if (hasdisability == "Y" || hasdisability == "y" || hasdisability == "Yes" || hasdisability == "yes") AccountInfo!.HasDisability = true;
+
 
         if (password_1 != password_2)
         {
