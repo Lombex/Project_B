@@ -44,7 +44,6 @@ static class UserLogin
             AccountFunctionality.ErrorMessage("Password does not meet the standard requirements.\nPassword needs at least:\n- 6 characters\n- 1 symbol\n- 1 upper and lower case letter\n- a number");
             return false;
         }
-
         return true;
     }
 
