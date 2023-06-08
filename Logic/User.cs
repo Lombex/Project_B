@@ -21,29 +21,31 @@ public class User
                 Console.WriteLine("This account does not exits");
                 ChangeName();
             }
-        } else
+        }
+        else
         {
+
             Console.Write("Give the users email address: ");
             string EmailAddress = Console.ReadLine()!;
-            foreach (AccountModel account in ViewFlights.accountList)
+            var account = ViewFlights.accountList.FirstOrDefault(a => a.EmailAddress == EmailAddress);
+            Console.WriteLine($"{account.EmailAddress} - {EmailAddress}");
+            if (account != null)
             {
-                
-                //Console.WriteLine($"{account.EmailAddress} - {EmailAddress}");
-                if (account.EmailAddress == EmailAddress)
-                {
-                    Console.WriteLine("Give users new name: ");
-                    string NewName = Console.ReadLine()!;
-                    UserLogin.AccountInfo!.FullName = NewName;
-                    ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
-                    AccountsAccess.WriteAll(ViewFlights.accountList);
-                    
-                } else
-                {
-                    Console.WriteLine("Coudnt find email please try again!");
-                    ChangeName(true);
-                }
+                Console.WriteLine("Give users new name: ");
+                string NewName = Console.ReadLine()!;
+                account!.FullName = NewName;
+                ViewFlights.accountList[account.Id - 1] = account;
+                AccountsAccess.WriteAll(ViewFlights.accountList);
+                Menu.AdminAccount();
+
+            }
+            else
+            {
+                Console.WriteLine("Coudnt find email please try again!");
+                ChangeName(true);
             }
         }
+
         Console.Write("What name do you want use? ");
         string NewUsername = Console.ReadLine()!;
         Console.WriteLine("Confirm your name.");
@@ -107,7 +109,8 @@ public class User
                 Console.WriteLine("This account does not exits");
                 ChangeEmail();
             }
-        } else
+        }
+        else
         {
             List<AccountModel> account_list = AccountsAccess.LoadAll();
             Console.Write("Give the users email address: ");
