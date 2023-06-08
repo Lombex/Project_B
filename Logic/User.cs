@@ -28,7 +28,6 @@ public class User
             Console.Write("Give the users email address: ");
             string EmailAddress = Console.ReadLine()!;
             var account = ViewFlights.accountList.FirstOrDefault(a => a.EmailAddress == EmailAddress);
-            Console.WriteLine($"{account.EmailAddress} - {EmailAddress}");
             if (account != null)
             {
                 Console.WriteLine("Give users new name: ");
@@ -36,6 +35,9 @@ public class User
                 account!.FullName = NewName;
                 ViewFlights.accountList[account.Id - 1] = account;
                 AccountsAccess.WriteAll(ViewFlights.accountList);
+                Console.WriteLine("User has been changed!");
+                Console.Write("\nPress Enter to continue...");
+                Console.ReadLine();
                 Menu.AdminAccount();
 
             }
@@ -64,7 +66,6 @@ public class User
             Console.WriteLine("The usernames given dont match");
             ChangeName();
         }
-
     }
     public void ChangePassword()
     {
