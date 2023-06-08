@@ -9,7 +9,6 @@ public class User
     // Create method book flight 
 
     // Create method see reservation information
-
     public void ChangeName(bool isAdmin = false)
     {
         if (!isAdmin)
@@ -24,17 +23,20 @@ public class User
             }
         } else
         {
-            List<AccountModel> account_list = AccountsAccess.LoadAll();
             Console.Write("Give the users email address: ");
             string EmailAddress = Console.ReadLine()!;
-            foreach (AccountModel account in account_list)
+            foreach (AccountModel account in ViewFlights.accountList)
             {
+                
+                //Console.WriteLine($"{account.EmailAddress} - {EmailAddress}");
                 if (account.EmailAddress == EmailAddress)
                 {
                     Console.WriteLine("Give users new name: ");
                     string NewName = Console.ReadLine()!;
-                    account.FullName = NewName;
-                    AccountsAccess.WriteAll(account_list);
+                    UserLogin.AccountInfo!.FullName = NewName;
+                    ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
+                    AccountsAccess.WriteAll(ViewFlights.accountList);
+                    
                 } else
                 {
                     Console.WriteLine("Coudnt find email please try again!");
@@ -118,6 +120,7 @@ public class User
                     string _NewEmail = Console.ReadLine()!;
                     account.EmailAddress = _NewEmail;
                     AccountsAccess.WriteAll(account_list);
+
                 }
                 else
                 {
