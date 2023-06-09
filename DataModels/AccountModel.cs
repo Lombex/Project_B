@@ -21,8 +21,6 @@ public class AccountModel
 
     [JsonPropertyName("BookedFlights")]
     public List<List<string>> BookedFlights { get; set; }
-
-    [JsonPropertyName("Hasdisability")]
     public bool HasDisability { get; set; } // When a person has a disability
 
     // [JsonPropertyName("haschildren")]
