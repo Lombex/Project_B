@@ -15,6 +15,8 @@ public class ViewFlights
     };
     public static string? SeatPicker;
 
+    public static bool HasDisability = false;
+
     public static int FlightID { get; private set; }
     public static void FlightMenu()
     {
@@ -39,13 +41,7 @@ public class ViewFlights
             {
                 Console.Write("Do you have a disability\n>> ");
                 string hasdisability = Console.ReadLine()!;
-                if (hasdisability == "Y" || hasdisability == "y" || hasdisability == "Yes" || hasdisability == "yes")
-                {
-                    AccountModel? DissabilityCheck = accountList.FirstOrDefault(a => a.Id == AccountInfo.Id);
-                    DissabilityCheck!.HasDisability = true;
-                    UserLogin.AccountInfo = DissabilityCheck;
-                    AccountsAccess.WriteAll(accountList);
-                }
+                if (hasdisability == "Y" || hasdisability == "y" || hasdisability == "Yes" || hasdisability == "yes") HasDisability = true;
 
                 Console.WriteLine("Choose a seat you would like");
                 string seat_picker = Console.ReadLine()!;
@@ -97,12 +93,7 @@ public class ViewFlights
             }
             if (disabled_seats.Contains(SeatPicker))
             {
-                if (UserLogin.AccountInfo.HasDisability)
-                {
-                    double ticket_price = _flight[0].Price;
-                    Ticket_Price = ticket_price;
-                }
-                else
+                if (!HasDisability)
                 {
                     Console.WriteLine("You have no disability so you cannot choose this seat, please try again!");
                     FlightMenu();

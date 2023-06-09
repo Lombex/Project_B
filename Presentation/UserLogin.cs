@@ -83,8 +83,6 @@ static class UserLogin
         Console.Write("Please enter your password again\n>> ");
         string password_2 = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
         Console.Write("Do you have a disability\n>> ");
-        string hasdisability = Console.ReadLine()!;
-        if (hasdisability == "Y" || hasdisability == "y" || hasdisability == "Yes" || hasdisability == "yes") AccountInfo!.HasDisability = true;
 
 
         if (password_1 != password_2)
@@ -105,14 +103,7 @@ static class UserLogin
                     newData = new AccountModel(highestId + 1, email, password_1, full_name, true, false); // admin is automatically false
                     break;
                 default:
-                    if (hasdisability == "Y" || hasdisability == "y" || hasdisability == "Yes" || hasdisability == "yes")
-                    {
-                        newData = new AccountModel(highestId + 1, email, password_1, full_name, false, false); // admin is automatically false
-                    }
-                    else
-                    {
-                        newData = new AccountModel(highestId + 1, email, password_1, full_name, false, false); // admin is automatically false
-                    }
+                    newData = new AccountModel(highestId + 1, email, password_1, full_name); // admin is automatically false
                     break;
             }
             dataList.Add(newData);
