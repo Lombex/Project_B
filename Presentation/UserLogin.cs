@@ -1,4 +1,5 @@
 using System.Diagnostics.Metrics;
+using System.Globalization;
 using System.Net;
 using System.Numerics;
 using System.Text.RegularExpressions;
@@ -65,6 +66,10 @@ static class UserLogin
     public static void MakeAccount(AccountType type, bool back_to_menu)
     {
         string full_name = AccountFunctionality.GetInput("Please enter your full name");
+
+        var textinfo = new CultureInfo("en-US", false).TextInfo;
+        full_name = textinfo.ToTitleCase(full_name.ToLower());
+
         string email = AccountFunctionality.GetInput("Please enter your email address");
         List<AccountModel> dataList = AccountsAccess.LoadAll();
         if (dataList.Any(data => data.EmailAddress == email))

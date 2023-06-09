@@ -1,7 +1,9 @@
 using Newtonsoft.Json;
+using System.Globalization;
 
 public class User
 {
+
     // Create method for edit own account data
 
     // Create method cancel booking 
@@ -13,24 +15,22 @@ public class User
     {
         if (!isAdmin)
         {
-            Console.Write("Please enter your password: ");
-            string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
-            AccountModel? acc = AccountsLogic.CheckLogin(UserLogin.AccountInfo!.EmailAddress, password);
-            if (acc == null)
+            if (!CheckPassword())
             {
-                Console.WriteLine("This account does not exits");
+                AccountFunctionality.ErrorMessage("This password is incorrect, please try again.");
                 ChangeName();
+                return;
             }
         }
         else
         {
 
-            Console.Write("Give the users email address: ");
-            string EmailAddress = Console.ReadLine()!;
+            
+            string EmailAddress = AccountFunctionality.GetInput("Give the user's email address: ");
             var account = ViewFlights.accountList.FirstOrDefault(a => a.EmailAddress == EmailAddress);
             if (account != null)
             {
-                Console.WriteLine("Give users new name: ");
+                Console.WriteLine("Give user's new name: ");
                 string NewName = Console.ReadLine()!;
                 account!.FullName = NewName;
                 ViewFlights.accountList[account.Id - 1] = account;
@@ -43,17 +43,19 @@ public class User
             }
             else
             {
-                Console.WriteLine("Coudnt find email please try again!");
-                ChangeName(true);
+                AccountFunctionality.ErrorMessage("Could not find that email, please try again!");
+                ChangeName(isAdmin);
             }
         }
 
-        Console.Write("What name do you want use? ");
-        string NewUsername = Console.ReadLine()!;
-        Console.WriteLine("Confirm your name.");
-        string ConfirmUsername = Console.ReadLine()!;
+        string NewUsername = AccountFunctionality.GetInput("What name do you want to use? ");
+        string ConfirmUsername = AccountFunctionality.GetInput("Please enter your name again.");
         if (NewUsername == ConfirmUsername)
         {
+            // uses TextInfo to turn names from "john doe" to "John Doe"
+            var textinfo = new CultureInfo("en-US", false).TextInfo;
+            NewUsername = textinfo.ToTitleCase(NewUsername.ToLower());
+
             Console.WriteLine($"Username has been changed to {NewUsername}");
             UserLogin.AccountInfo!.FullName = NewUsername;
             ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
@@ -63,23 +65,21 @@ public class User
         }
         else
         {
-            Console.WriteLine("The usernames given dont match");
+            AccountFunctionality.ErrorMessage("The usernames given don't match.");
             ChangeName();
         }
     }
     public void ChangePassword()
     {
-        Console.Write("Please enter your old password: ");
-        string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
-        AccountModel? acc = AccountsLogic.CheckLogin(UserLogin.AccountInfo!.EmailAddress, password);
-        if (acc == null)
+        if(!CheckPassword())
         {
-            Console.WriteLine("This account does not exits");
+            AccountFunctionality.ErrorMessage("Your password was incorrect.");
             ChangePassword();
+            return;
         }
-        Console.Write("Enter new password: ");
+        Console.Write("Enter new password: \n>> ");
         string? NewPassword = AccountFunctionality.HidePassword();
-        Console.Write("Confirm your password: ");
+        Console.Write("Confirm your password: \n>> ");
         string? ConfirmedPassword = AccountFunctionality.HidePassword();
         if (UserLogin.PasswordCheck(NewPassword) && NewPassword == ConfirmedPassword)
         {
@@ -92,7 +92,7 @@ public class User
         }
         else
         {
-            Console.WriteLine("The password given dont match");
+            AccountFunctionality.GetInput("The passwords given don't match.");
             ChangePassword();
         }
     }
@@ -100,27 +100,23 @@ public class User
     {
         if (!isAdmin)
         {
-            Console.Write("Please enter your password: ");
-            string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
-            Console.Write("Enter your current Email: ");
-            string CurrentEmail = Console.ReadLine()!;
-            AccountModel? acc = AccountsLogic.CheckLogin(CurrentEmail, password);
-            if (acc == null)
+            if (!CheckPassword())
             {
-                Console.WriteLine("This account does not exits");
-                ChangeEmail();
+                AccountFunctionality.ErrorMessage("Your password was incorrect, please try again.");
+                ChangeEmail(isAdmin);
+                return;
             }
         }
         else
         {
             List<AccountModel> account_list = AccountsAccess.LoadAll();
-            Console.Write("Give the users email address: ");
+            Console.Write("Enter the user's email address: ");
             string EmailAddress = Console.ReadLine()!;
             foreach (AccountModel account in account_list)
             {
                 if (account.EmailAddress == EmailAddress)
                 {
-                    Console.WriteLine("Give users new email: ");
+                    Console.WriteLine("Enter user's new email: ");
                     string _NewEmail = Console.ReadLine()!;
                     account.EmailAddress = _NewEmail;
                     AccountsAccess.WriteAll(account_list);
@@ -128,21 +124,20 @@ public class User
                 }
                 else
                 {
-                    Console.WriteLine("Coudnt find email please try again!");
+                    Console.WriteLine("Couldn't find that email, please try again!");
                     ChangeName(true);
                 }
             }
         }
 
-        Console.Write("Enter your new email: ");
-        string NewEmail = Console.ReadLine()!;
-        Console.Write("Confirm your new email: ");
-        string ConfirmEmail = Console.ReadLine()!;
+        
+        string NewEmail = AccountFunctionality.GetInput("Enter your new email: ");
+        string ConfirmEmail = AccountFunctionality.GetInput("Please confirm your new email: ");
 
         if (NewEmail == ConfirmEmail)
         {
-            Console.WriteLine($"Email has been changed to {NewEmail}");
-            UserLogin.AccountInfo!.EmailAddress = NewEmail;
+            Console.WriteLine($"Email has been changed to {NewEmail}.");
+            UserLogin.AccountInfo.EmailAddress = NewEmail;
             ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
             AccountsAccess.WriteAll(ViewFlights.accountList);
             Console.Write("\nPress Enter to continue...");
@@ -150,8 +145,17 @@ public class User
         }
         else
         {
-            Console.WriteLine("Email does not match!");
+            Console.WriteLine("Given emails don't match!");
             ChangeEmail();
         }
+    }
+
+    private bool CheckPassword(bool isAdmin = false)
+    {
+        if (!isAdmin) Console.Write("Please enter your password\n>> ");
+        else Console.WriteLine("Please enter the user's password");
+        string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
+        AccountModel? acc = AccountsLogic.CheckLogin(UserLogin.AccountInfo.EmailAddress, password);
+        return acc != null;
     }
 }
