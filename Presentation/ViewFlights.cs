@@ -28,9 +28,7 @@ public class ViewFlights
 
         if (FlightID <= 0 || FlightID > _flights.Count)
         {
-            Console.WriteLine("This Flight ID Does not exist please try again...");
-            Console.Write("Press Enter to continue...");
-            Console.ReadLine();
+            AccountFunctionality.ErrorMessage("This Flight ID Does not exist, please try again...");
             FlightMenu();
         }
         else
