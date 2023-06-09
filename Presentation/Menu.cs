@@ -5,7 +5,6 @@ static class Menu
     //This shows the menu. You can call back to this method to show the menu again
     //after another presentation method is completed.
     //You could edit this to show different menus depending on the user's role
-
     static public void Start()
     {
         Console.Clear();
@@ -72,7 +71,6 @@ static class Menu
                 break;
         }
     }
-
     public static void AdminAccount()
     {
         Console.Clear();
@@ -196,12 +194,13 @@ static class Menu
     }
     public static void UserEditMenu()
     {
+
         List<string> Options = new List<string> { "Enter 1 to change name", "Enter 2 to change password", "Enter 3 to change email", "Enter 4 to go back" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string option in Options) Console.WriteLine(option);
         Console.WriteLine("+-------------------------+");
 
-        Console.Write("Select a option: ");
+        Console.Write("\n>> ");
         string SelectedOption = Console.ReadLine()!;
         User user = new User();
 
@@ -223,7 +222,7 @@ static class Menu
                 Account();
                 break;
             default:
-                Console.WriteLine("This is not a option!");
+                Console.WriteLine("This is not an option!");
                 UserEditMenu();
                 break;
         }

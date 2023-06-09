@@ -44,7 +44,6 @@ static class AccountsLogic
     {
         return _accounts.Find(i => i.Id == id);
     }
-
     public static string GetHashedSHA256(string password)
     {
         using (SHA256 sha256Hash = SHA256.Create())

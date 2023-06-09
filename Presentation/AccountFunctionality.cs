@@ -64,6 +64,7 @@ public class AccountFunctionality
             case "Y":
                 Console.WriteLine("Bye!");
                 System.Environment.Exit(0);
+                ErrorMessage("Program failed to exit. Close manually or try again.");
                 return true;
                 // unnecessary return because it'll have shut down but the compiler whines on
             default:
