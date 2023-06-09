@@ -37,6 +37,16 @@ public class ViewFlights
             bool valid_seat = false;
             while (valid_seat == false)
             {
+                Console.Write("Do you have a disability\n>> ");
+                string hasdisability = Console.ReadLine()!;
+                if (hasdisability == "Y" || hasdisability == "y" || hasdisability == "Yes" || hasdisability == "yes") 
+                {
+                    AccountModel? DissabilityCheck = accountList.FirstOrDefault(a => a.Id == AccountInfo.Id);
+                    DissabilityCheck!.HasDisability = true;
+                    UserLogin.AccountInfo = DissabilityCheck;
+                    AccountsAccess.WriteAll(accountList);
+                }
+
                 Console.WriteLine("Choose a seat you would like");
                 string seat_picker = Console.ReadLine()!;
                 List<char> PlaneRows = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F' };
