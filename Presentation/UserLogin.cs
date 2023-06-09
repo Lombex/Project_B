@@ -107,11 +107,11 @@ static class UserLogin
                 default:
                     if (hasdisability == "Y" || hasdisability == "y" || hasdisability == "Yes" || hasdisability == "yes")
                     {
-                        newData = new AccountModel(highestId + 1, email, password_1, full_name, false, false, true); // admin is automatically false
+                        newData = new AccountModel(highestId + 1, email, password_1, full_name, false, false); // admin is automatically false
                     }
                     else
                     {
-                        newData = new AccountModel(highestId + 1, email, password_1, full_name, false, false, false); // admin is automatically false
+                        newData = new AccountModel(highestId + 1, email, password_1, full_name, false, false); // admin is automatically false
                     }
                     break;
             }
