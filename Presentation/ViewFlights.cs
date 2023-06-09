@@ -5,7 +5,7 @@ using DataModels;
 
 public class ViewFlights
 {
-    private static List<FlightInfoModel>? _flights;
+    public static List<FlightInfoModel>? _flights;
 
     public static List<AccountModel> accountList = AccountsAccess.LoadAll();
 
@@ -39,7 +39,14 @@ public class ViewFlights
             {
                 Console.Write("Do you have a disability\n>> ");
                 string hasdisability = Console.ReadLine()!;
-                if (hasdisability == "Y" || hasdisability == "y" || hasdisability == "Yes" || hasdisability == "yes") AccountInfo.HasDisability = true;
+                if (hasdisability == "Y" || hasdisability == "y" || hasdisability == "Yes" || hasdisability == "yes")
+                {
+                    AccountModel? DissabilityCheck = accountList.FirstOrDefault(a => a.Id == AccountInfo.Id);
+                    DissabilityCheck!.HasDisability = true;
+                    UserLogin.AccountInfo = DissabilityCheck;
+                    AccountsAccess.WriteAll(accountList);
+                }
+
                 Console.WriteLine("Choose a seat you would like");
                 string seat_picker = Console.ReadLine()!;
                 List<char> PlaneRows = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F' };
@@ -79,16 +86,16 @@ public class ViewFlights
                 }
             }
 
-            List<string> first_class_seats = new List<string> {"A1","A2", "A3", "A4", "A5", "A6", "B1","B2", "B3", "B4", "B5", "B6"};
-            List<string> disabled_seats = new List<string> {"C1","C2", "C3", "C4", "C5", "C6"};
+            List<string> first_class_seats = new List<string> { "A1", "A2", "A3", "A4", "A5", "A6", "B1", "B2", "B3", "B4", "B5", "B6" };
+            List<string> disabled_seats = new List<string> { "C1", "C2", "C3", "C4", "C5", "C6" };
             double Ticket_Price = _flight[0].Price;
-            if(first_class_seats.Contains(SeatPicker))
+            if (first_class_seats.Contains(SeatPicker))
             {
-                double ticket_price =_flight[0].Price * 2;
+                double ticket_price = _flight[0].Price * 2;
                 Ticket_Price = ticket_price;
-                
+
             }
-            if(disabled_seats.Contains(SeatPicker))
+            if (disabled_seats.Contains(SeatPicker))
             {
                 if (UserLogin.AccountInfo.HasDisability)
                 {
@@ -111,7 +118,7 @@ public class ViewFlights
             Console.WriteLine($"Booked seat: {SeatPicker}");
             Console.WriteLine("------------");
             Console.WriteLine("\n\nEnter Yes to confirm");
-            string user_input  = Console.ReadLine();
+            string user_input = Console.ReadLine()!;
             if (user_input != "Yes" && user_input != "yes" && user_input != "Y" && user_input != "y")
             {
                 Console.WriteLine("Abort booking, please wait 5 seconds and try again later!");
@@ -250,65 +257,116 @@ public class ViewFlights
     }
     public static void FlightSchedule()
     {
-        HashSet<String> possible_destinations = new HashSet<string>();
-        foreach(FlightInfoModel flight in _flights)
+        if (_flights == null)
+            _flights = FlightInfoAccess.LoadAll();
+
+        HashSet<string> possible_destinations = new HashSet<string>();
+        Dictionary<string, HashSet<string>> destinationDates = new Dictionary<string, HashSet<string>>();
+
+        foreach (FlightInfoModel flight in _flights)
         {
             possible_destinations.Add(flight.Destination);
+
+            if (!destinationDates.ContainsKey(flight.Destination))
+            {
+                destinationDates[flight.Destination] = new HashSet<string>();
+            }
+
+            destinationDates[flight.Destination].Add(flight.Date);
         }
+
+        Console.Clear();
         Console.WriteLine("Possible destinations: ");
+        int destinationIndex = 1;
+        Dictionary<int, string> destinationDictionary = new Dictionary<int, string>();
         foreach (string destination in possible_destinations)
         {
-            Console.WriteLine($"- {destination}");
+            destinationDictionary.Add(destinationIndex, destination);
+            Console.WriteLine($"- {destinationIndex}: {destination}");
+            destinationIndex++;
         }
 
-        //PrintFlightTable(_flights);
-        //Console.WriteLine("Would you like to enable sorting for a more organized viewing?");
-        //Console.Write(">> ");
-        //string sorting = Console.ReadLine()!.ToLower();
-
-        // if (sorting == "yes" || sorting == "y")
-        // {
-        //     SortingMenu();
-        // }
-        //else if (sorting == "no" || sorting == "n")
-        if (true)
+        while (true)
         {
-            while (true)
+            Console.WriteLine("Please enter your preferred destination");
+            Console.Write(">> ");
+            int destinationID = Convert.ToInt32(Console.ReadLine());
+
+            if (destinationID >= 1 && destinationID <= destinationDictionary.Count)
             {
-                Console.WriteLine("Please enter your preferred destination");
-                Console.Write(">> ");
-                string possible_destination = Console.ReadLine()!;
+                string preferredDestination = destinationDictionary[destinationID];
 
-                if (possible_destinations.Contains(possible_destination))
+                if (destinationDates.ContainsKey(preferredDestination))
                 {
-                    FlightInfoLogic Fil = new FlightInfoLogic();
-                    List<FlightInfoModel> possible_flights = Fil.SearchByName(possible_destination);
+                    HashSet<string> possible_dates = destinationDates[preferredDestination];
 
-                    PrintFlightTable(possible_flights);
+                    Console.WriteLine("Possible dates for the selected destination: ");
+                    int dateIndex = 1;
+                    Dictionary<int, string> dateDictionary = new Dictionary<int, string>();
+                    foreach (string date in possible_dates)
+                    {
+                        dateDictionary.Add(dateIndex, date);
+                        Console.WriteLine($"- {dateIndex}: {date}");
+                        dateIndex++;
+                    }
+
+                    Console.WriteLine("Please enter the desired date:");
+                    Console.Write(">> ");
+
+                    int dateChoice = Convert.ToInt32(Console.ReadLine());
+
+                    if (dateDictionary.ContainsKey(dateChoice))
+                    {
+                        string selectedDate = dateDictionary[dateChoice];
+
+                        List<FlightInfoModel> possible_flights = _flights
+                            .Where(flight => flight.Destination == preferredDestination && flight.Date == selectedDate)
+                            .ToList();
+
+                        PrintFlightTable(possible_flights);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid date choice. Please try again.");
+                        continue;
+                    }
 
                     Console.WriteLine("What is the flight ID of the flight you will be taking?");
                     Console.Write(">> ");
                     try
                     {
-                        FlightID = Convert.ToInt32(Console.ReadLine()!);
+                        FlightID = Convert.ToInt32(Console.ReadLine());
                     }
                     catch
                     {
                         Console.WriteLine("FlightID can only be a number!");
-                        FlightSchedule();
+                        continue;
                     }
                     break;
                 }
-                Console.Clear();
-                Console.WriteLine("This destination does not exists, please try again!");
-                Console.WriteLine("Possible destinations: ");
-                foreach (string destination in possible_destinations)
+                else
                 {
-                    Console.WriteLine($"- {destination}");
+                    Console.WriteLine("No flights available for the selected destination. Please try again.");
+                    continue;
                 }
             }
+            else
+            {
+                Console.WriteLine("Invalid destination number. Please try again.");
+            }
+        }
+
+        Console.Clear();
+        Console.WriteLine("This destination does not exist. Please try again!");
+        Console.WriteLine("Possible destinations: ");
+        foreach (string destination in possible_destinations)
+        {
+            Console.WriteLine($"- {destination}");
         }
     }
+
+
+
     public static void LayoutPlane()
     {
         if (_flights == null) _flights = FlightInfoAccess.LoadAll();
