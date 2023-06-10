@@ -184,39 +184,31 @@ public class ViewFlights
         {
             case "1":
                 _flights = flight.SortByFlightNumber(ascending);
-                FlightSchedule();
+                // PrintFlightTable(possible_flights);
                 break;
             case "2":
                 _flights = flight.SortByAircraft(ascending);
-                FlightSchedule();
                 break;
             case "3":
                 _flights = flight.SortByOrigin(ascending);
-                FlightSchedule();
                 break;
             case "4":
                 _flights = flight.SortByDestination(ascending);
-                FlightSchedule();
                 break;
             case "5":
                 _flights = flight.SortByDate(ascending);
-                FlightSchedule();
                 break;
             case "6":
                 _flights = flight.SortByFlightTime(ascending);
-                FlightSchedule();
                 break;
             case "7":
                 _flights = flight.SortByDepartTime(ascending);
-                FlightSchedule();
                 break;
             case "8":
                 _flights = flight.SortByArrivalTime(ascending);
-                FlightSchedule();
                 break;
             case "9":
                 _flights = flight.SortByGate(ascending);
-                FlightSchedule();
                 break;
             default:
                 break;
@@ -250,7 +242,7 @@ public class ViewFlights
             _flights = FlightInfoAccess.LoadAll();
 
         HashSet<string> possible_destinations = new HashSet<string>();
-        Dictionary<string, HashSet<string>> destinationDates = new Dictionary<string, HashSet<string>>();
+        SortedDictionary<string, List<string>> destinationDates = new SortedDictionary<string, List<string>>();
 
         foreach (FlightInfoModel flight in _flights)
         {
@@ -258,7 +250,7 @@ public class ViewFlights
 
             if (!destinationDates.ContainsKey(flight.Destination))
             {
-                destinationDates[flight.Destination] = new HashSet<string>();
+                destinationDates[flight.Destination] = new List<string>();
             }
 
             destinationDates[flight.Destination].Add(flight.Date);
@@ -266,91 +258,199 @@ public class ViewFlights
 
         Console.Clear();
         Console.WriteLine("Possible destinations: ");
-        int destinationIndex = 1;
-        Dictionary<int, string> destinationDictionary = new Dictionary<int, string>();
-        foreach (string destination in possible_destinations)
-        {
-            destinationDictionary.Add(destinationIndex, destination);
-            Console.WriteLine($"- {destinationIndex}: {destination}");
-            destinationIndex++;
-        }
 
-        while (true)
-        {
-            Console.WriteLine("Please enter your preferred destination");
-            Console.Write(">> ");
-            int destinationID = Convert.ToInt32(Console.ReadLine());
+        int currentDestinationIndex = 0;
+        int destinationsPerPage = 25;
+        int totalPages = (int)Math.Ceiling((double)possible_destinations.Count / destinationsPerPage);
 
-            if (destinationID >= 1 && destinationID <= destinationDictionary.Count)
+        bool showMoreDestinations = true;
+
+        while (showMoreDestinations)
+        {
+            currentDestinationIndex = currentDestinationIndex < 0 ? 0 : currentDestinationIndex;
+            int destinationIndex = 1;
+            Dictionary<int, string> destinationDictionary = new Dictionary<int, string>();
+
+            for (int i = currentDestinationIndex; i < currentDestinationIndex + destinationsPerPage && i < possible_destinations.Count; i++)
             {
-                string preferredDestination = destinationDictionary[destinationID];
+                string destination = possible_destinations.ElementAt(i);
+                destinationDictionary.Add(destinationIndex, destination);
+                Console.WriteLine($"- {destinationIndex}: {destination}");
+                destinationIndex++;
+            }
 
-                if (destinationDates.ContainsKey(preferredDestination))
+            Console.WriteLine($"Page {currentDestinationIndex / destinationsPerPage + 1} of {totalPages}");
+            Console.WriteLine("Enter 'next' to view the next page of destinations, 'back' to view the previous page, or any other key to select a destination:");
+            Console.Write(">> ");
+
+            string destinationChoice = Console.ReadLine()!;
+
+            if (destinationChoice.ToLower() == "next")
+            {
+                currentDestinationIndex += destinationsPerPage;
+                if (currentDestinationIndex >= possible_destinations.Count)
                 {
-                    HashSet<string> possible_dates = destinationDates[preferredDestination];
-
-                    Console.WriteLine("Possible dates for the selected destination: ");
-                    int dateIndex = 1;
-                    Dictionary<int, string> dateDictionary = new Dictionary<int, string>();
-                    foreach (string date in possible_dates)
-                    {
-                        dateDictionary.Add(dateIndex, date);
-                        Console.WriteLine($"- {dateIndex}: {date}");
-                        dateIndex++;
-                    }
-
-                    Console.WriteLine("Please enter the desired date:");
-                    Console.Write(">> ");
-
-                    int dateChoice = Convert.ToInt32(Console.ReadLine());
-
-                    if (dateDictionary.ContainsKey(dateChoice))
-                    {
-                        string selectedDate = dateDictionary[dateChoice];
-
-                        List<FlightInfoModel> possible_flights = _flights
-                            .Where(flight => flight.Destination == preferredDestination && flight.Date == selectedDate)
-                            .ToList();
-
-                        PrintFlightTable(possible_flights);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid date choice. Please try again.");
-                        continue;
-                    }
-
-                    Console.WriteLine("What is the flight ID of the flight you will be taking?");
-                    Console.Write(">> ");
-                    try
-                    {
-                        FlightID = Convert.ToInt32(Console.ReadLine());
-                    }
-                    catch
-                    {
-                        Console.WriteLine("FlightID can only be a number!");
-                        continue;
-                    }
-                    break;
+                    currentDestinationIndex = (totalPages - 1) * destinationsPerPage;
+                    Console.Clear();
+                    Console.WriteLine("This is the last page of destinations.");
                 }
                 else
                 {
-                    Console.WriteLine("No flights available for the selected destination. Please try again.");
-                    continue;
+                    Console.Clear();
+                }
+            }
+            else if (destinationChoice.ToLower() == "back")
+            {
+                currentDestinationIndex -= destinationsPerPage;
+                if (currentDestinationIndex < 0)
+                {
+                    currentDestinationIndex = 0;
+                    Console.Clear();
+                    Console.WriteLine("This is the beginning of destinations.");
+                }
+                else
+                {
+                    Console.Clear();
                 }
             }
             else
             {
-                Console.WriteLine("Invalid destination number. Please try again.");
-            }
-        }
+                if (int.TryParse(destinationChoice, out int destinationID))
+                {
+                    if (destinationID >= 1 && destinationID <= destinationDictionary.Count)
+                    {
+                        string preferredDestination = destinationDictionary[destinationID];
 
-        Console.Clear();
-        Console.WriteLine("This destination does not exist. Please try again!");
-        Console.WriteLine("Possible destinations: ");
-        foreach (string destination in possible_destinations)
-        {
-            Console.WriteLine($"- {destination}");
+                        if (destinationDates.ContainsKey(preferredDestination))
+                        {
+                            List<string> possible_dates = destinationDates[preferredDestination];
+                            possible_dates.Sort((x, y) => DateTime.ParseExact(x, "dd-MM-yyyy", null).CompareTo(DateTime.ParseExact(y, "dd-MM-yyyy", null)));
+
+                            Console.WriteLine("Possible dates for the selected destination: ");
+
+                            int datesPerPage = 25;
+                            int totalDatePages = (int)Math.Ceiling((double)possible_dates.Count / datesPerPage);
+                            int currentDatePage = 1;
+
+                            bool showMoreDates = true;
+
+                            while (showMoreDates)
+                            {
+                                currentDatePage = currentDatePage < 1 ? 1 : currentDatePage;
+                                int dateIndex = 1;
+                                Dictionary<int, string> dateDictionary = new Dictionary<int, string>();
+
+                                foreach (string date in possible_dates.Skip((currentDatePage - 1) * datesPerPage).Take(datesPerPage))
+                                {
+                                    dateDictionary.Add(dateIndex, date);
+                                    Console.WriteLine($"- {dateIndex}: {date}");
+                                    dateIndex++;
+                                }
+
+                                Console.WriteLine($"Page {currentDatePage} of {totalDatePages}");
+                                Console.WriteLine("Enter 'next' to view the next page of dates, 'back' to view the previous page, or any other key to select a date:");
+                                Console.Write(">> ");
+
+                                string dateChoice = Console.ReadLine()!;
+
+                                if (dateChoice.ToLower() == "next")
+                                {
+                                    currentDatePage++;
+                                    if (currentDatePage > totalDatePages)
+                                    {
+                                        currentDatePage = totalDatePages;
+                                        Console.Clear();
+                                        Console.WriteLine($"Showing dates page {currentDatePage} of {totalDatePages}");
+                                    }
+                                    else
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine($"Showing dates page {currentDatePage} of {totalDatePages}");
+                                    }
+                                }
+                                else if (dateChoice.ToLower() == "back")
+                                {
+                                    currentDatePage--;
+                                    if (currentDatePage < 1)
+                                    {
+                                        currentDatePage = 1;
+                                        Console.Clear();
+                                        Console.WriteLine($"Showing dates page {currentDatePage} of {totalDatePages}");
+                                    }
+                                    else
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine($"Showing dates page {currentDatePage} of {totalDatePages}");
+                                    }
+                                }
+                                else
+                                {
+                                    if (int.TryParse(dateChoice, out int dateID))
+                                    {
+                                        if (dateID >= 1 && dateID <= dateDictionary.Count)
+                                        {
+                                            string selectedDate = dateDictionary[dateID];
+
+                                            List<FlightInfoModel> possible_flights = _flights
+                                                .Where(flight => flight.Destination == preferredDestination && flight.Date == selectedDate)
+                                                .ToList();
+
+                                            possible_flights.Sort((x, y) => DateTime.ParseExact(x.Date, "dd-MM-yyyy", null).CompareTo(DateTime.ParseExact(y.Date, "dd-MM-yyyy", null)));
+
+                                            PrintFlightTable(possible_flights);
+
+                                            // Console.WriteLine("Do you want to sort for easier viewing");
+                                            // Console.Write(">> ");
+                                            // string sorting = Console.ReadLine()!.ToLower();
+                                            // if (sorting == "yes" || sorting == "y") SortingMenu(possible_flights);
+
+
+                                            Console.WriteLine("What is the flight ID of the flight you will be taking?");
+                                            Console.Write(">> ");
+                                            if (int.TryParse(Console.ReadLine(), out int FlightID))
+                                            {
+                                                showMoreDestinations = false;
+                                                showMoreDates = false;
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("FlightID can only be a number! Please try again.");
+                                                continue;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Invalid date choice. Please try again.");
+                                            continue;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Invalid input. Please try again.");
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No flights available for the selected destination. Please try again.");
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid destination number. Please try again.");
+                        continue;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please try again.");
+                    continue;
+                }
+            }
         }
     }
 
