@@ -10,7 +10,7 @@ public class Admin : User
 
     // Create new method change flight data
     public void ChangeName() => base.ChangeName(true);
-    public void ChangeEmail() => base.ChangeEmail(true);   
+    public void ChangeEmail() => base.ChangeEmail(true);
     public void ChangeUserPassword(string EmailAddress)
     {
         List<AccountModel> account_list = AccountsAccess.LoadAll();
@@ -77,6 +77,104 @@ public class Admin : User
         FlightInfoAccess.WriteAll(dataList);
 
         Menu.AdminAccount();
+    }
+
+
+    public void ModifyFlight()
+    {
+        if (ViewFlights._flights == null) ViewFlights._flights = FlightInfoAccess.LoadAll();
+
+        Console.Write("Enter Flight ID to modify: ");
+        if (!int.TryParse(Console.ReadLine(), out int flightID))
+        {
+            Console.WriteLine("Invalid Flight ID.");
+            return;
+        }
+
+        FlightInfoModel flight = ViewFlights._flights.Find(f => f.FlightID == flightID)!;
+
+        if (flight == null)
+        {
+            Console.WriteLine("Flight not found.");
+            return;
+        }
+
+        Console.WriteLine($"Selected Flight: {flight.FlightNumber} - {flight.Origin} to {flight.Destination}");
+
+        Console.WriteLine("Select the attribute to modify:");
+        Console.WriteLine("1. Flight Number");
+        Console.WriteLine("2. Aircraft");
+        Console.WriteLine("3. Origin");
+        Console.WriteLine("4. Destination");
+        Console.WriteLine("5. Date");
+        Console.WriteLine("6. Flight Time");
+        Console.WriteLine("7. Departure Time");
+        Console.WriteLine("8. Arrival Time");
+        Console.WriteLine("9. Gate");
+        Console.WriteLine("10. Price");
+
+        Console.Write("Enter your choice: ");
+        string choice = Console.ReadLine()!;
+
+        Console.Write("Enter the new value: ");
+        string newValue = Console.ReadLine()!;
+
+        switch (choice)
+        {
+            case "1":
+                flight.FlightNumber = newValue;
+                break;
+            case "2":
+                flight.Aircraft = newValue;
+                break;
+            case "3":
+                flight.Origin = newValue;
+                break;
+            case "4":
+                flight.Destination = newValue;
+                break;
+            case "5":
+                flight.Date = newValue;
+                break;
+            case "6":
+                if (double.TryParse(newValue, out double flightTime))
+                {
+                    flight.FlightTime = flightTime;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Flight Time.");
+                    return;
+                }
+                break;
+            case "7":
+                flight.DepartTime = newValue;
+                break;
+            case "8":
+                flight.ArrivalTime = newValue;
+                break;
+            case "9":
+                flight.Gate = newValue;
+                break;
+            case "10":
+                if (int.TryParse(newValue, out int price))
+                {
+                    flight.Price = price;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Price.");
+                    return;
+                }
+                break;
+            default:
+                Console.WriteLine("Invalid choice.");
+                return;
+        }
+
+        FlightInfoAccess.WriteAll(ViewFlights._flights);
+
+        Console.WriteLine("Flight information updated successfully.");
     }
     public void ViewFlightList() => ViewFlights.FlightMenu();
 }

@@ -280,12 +280,12 @@ public class ViewFlights
             }
 
             Console.WriteLine($"Page {currentDestinationIndex / destinationsPerPage + 1} of {totalPages}");
-            Console.WriteLine("Enter 'next' to view the next page of destinations, 'back' to view the previous page, or any other key to select a destination:");
+            Console.WriteLine("Enter 'n' to view the next page of destinations, 'b' to view the previous page, or any other key to select a destination:");
             Console.Write(">> ");
 
             string destinationChoice = Console.ReadLine()!;
 
-            if (destinationChoice.ToLower() == "next")
+            if (destinationChoice.ToLower() == "n")
             {
                 currentDestinationIndex += destinationsPerPage;
                 if (currentDestinationIndex >= possible_destinations.Count)
@@ -299,7 +299,7 @@ public class ViewFlights
                     Console.Clear();
                 }
             }
-            else if (destinationChoice.ToLower() == "back")
+            else if (destinationChoice.ToLower() == "b")
             {
                 currentDestinationIndex -= destinationsPerPage;
                 if (currentDestinationIndex < 0)
@@ -340,7 +340,7 @@ public class ViewFlights
                                 int dateIndex = 1;
                                 Dictionary<int, string> dateDictionary = new Dictionary<int, string>();
 
-                                foreach (string date in possible_dates.Skip((currentDatePage - 1) * datesPerPage).Take(datesPerPage))
+                                foreach (string date in possible_dates.Skip((currentDatePage - 1) * datesPerPage).Take(datesPerPage).Distinct())
                                 {
                                     dateDictionary.Add(dateIndex, date);
                                     Console.WriteLine($"- {dateIndex}: {date}");
@@ -348,12 +348,12 @@ public class ViewFlights
                                 }
 
                                 Console.WriteLine($"Page {currentDatePage} of {totalDatePages}");
-                                Console.WriteLine("Enter 'next' to view the next page of dates, 'back' to view the previous page, or any other key to select a date:");
+                                Console.WriteLine("Enter 'n' to view the next page of dates, 'b' to view the previous page, or any other key to select a date:");
                                 Console.Write(">> ");
 
                                 string dateChoice = Console.ReadLine()!;
 
-                                if (dateChoice.ToLower() == "next")
+                                if (dateChoice.ToLower() == "n")
                                 {
                                     currentDatePage++;
                                     if (currentDatePage > totalDatePages)
@@ -368,7 +368,7 @@ public class ViewFlights
                                         Console.WriteLine($"Showing dates page {currentDatePage} of {totalDatePages}");
                                     }
                                 }
-                                else if (dateChoice.ToLower() == "back")
+                                else if (dateChoice.ToLower() == "b")
                                 {
                                     currentDatePage--;
                                     if (currentDatePage < 1)
@@ -407,17 +407,19 @@ public class ViewFlights
 
                                             Console.WriteLine("What is the flight ID of the flight you will be taking?");
                                             Console.Write(">> ");
-                                            if (int.TryParse(Console.ReadLine(), out int FlightID))
+                                            try
                                             {
+                                                FlightID = Convert.ToInt32(Console.ReadLine());
                                                 showMoreDestinations = false;
                                                 showMoreDates = false;
                                                 break;
                                             }
-                                            else
+                                            catch
                                             {
-                                                Console.WriteLine("FlightID can only be a number! Please try again.");
+                                                Console.WriteLine("FlightID can only be a number!");
                                                 continue;
                                             }
+
                                         }
                                         else
                                         {
@@ -463,7 +465,7 @@ public class ViewFlights
         Table.Options.EnableCount = options.EnableCount;
 
         var FilterByFlightID = from s in _flights
-                               where s.FlightID == FlightID - 1
+                               where s.FlightID == (FlightID - 1)
                                select s;
 
         List<FlightInfoModel> remove_flight = FilterByFlightID.ToList();

@@ -80,7 +80,7 @@ static class Menu
         Admin admin = new Admin();
 
         // edit/delete flights should be in a submenu in 3, but for now this name is more accurate
-        List<string> admin_account_choices = new List<string>() { " Enter 1 to create an account", " Enter 2 to change user password", " Enter 3 to change user name" , " Enter 4 to change user email", " Enter 5 to create a flight", " Enter 6 to view all flights ", " Enter 7 to change banner/logo", " Enter 8 to log out" };
+        List<string> admin_account_choices = new List<string>() { " Enter 1 to create an account", " Enter 2 to change user password", " Enter 3 to change user name", " Enter 4 to change user email", " Enter 5 to create a flight", " Enter 6 to modify a flight", " Enter 7 to view all flights ", " Enter 8 to change banner/logo", " Enter 9 to log out" };
 
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in admin_account_choices) Console.WriteLine(item);
@@ -95,29 +95,37 @@ static class Menu
             case "2":
                 var email_address = AccountFunctionality.GetInput("Please enter an email");
                 admin.ChangeUserPassword(email_address!);
-                Menu.AdminAccount();
+                AdminAccount();
                 break;
             case "3":
                 admin.ChangeName(true);
+                AdminAccount();
                 break;
             case "4":
                 admin.ChangeEmail(true);
+                AdminAccount();
                 break;
             case "5":
                 Console.WriteLine("Add flight:");
                 admin.Add_flight();
+                AdminAccount();
                 break;
             case "6":
-                admin.ViewFlightList();
+                admin.ModifyFlight();
+                AdminAccount();
                 break;
             case "7":
+                admin.ViewFlightList();
+                AdminAccount();
+                break;
+            case "8":
                 Console.WriteLine("These are all available banners: ");
                 AccountFunctionality.PrintBanner(true);
                 int banner_choice = Convert.ToInt32(AccountFunctionality.GetInput("Choose a banner, and type the number of the banner you want: "));
                 AccountFunctionality.ChangeBanner(banner_choice);
                 AdminAccount();
                 break;
-            case "8":
+            case "9":
                 Menu.Start();
                 break;
             default:
