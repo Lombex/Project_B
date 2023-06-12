@@ -16,15 +16,29 @@ public class ViewFlights
     public static string? SeatPicker;
 
     public static bool HasDisability = false;
+    public static int numberOfChildren = 0;
+
+    public static int numberOfAdults = 0;
 
     public static int FlightID { get; private set; }
+
     public static void FlightMenu()
     {
-        if (_flights == null) _flights = FlightInfoAccess.LoadAll();
+        if (_flights == null)
+            _flights = FlightInfoAccess.LoadAll();
+
         FlightInfoLogic Fil = new FlightInfoLogic();
         FlightSchedule();
         LayoutPlane();
+
         int FlightId = FlightID - 1;
+
+        var FilterByFlightID = from s in _flights
+                               where s.FlightID == FlightID - 1
+                               select s;
+
+        List<FlightInfoModel> _flight = FilterByFlightID.ToList();
+        List<string> taken_seats = _flight[0].SeatsTaken;
 
         if (FlightID <= 0 || FlightID > _flights.Count)
         {
@@ -35,68 +49,96 @@ public class ViewFlights
         {
             AccountModel AccountInfo = UserLogin.AccountInfo!;
             bool valid_seat = false;
+            List<string> selectedSeats = new List<string>();
+
             while (valid_seat == false)
             {
-                Console.Write("Do you have a disability\n>> ");
+                Console.Write("Do you have a disability?\n>> ");
                 string hasdisability = Console.ReadLine()!;
-                if (hasdisability == "Y" || hasdisability == "y" || hasdisability == "Yes" || hasdisability == "yes") HasDisability = true;
+                if (hasdisability == "Y" || hasdisability == "y" || hasdisability == "Yes" || hasdisability == "yes")
+                    HasDisability = true;
 
-                Console.WriteLine("Choose a seat you would like");
-                string seat_picker = Console.ReadLine()!;
-                List<char> PlaneRows = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F' };
-                if (PlaneRows.Contains(seat_picker[0]))
+                Console.Write("Do you have any children (Y/N)? ");
+                string hasChildren = Console.ReadLine()!;
+                if (hasChildren == "Y" || hasChildren == "y" || hasChildren == "Yes" || hasChildren == "yes")
                 {
-                    if (Convert.ToInt32(seat_picker[1..]) >= 1 && Convert.ToInt32(seat_picker[1..]) <= 30)
+                    Console.Write("How many children do you have? ");
+                    int childrenCountInput = Convert.ToInt32(Console.ReadLine());
+                    numberOfChildren = childrenCountInput;
+                }
+
+                Console.Write("How many adults (excluding children) are booking the flight? ");
+                numberOfAdults = Convert.ToInt32(Console.ReadLine());
+
+                Console.WriteLine($"You have entered {numberOfAdults} adults and {numberOfChildren} children. Do you want to proceed with these numbers? (Y/N)");
+                string proceedConfirmation = Console.ReadLine()!;
+                if (proceedConfirmation != "Y" && proceedConfirmation != "y" && proceedConfirmation != "Yes" && proceedConfirmation != "yes")
+                {
+                    Console.WriteLine("Aborting booking. Please try again!");
+                    FlightMenu();
+                }
+
+                Console.WriteLine("Choose the seat(s) you would like (separated by commas, e.g., A1, B2): ");
+                string seatPicker = Console.ReadLine()!;
+                selectedSeats = seatPicker.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                List<char> PlaneRows = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F' };
+
+                bool allSeatsValid = true;
+                if (allSeatsValid)
+                {
+                    bool seatsAvailable = true;
+                    foreach (string seat in selectedSeats)
+                    {
+                        if (_flight[0].SeatsTaken.Contains(seat))
+                        {
+                            AccountFunctionality.ErrorMessage($"Seat {seat} is already taken. Please choose another seat.");
+                            seatsAvailable = false;
+                            break;
+                        }
+                    }
+
+                    if (seatsAvailable)
                     {
                         valid_seat = true;
-                        SeatPicker = seat_picker;
+                        SeatPicker = seatPicker;
                     }
                     else
                     {
-                        AccountFunctionality.ErrorMessage("This seat is not available, please try again");
+                        valid_seat = false;
+                        AccountFunctionality.ErrorMessage("One or more selected seats are not available. Please choose different seats.");
                     }
                 }
-                else
+            }
+
+            double Ticket_Price = 0.0;
+            List<string> firstClassSeats = new List<string> { "A1", "A2", "A3", "A4", "A5", "A6", "B1", "B2", "B3", "B4", "B5", "B6" };
+            List<string> disabledSeats = new List<string> { "C1", "C2", "C3", "C4", "C5", "C6" };
+
+            foreach (string seat in selectedSeats)
+            {
+                double ticketPrice = _flight[0].Price;
+
+                if (firstClassSeats.Contains(seat))
                 {
-                    AccountFunctionality.ErrorMessage("This seat is not available, please try again");
+                    ticketPrice *= 2;
                 }
-            }
 
-            if (_flights == null) _flights = FlightInfoAccess.LoadAll();
-            var FilterByFlightID = from s in _flights
-                                   where s.FlightID == FlightId
-                                   select s;
-
-            List<FlightInfoModel> _flight = FilterByFlightID.ToList();
-            List<string> taken_seats = _flight[0].SeatsTaken;
-
-            foreach (string taken_seat in taken_seats)
-            {
-                if (taken_seat == SeatPicker)
+                if (disabledSeats.Contains(seat) && !HasDisability)
                 {
-                    Console.WriteLine("This seat is already taken, please wait and try again in 5 seconds");
-                    Thread.Sleep(5000);
-                    ViewFlights.FlightMenu();
-                }
-            }
-
-            List<string> first_class_seats = new List<string> { "A1", "A2", "A3", "A4", "A5", "A6", "B1", "B2", "B3", "B4", "B5", "B6" };
-            List<string> disabled_seats = new List<string> { "C1", "C2", "C3", "C4", "C5", "C6" };
-            double Ticket_Price = _flight[0].Price;
-            if (first_class_seats.Contains(SeatPicker))
-            {
-                double ticket_price = _flight[0].Price * 2;
-                Ticket_Price = ticket_price;
-
-            }
-            if (disabled_seats.Contains(SeatPicker))
-            {
-                if (!HasDisability)
-                {
-                    Console.WriteLine("You have no disability so you cannot choose this seat, please try again!");
+                    AccountFunctionality.ErrorMessage("You have no disability, so you cannot choose this seat. Please try again!");
                     FlightMenu();
                 }
+
+                if (numberOfChildren > 0)
+                {
+                    ticketPrice *= 0.8;
+                    numberOfChildren--;
+                }
+
+                Ticket_Price += ticketPrice;
             }
+
             Console.Clear();
             Console.WriteLine("Please confirm your booking!");
 
@@ -104,7 +146,9 @@ public class ViewFlights
             Console.WriteLine($"Flight: {_flight[0].FlightNumber} from {_flight[0].Origin} to {_flight[0].Destination}");
             Console.WriteLine($"Date : {_flight[0].Date} - {_flight[0].DepartTime}");
             Console.WriteLine($"Total price: {Ticket_Price}");
-            Console.WriteLine($"Booked seat: {SeatPicker}");
+            Console.WriteLine($"Booked seat(s): {SeatPicker}");
+            Console.WriteLine($"Number of adults: {numberOfAdults}");
+            Console.WriteLine($"Number of children: {numberOfChildren}");
             Console.WriteLine("------------");
             Console.WriteLine("\n\nEnter Yes to confirm");
             string user_input = Console.ReadLine()!;
@@ -115,14 +159,13 @@ public class ViewFlights
                 FlightMenu();
             }
 
-
-            _flight[0].SeatsTaken.Add(SeatPicker!);
+            _flight[0].SeatsTaken.AddRange(selectedSeats);
             _flights[FlightId] = _flight[0];
             FlightInfoAccess.WriteAll(_flights);
 
             int highestId = FilterByFlightID.Max(data => data.FlightID);
             BookHistoryModel newData = new BookHistoryModel(AccountInfo.Id, AccountInfo.FullName, AccountInfo.EmailAddress,
-            DateTime.Now.ToString(), FlightId, _flight[0].FlightNumber, SeatPicker!, _flight[0].Destination, _flight[0].Gate, _flight[0].DepartTime, _flight[0].ArrivalTime);
+                DateTime.Now.ToString(), FlightId, _flight[0].FlightNumber, SeatPicker!, _flight[0].Destination, _flight[0].Gate, _flight[0].DepartTime, _flight[0].ArrivalTime);
 
             List<BookHistoryModel> dataList = BookHistoryAccess.LoadAll();
             dataList.Add(newData);
@@ -132,17 +175,17 @@ public class ViewFlights
             if (updatedAccount != null)
             {
                 List<string> updatedBookedFlights = new List<string> {
-                    FlightId.ToString(),
-                    _flight[0].FlightNumber,
-                    DateTime.Now.ToString(),
-                    SeatPicker!,
-                    _flight[0].Origin,
-                    _flight[0].Destination,
-                    _flight[0].DepartTime.ToString(),
-                    _flight[0].ArrivalTime.ToString(),
-                    Ticket_Price.ToString(),
-                    _flight[0].Gate,
-                };
+            FlightId.ToString(),
+            _flight[0].FlightNumber,
+            DateTime.Now.ToString(),
+            SeatPicker!,
+            _flight[0].Origin,
+            _flight[0].Destination,
+            _flight[0].DepartTime.ToString(),
+            _flight[0].ArrivalTime.ToString(),
+            Ticket_Price.ToString(),
+            _flight[0].Gate,
+        };
 
                 updatedAccount.BookedFlights.Add(updatedBookedFlights);
                 UserLogin.AccountInfo = updatedAccount;
@@ -151,14 +194,6 @@ public class ViewFlights
             Menu.Account();
         }
     }
-
-    // Check which class seat it has to be
-
-    // Check if User has an disability or has children for discount.
-
-    // Make sure to ask for confirmation 
-
-    // Menu has be able to pick seats | Menu has to be able to go back to its respective menu
 
     public static void SortingMenu()
     {
@@ -530,79 +565,114 @@ public class ViewFlights
             }
             else if (delete_flight == true)
             {
-                if (_flights == null) _flights = FlightInfoAccess.LoadAll();
-                Console.WriteLine("Enter your flight ID you want to delete");
-                string removed_flight_id = Convert.ToString(Convert.ToInt32(Console.ReadLine()) - 1);
-                Console.WriteLine("The seat of the booking you want to delete");
-                string seat = Console.ReadLine()!;
+                if (_flights == null)
+                    _flights = FlightInfoAccess.LoadAll();
+
+                Console.WriteLine("Enter the flight ID you want to delete:");
+                int removed_flight_id = Convert.ToInt32(Console.ReadLine()) - 1;
+
+                Console.WriteLine("Enter the seat(s) of the booking you want to delete (separated by commas):");
+                string seatsInput = Console.ReadLine()!;
+                List<string> seatList = seatsInput.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
 
                 var FilterByFlightID = from s in _flights
-                                       where s.FlightID == Convert.ToInt32(removed_flight_id)
+                                       where s.FlightID == removed_flight_id
                                        select s;
 
                 List<FlightInfoModel> remove_flight = FilterByFlightID.ToList();
 
+                bool bookingDeleted = false;
+
                 foreach (List<string> flight in flight_account_info)
                 {
-                    if (flight.Contains(removed_flight_id) && flight.Contains(seat))
+                    if (flight.Contains(removed_flight_id.ToString()) && seatList.Any(flight.Contains))
                     {
                         // Flight section
-                        remove_flight[0].SeatsTaken.Remove(flight[3]);
-                        _flights![Convert.ToInt32(removed_flight_id)] = remove_flight[0];
+                        foreach (string seat in seatList)
+                        {
+                            remove_flight[0].SeatsTaken.Remove(seat);
+                        }
+                        _flights[removed_flight_id] = remove_flight[0];
                         FlightInfoAccess.WriteAll(_flights);
 
                         // Account section
                         List<List<string>> list_flight_account_info = flight_account_info.ToList();
-                        list_flight_account_info.RemoveAll(innerList => innerList.Contains(removed_flight_id) && innerList.Contains(seat));
+                        list_flight_account_info.RemoveAll(innerList => innerList.Contains(removed_flight_id.ToString()) && seatList.Any(innerList.Contains));
                         UserLogin.AccountInfo.BookedFlights = list_flight_account_info;
                         AccountsAccess.WriteAll(accountList);
-
-
-
-                        // Impelement code to remove flight from json (by flightID)! 
-
-                        Console.WriteLine("Flight deleted successfully!");
+                        bookingDeleted = true;
+                        break;
                     }
+                }
+
+                if (bookingDeleted)
+                {
+                    Console.WriteLine("Booking deleted successfully!");
+                }
+                else
+                {
+                    Console.WriteLine("No booking found with the specified flight ID and seat(s).");
                 }
             }
             else if (change_seat == true)
             {
-                if (_flights == null) _flights = FlightInfoAccess.LoadAll();
-                Console.WriteLine("Enter your flight ID you want to change seats on");
-                int changed_seat_flightID = Convert.ToInt32(Console.ReadLine());
+                if (_flights == null)
+                    _flights = FlightInfoAccess.LoadAll();
 
-                Console.WriteLine("Enter your old seat you want to change seats on");
-                string old_seat = Console.ReadLine()!;
+                Console.WriteLine("Enter the flight ID you want to change seats on:");
+                int changed_seat_flightID = Convert.ToInt32(Console.ReadLine()) - 1;
 
-                Console.WriteLine("Enter your new seat you want to change seats on");
-                string new_seat = Console.ReadLine()!;
+                Console.WriteLine("Enter your old seat(s) (separated by commas):");
+                string old_seatsInput = Console.ReadLine()!;
+                List<string> old_seatList = old_seatsInput.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                Console.WriteLine("Enter your new seat(s) (separated by commas):");
+                string new_seatsInput = Console.ReadLine()!;
+                List<string> new_seatList = new_seatsInput.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
 
                 var FilterByFlightID = from s in _flights
-                                       where s.FlightID == Convert.ToInt32(changed_seat_flightID)
+                                       where s.FlightID == changed_seat_flightID
                                        select s;
 
                 List<FlightInfoModel> ChangeSeatFlight = FilterByFlightID.ToList();
 
+                bool seatsChanged = false;
+
                 foreach (List<string> flight in flight_account_info)
                 {
-                    if (flight.Contains(old_seat))
+                    string[] bookedSeats = flight[3].Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                    if (flight[0] == changed_seat_flightID.ToString() && old_seatsInput == flight[3])
                     {
                         // Flight section
-                        ChangeSeatFlight[0].SeatsTaken.Remove(old_seat);
-                        ChangeSeatFlight[0].SeatsTaken.Add(new_seat);
+                        foreach (string old_seat in old_seatList)
+                        {
+                            ChangeSeatFlight[0].SeatsTaken.RemoveAll(seat => seat == old_seat);
+                        }
+                        ChangeSeatFlight[0].SeatsTaken.AddRange(new_seatList);
                         _flights[changed_seat_flightID] = ChangeSeatFlight[0];
                         FlightInfoAccess.WriteAll(_flights);
 
                         // Account section
                         List<List<string>> list_flight_account_info = flight_account_info.ToList();
-                        flight[3] = new_seat;
+                        flight[3] = new_seatsInput;
+                        list_flight_account_info.RemoveAll(innerList => innerList.Contains(changed_seat_flightID.ToString()) && innerList.Contains(old_seatsInput));
                         UserLogin.AccountInfo.BookedFlights = list_flight_account_info;
                         AccountsAccess.WriteAll(accountList);
-
-                        // Implement code for changing seat (by flightID)! 
-
-                        Console.WriteLine("Seat changed successfully");
+                        seatsChanged = true;
+                        break;
                     }
+                }
+
+                if (seatsChanged)
+                {
+                    Console.WriteLine("Seats changed successfully!");
+                    UserLogin.AccountInfo.BookedFlights = flight_account_info;
+                    AccountsAccess.WriteAll(accountList);
+                }
+                else
+                {
+                    Console.WriteLine("No booking found with the specified flight ID and old seat(s).");
                 }
             }
         }
