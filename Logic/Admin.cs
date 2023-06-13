@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 public class Admin : User
 {
+    private static FlightInfoAccess flightinfoAccess = new FlightInfoAccess();
 
     // Create new method edit customer account data
 
@@ -13,7 +14,7 @@ public class Admin : User
     public void ChangeEmail() => base.ChangeEmail(true);
     public void ChangeUserPassword(string EmailAddress)
     {
-        List<AccountModel> account_list = AccountsAccess.LoadAll();
+        List<AccountModel> account_list = accountsAccess.LoadAll();
         foreach (AccountModel User in account_list)
         {
             if (User.EmailAddress == EmailAddress)
@@ -30,7 +31,7 @@ public class Admin : User
                     Password2 = AccountFunctionality.HidePassword();
                 }
                 User.Password = AccountsLogic.GetHashedSHA256(Password1!);
-                AccountsAccess.WriteAll(account_list);
+                accountsAccess.WriteAll(account_list);
                 return;
             }
         }
@@ -70,17 +71,17 @@ public class Admin : User
         string gate = AccountFunctionality.GetInput("Enter gate")!;
         int price = Convert.ToInt32(AccountFunctionality.GetInput("Enter standard price of the flight"));
 
-        List<FlightInfoModel> dataList = FlightInfoAccess.LoadAll();
+        List<FlightInfoModel> dataList = flightinfoAccess.LoadAll();
         int highestId = dataList.Max(data => data.FlightID);
         FlightInfoModel newFlight = new FlightInfoModel(highestId + 1, flight_number, aircraft, origin, destination, date, flighttime, departtime, arrivaltime, price, gate);
         dataList.Add(newFlight);
-        FlightInfoAccess.WriteAll(dataList);
+        flightinfoAccess.WriteAll(dataList);
 
         Menu.AdminAccount();
     }
     public void ModifyFlight()
     {
-        if (ViewFlights._flights == null) ViewFlights._flights = FlightInfoAccess.LoadAll();
+        if (ViewFlights._flights == null) ViewFlights._flights = flightinfoAccess.LoadAll();
 
         Console.Write("Enter Flight ID to modify: ");
         if (!int.TryParse(Console.ReadLine(), out int flightID))
@@ -170,7 +171,7 @@ public class Admin : User
                 return;
         }
 
-        FlightInfoAccess.WriteAll(ViewFlights._flights);
+        flightinfoAccess.WriteAll(ViewFlights._flights);
 
         Console.WriteLine("Flight information updated successfully.");
     }
