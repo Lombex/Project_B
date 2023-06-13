@@ -78,8 +78,6 @@ public class Admin : User
 
         Menu.AdminAccount();
     }
-
-
     public void ModifyFlight()
     {
         if (ViewFlights._flights == null) ViewFlights._flights = FlightInfoAccess.LoadAll();
