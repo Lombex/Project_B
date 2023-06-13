@@ -3,6 +3,7 @@ using System.Globalization;
 
 public class User
 {
+    protected static AccountsAccess accountsAccess = new AccountsAccess();
 
     // Create method for edit own account data
 
@@ -25,7 +26,7 @@ public class User
         else
         {
 
-            
+
             string EmailAddress = AccountFunctionality.GetInput("Give the user's email address: ");
             var account = ViewFlights.accountList.FirstOrDefault(a => a.EmailAddress == EmailAddress);
             if (account != null)
@@ -34,7 +35,7 @@ public class User
                 string NewName = Console.ReadLine()!;
                 account!.FullName = NewName;
                 ViewFlights.accountList[account.Id - 1] = account;
-                AccountsAccess.WriteAll(ViewFlights.accountList);
+                accountsAccess.WriteAll(ViewFlights.accountList);
                 Console.WriteLine("User has been changed!");
                 Console.Write("\nPress Enter to continue...");
                 Console.ReadLine();
@@ -59,7 +60,7 @@ public class User
             Console.WriteLine($"Username has been changed to {NewUsername}");
             UserLogin.AccountInfo!.FullName = NewUsername;
             ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
-            AccountsAccess.WriteAll(ViewFlights.accountList);
+            accountsAccess.WriteAll(ViewFlights.accountList);
             Console.Write("Press Enter to continue...");
             Console.ReadLine();
         }
@@ -71,7 +72,7 @@ public class User
     }
     public void ChangePassword()
     {
-        if(!CheckPassword())
+        if (!CheckPassword())
         {
             AccountFunctionality.ErrorMessage("Your password was incorrect.");
             ChangePassword();
@@ -86,7 +87,7 @@ public class User
             Console.WriteLine($"Password has been successfully changed");
             UserLogin.AccountInfo.Password = AccountsLogic.GetHashedSHA256(NewPassword);
             ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
-            AccountsAccess.WriteAll(ViewFlights.accountList);
+            accountsAccess.WriteAll(ViewFlights.accountList);
             Console.Write("Press Enter to continue...");
             Console.ReadLine();
         }
@@ -109,7 +110,7 @@ public class User
         }
         else
         {
-            List<AccountModel> account_list = AccountsAccess.LoadAll();
+            List<AccountModel> account_list = accountsAccess.LoadAll();
             Console.Write("Enter the user's email address: ");
             string EmailAddress = Console.ReadLine()!;
             foreach (AccountModel account in account_list)
@@ -119,7 +120,7 @@ public class User
                     Console.WriteLine("Enter user's new email: ");
                     string _NewEmail = Console.ReadLine()!;
                     account.EmailAddress = _NewEmail;
-                    AccountsAccess.WriteAll(account_list);
+                    accountsAccess.WriteAll(account_list);
 
                 }
                 else
@@ -130,7 +131,7 @@ public class User
             }
         }
 
-        
+
         string NewEmail = AccountFunctionality.GetInput("Enter your new email: ");
         string ConfirmEmail = AccountFunctionality.GetInput("Please confirm your new email: ");
 
@@ -139,7 +140,7 @@ public class User
             Console.WriteLine($"Email has been changed to {NewEmail}.");
             UserLogin.AccountInfo.EmailAddress = NewEmail;
             ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
-            AccountsAccess.WriteAll(ViewFlights.accountList);
+            accountsAccess.WriteAll(ViewFlights.accountList);
             Console.Write("\nPress Enter to continue...");
             Console.ReadLine();
         }

@@ -7,10 +7,13 @@ using System.Text.Json;
 public class FlightInfoLogic
 {
     // private field (list) with json info
+
+
     private List<FlightInfoModel> _flightinfo;
     public FlightInfoLogic()
     {
-        _flightinfo = FlightInfoAccess.LoadAll();
+        FlightInfoAccess flightinfoAccess = new FlightInfoAccess();
+        _flightinfo = flightinfoAccess.LoadAll();
     }
 
     public List<FlightInfoModel>? SortByFlightNumber(bool ascending = true)
@@ -156,13 +159,13 @@ public class FlightInfoLogic
 
         return sortedList;
     }
-    
+
 
     public List<FlightInfoModel> SearchByName(string possible_destination)
     {
-        List<FlightInfoModel> possible_flights= new List<FlightInfoModel>();
+        List<FlightInfoModel> possible_flights = new List<FlightInfoModel>();
 
-        foreach(FlightInfoModel item in _flightinfo)
+        foreach (FlightInfoModel item in _flightinfo)
         {
             if (item.Destination == possible_destination)
             {

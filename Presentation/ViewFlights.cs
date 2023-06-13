@@ -1,13 +1,18 @@
 using System;
 using System.Data;
 using ConsoleTables;
-using DataModels;
 
 public class ViewFlights
 {
+
+    private static AccountsAccess accountsAccess = new AccountsAccess();
+    private static FlightInfoAccess flightinfoAccess = new FlightInfoAccess();
+
+    private static BookHistoryAccess bookhistoryAccess = new BookHistoryAccess();
+
     public static List<FlightInfoModel>? _flights;
 
-    public static List<AccountModel> accountList = AccountsAccess.LoadAll();
+    public static List<AccountModel> accountList = accountsAccess.LoadAll();
 
     public static ConsoleTableOptions options = new ConsoleTableOptions
     {
@@ -25,7 +30,7 @@ public class ViewFlights
     public static void FlightMenu()
     {
         if (_flights == null)
-            _flights = FlightInfoAccess.LoadAll();
+            _flights = flightinfoAccess.LoadAll();
 
         FlightInfoLogic Fil = new FlightInfoLogic();
         FlightSchedule();
@@ -161,15 +166,15 @@ public class ViewFlights
 
             _flight[0].SeatsTaken.AddRange(selectedSeats);
             _flights[FlightId] = _flight[0];
-            FlightInfoAccess.WriteAll(_flights);
+            flightinfoAccess.WriteAll(_flights);
 
             int highestId = FilterByFlightID.Max(data => data.FlightID);
             BookHistoryModel newData = new BookHistoryModel(AccountInfo.Id, AccountInfo.FullName, AccountInfo.EmailAddress,
                 DateTime.Now.ToString(), FlightId, _flight[0].FlightNumber, SeatPicker!, _flight[0].Destination, _flight[0].Gate, _flight[0].DepartTime, _flight[0].ArrivalTime);
 
-            List<BookHistoryModel> dataList = BookHistoryAccess.LoadAll();
+            List<BookHistoryModel> dataList = bookhistoryAccess.LoadAll();
             dataList.Add(newData);
-            BookHistoryAccess.WriteAll(dataList);
+            bookhistoryAccess.WriteAll(dataList);
 
             AccountModel? updatedAccount = accountList.FirstOrDefault(a => a.Id == AccountInfo.Id);
             if (updatedAccount != null)
@@ -189,7 +194,7 @@ public class ViewFlights
 
                 updatedAccount.BookedFlights.Add(updatedBookedFlights);
                 UserLogin.AccountInfo = updatedAccount;
-                AccountsAccess.WriteAll(accountList);
+                accountsAccess.WriteAll(accountList);
             }
             Menu.Account();
         }
@@ -274,7 +279,7 @@ public class ViewFlights
     public static void FlightSchedule()
     {
         if (_flights == null)
-            _flights = FlightInfoAccess.LoadAll();
+            _flights = flightinfoAccess.LoadAll();
 
         HashSet<string> possible_destinations = new HashSet<string>();
         SortedDictionary<string, List<string>> destinationDates = new SortedDictionary<string, List<string>>();
@@ -495,7 +500,7 @@ public class ViewFlights
 
     public static void LayoutPlane()
     {
-        if (_flights == null) _flights = FlightInfoAccess.LoadAll();
+        if (_flights == null) _flights = flightinfoAccess.LoadAll();
         var Table = new ConsoleTable("Row", "A", "B", "C", "D", "E", "F");
         Table.Options.EnableCount = options.EnableCount;
 
@@ -566,7 +571,7 @@ public class ViewFlights
             else if (delete_flight == true)
             {
                 if (_flights == null)
-                    _flights = FlightInfoAccess.LoadAll();
+                    _flights = flightinfoAccess.LoadAll();
 
                 Console.WriteLine("Enter the flight ID you want to delete:");
                 int removed_flight_id = Convert.ToInt32(Console.ReadLine()) - 1;
@@ -593,13 +598,13 @@ public class ViewFlights
                             remove_flight[0].SeatsTaken.Remove(seat);
                         }
                         _flights[removed_flight_id] = remove_flight[0];
-                        FlightInfoAccess.WriteAll(_flights);
+                        flightinfoAccess.WriteAll(_flights);
 
                         // Account section
                         List<List<string>> list_flight_account_info = flight_account_info.ToList();
                         list_flight_account_info.RemoveAll(innerList => innerList.Contains(removed_flight_id.ToString()) && seatList.Any(innerList.Contains));
                         UserLogin.AccountInfo.BookedFlights = list_flight_account_info;
-                        AccountsAccess.WriteAll(accountList);
+                        accountsAccess.WriteAll(accountList);
                         bookingDeleted = true;
                         break;
                     }
@@ -617,7 +622,7 @@ public class ViewFlights
             else if (change_seat == true)
             {
                 if (_flights == null)
-                    _flights = FlightInfoAccess.LoadAll();
+                    _flights = flightinfoAccess.LoadAll();
 
                 Console.WriteLine("Enter the flight ID you want to change seats on:");
                 int changed_seat_flightID = Convert.ToInt32(Console.ReadLine()) - 1;
@@ -651,14 +656,14 @@ public class ViewFlights
                         }
                         ChangeSeatFlight[0].SeatsTaken.AddRange(new_seatList);
                         _flights[changed_seat_flightID] = ChangeSeatFlight[0];
-                        FlightInfoAccess.WriteAll(_flights);
+                        flightinfoAccess.WriteAll(_flights);
 
                         // Account section
                         List<List<string>> list_flight_account_info = flight_account_info.ToList();
                         flight[3] = new_seatsInput;
                         list_flight_account_info.RemoveAll(innerList => innerList.Contains(changed_seat_flightID.ToString()) && innerList.Contains(old_seatsInput));
                         UserLogin.AccountInfo.BookedFlights = list_flight_account_info;
-                        AccountsAccess.WriteAll(accountList);
+                        accountsAccess.WriteAll(accountList);
                         seatsChanged = true;
                         break;
                     }
@@ -668,7 +673,7 @@ public class ViewFlights
                 {
                     Console.WriteLine("Seats changed successfully!");
                     UserLogin.AccountInfo.BookedFlights = flight_account_info;
-                    AccountsAccess.WriteAll(accountList);
+                    accountsAccess.WriteAll(accountList);
                 }
                 else
                 {

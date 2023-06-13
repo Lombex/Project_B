@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 
 static class UserLogin
 {
+    private static AccountsAccess accountsAccess = new AccountsAccess();
     public static AccountModel? AccountInfo { get; set; } // AccountInformation
     public static void Start()
     {
@@ -71,7 +72,7 @@ static class UserLogin
         full_name = textinfo.ToTitleCase(full_name.ToLower());
 
         string email = AccountFunctionality.GetInput("Please enter your email address");
-        List<AccountModel> dataList = AccountsAccess.LoadAll();
+        List<AccountModel> dataList = accountsAccess.LoadAll();
         if (dataList.Any(data => data.EmailAddress == email))
         {
             AccountFunctionality.ErrorMessage("An account with the same email address already exists. Please choose a different email address.");
@@ -108,7 +109,7 @@ static class UserLogin
             }
             dataList.Add(newData);
             AccountInfo = newData;
-            AccountsAccess.WriteAll(dataList);
+            accountsAccess.WriteAll(dataList);
             if (back_to_menu == false) Menu.AdminAccount();
 
             switch (type)
