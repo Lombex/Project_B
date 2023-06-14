@@ -697,43 +697,43 @@ public class ViewFlights
     public static Dictionary<(string, CateringOptions), string> _Catering = new Dictionary<(string, CateringOptions), string>();
     public static void Catering()
     {
-        Dictionary<string, (string[], string[])> DrinkOptions = new Dictionary<string, (string[], string[])>
+        Dictionary<string, (string[], string[], double)> DrinkOptions = new Dictionary<string, (string[], string[], double)>
         {
-            { "Sky High Spritzer", (new string[] { "gin", "elderflower liqueur", "lime juice", "soda water" }, new string[] { "nuts", "gluten" }) },
-            { "Aviation Elixir", (new string[] { "vodka", "blue curaçao", "pineapple juice", "lemonade" }, new string[] { "gluten" }) },
-            { "Jetsetter Mojito", (new string[] { "rum", "lime juice", "simple syrup", "mint leaves", "soda water" }, new string[] { "nuts" }) },
-            { "Cloud Nine Cosmopolitan", (new string[] { "vodka", "triple sec", "cranberry juice", "lime juice" }, new string[] { }) },
-            { "Inflight Infusion", (new string[] { "tequila", "orange juice", "grenadine syrup" }, new string[] { "gluten", "shellfish" }) },
-            { "Mile High Margarita", (new string[] { "tequila", "lime juice", "triple sec", "simple syrup" }, new string[] { "gluten", "dairy" }) },
-            { "Winged Whiskey Sour", (new string[] { "whiskey", "lemon juice", "simple syrup", "egg white" }, new string[] { "nuts", "dairy", "gluten" }) },
-            { "Turbulence Tonic", (new string[] { "gin", "tonic water", "lime wedge" }, new string[] { }) },
-            { "First Class Fizz", (new string[] { "vodka", "orange juice", "club soda", "lemon wedge" }, new string[] { }) },
-            { "Airborne Aperol Spritz", (new string[] { "aperol", "prosecco", "soda water", "orange slice" }, new string[] { "gluten" }) },
-            { "Sunset Sipper", (new string[] { "rum", "pineapple juice", "orange juice", "grenadine syrup" }, new string[] { }) },
-            { "Cabin Cooler", (new string[] { "gin", "lime juice", "mint leaves", "cucumber", "soda water" }, new string[] { }) },
-            { "Altitude Daiquiri", (new string[] { "rum", "lime juice", "simple syrup" }, new string[] { }) },
-            { "Sky Blue Sangria", (new string[] { "white wine", "blueberries", "pineapple chunks", "soda water" }, new string[] { }) },
-            { "Heavenly Hot Chocolate", (new string[] { "hot chocolate mix", "milk", "whipped cream", "cocoa powder" }, new string[] { "nuts", "dairy" }) },
-            { "Captain's Coffee Blend", (new string[] { "coffee", "whiskey", "sugar", "cream" }, new string[] { "gluten" }) }
+            { "Sky High Spritzer", (new string[] { "gin", "elderflower liqueur", "lime juice", "soda water" }, new string[] { "nuts", "gluten" }, 10.0 ) },
+            { "Aviation Elixir", (new string[] { "vodka", "blue curaçao", "pineapple juice", "lemonade" }, new string[] { "gluten" }, 5.0) },
+            { "Jetsetter Mojito", (new string[] { "rum", "lime juice", "simple syrup", "mint leaves", "soda water" }, new string[] { "nuts" }, 20.0 ) },
+            { "Cloud Nine Cosmopolitan", (new string[] { "vodka", "triple sec", "cranberry juice", "lime juice" }, new string[] { }, 15.0) },
+            { "Inflight Infusion", (new string[] { "tequila", "orange juice", "grenadine syrup" }, new string[] { "gluten", "shellfish" }, 25.0 ) },
+            { "Mile High Margarita", (new string[] { "tequila", "lime juice", "triple sec", "simple syrup" }, new string[] { "gluten", "dairy" }, 10.0 ) },
+            { "Winged Whiskey Sour", (new string[] { "whiskey", "lemon juice", "simple syrup", "egg white" }, new string[] { "nuts", "dairy", "gluten" }, 15.0 ) },
+            { "Turbulence Tonic", (new string[] { "gin", "tonic water", "lime wedge" }, new string[] { }, 10.0 ) },
+            { "First Class Fizz", (new string[] { "vodka", "orange juice", "club soda", "lemon wedge" }, new string[] { }, 20.0 ) },
+            { "Airborne Aperol Spritz", (new string[] { "aperol", "prosecco", "soda water", "orange slice" }, new string[] { "gluten" }, 30.0) },
+            { "Sunset Sipper", (new string[] { "rum", "pineapple juice", "orange juice", "grenadine syrup" }, new string[] { }, 15.0 ) },
+            { "Cabin Cooler", (new string[] { "gin", "lime juice", "mint leaves", "cucumber", "soda water" }, new string[] { }, 15.0 ) },
+            { "Altitude Daiquiri", (new string[] { "rum", "lime juice", "simple syrup" }, new string[] { }, 10.0 ) },
+            { "Sky Blue Sangria", (new string[] { "white wine", "blueberries", "pineapple chunks", "soda water" }, new string[] { }, 5.0 ) },
+            { "Heavenly Hot Chocolate", (new string[] { "hot chocolate mix", "milk", "whipped cream", "cocoa powder" }, new string[] { "nuts", "dairy" }, 30.0 ) },
+            { "Captain's Coffee Blend", (new string[] { "coffee", "whiskey", "sugar", "cream" }, new string[] { "gluten" }, 30.0 ) }
         };
-        Dictionary<string, (string[], string[])> FoodOptions = new Dictionary<string, (string[], string[])>
+        Dictionary<string, (string[], string[], double)> FoodOptions = new Dictionary<string, (string[], string[], double)>
         {
-            { "Classic Burger", (new string[] { "beef patty", "cheese", "lettuce", "tomato", "onion", "pickles" }, new string[] { "gluten", "dairy" }) },
-            { "Vegetarian Wrap", (new string[] { "grilled vegetables", "hummus", "lettuce", "tomato", "cucumber" }, new string[] { "gluten" }) },
-            { "Chicken Caesar Salad", (new string[] { "grilled chicken", "romaine lettuce", "croutons", "parmesan cheese", "caesar dressing" }, new string[] { "gluten" }) },
-            { "Pasta Primavera", (new string[] { "pasta", "mixed vegetables", "olive oil", "garlic", "parmesan cheese" }, new string[] { "gluten", "dairy" }) },
-            { "Beef Stir-Fry", (new string[] { "beef strips", "mixed vegetables", "soy sauce", "ginger", "garlic", "rice" }, new string[] { "gluten", "soy" }) },
-            { "Grilled Salmon", (new string[] { "salmon fillet", "lemon", "dill", "rice", "steamed vegetables" }, new string[] { }) },
-            { "Mushroom Risotto", (new string[] { "arborio rice", "mushrooms", "onion", "garlic", "parmesan cheese" }, new string[] { "gluten", "dairy" }) },
-            { "Chicken Tikka Masala", (new string[] { "chicken", "tomato sauce", "cream", "spices", "rice", "naan bread" }, new string[] { "gluten", "dairy" }) },
-            { "Spinach and Feta Stuffed Chicken", (new string[] { "chicken breast", "spinach", "feta cheese", "garlic", "lemon", "rice", "steamed vegetables" }, new string[] { "gluten", "dairy" }) },
-            { "Vegetable Curry", (new string[] { "mixed vegetables", "coconut milk", "spices", "rice", "naan bread" }, new string[] { "gluten", "dairy" }) },
-            { "Beef Lasagna", (new string[] { "beef ragu", "pasta sheets", "bechamel sauce", "mozzarella cheese", "parmesan cheese" }, new string[] { "gluten", "dairy" }) },
-            { "Shrimp Pad Thai", (new string[] { "shrimp", "rice noodles", "bean sprouts", "scallions", "peanuts", "tamarind sauce" }, new string[] { "gluten", "shellfish", "peanuts" }) },
-            { "Margherita Pizza", (new string[] { "pizza dough", "tomato sauce", "mozzarella cheese", "basil" }, new string[] { "gluten", "dairy" }) },
-            { "Fresh Fruit Platter", (new string[] { "assorted fresh fruits" }, new string[] { }) },
-            { "Cheese and Crackers", (new string[] { "assorted cheeses", "crackers" }, new string[] { "gluten", "dairy" }) },
-            { "Chocolate Cake", (new string[] { "chocolate cake", "chocolate ganache", "whipped cream" }, new string[] { "gluten", "dairy" }) }
+            { "Classic Burger", (new string[] { "beef patty", "cheese", "lettuce", "tomato", "onion", "pickles" }, new string[] { "gluten", "dairy" }, 20.0 ) },
+            { "Vegetarian Wrap", (new string[] { "grilled vegetables", "hummus", "lettuce", "tomato", "cucumber" }, new string[] { "gluten" }, 15.0 ) },
+            { "Chicken Caesar Salad", (new string[] { "grilled chicken", "romaine lettuce", "croutons", "parmesan cheese", "caesar dressing" }, new string[] { "gluten" }, 10.0) },
+            { "Pasta Primavera", (new string[] { "pasta", "mixed vegetables", "olive oil", "garlic", "parmesan cheese" }, new string[] { "gluten", "dairy" }, 15.0) },
+            { "Beef Stir-Fry", (new string[] { "beef strips", "mixed vegetables", "soy sauce", "ginger", "garlic", "rice" }, new string[] { "gluten", "soy" }, 10.0) },
+            { "Grilled Salmon", (new string[] { "salmon fillet", "lemon", "dill", "rice", "steamed vegetables" }, new string[] { }, 15.0) },
+            { "Mushroom Risotto", (new string[] { "arborio rice", "mushrooms", "onion", "garlic", "parmesan cheese" }, new string[] { "gluten", "dairy" }, 10.0) },
+            { "Chicken Tikka Masala", (new string[] { "chicken", "tomato sauce", "cream", "spices", "rice", "naan bread" }, new string[] { "gluten", "dairy" }, 40.0 ) },
+            { "Spinach and Feta Stuffed Chicken", (new string[] { "chicken breast", "spinach", "feta cheese", "garlic", "lemon", "rice", "steamed vegetables" }, new string[] { "gluten", "dairy" }, 5.0 ) },
+            { "Vegetable Curry", (new string[] { "mixed vegetables", "coconut milk", "spices", "rice", "naan bread" }, new string[] { "gluten", "dairy" }, 20.0 ) },
+            { "Beef Lasagna", (new string[] { "beef ragu", "pasta sheets", "bechamel sauce", "mozzarella cheese", "parmesan cheese" }, new string[] { "gluten", "dairy" }, 10.0 ) },
+            { "Shrimp Pad Thai", (new string[] { "shrimp", "rice noodles", "bean sprouts", "scallions", "peanuts", "tamarind sauce" }, new string[] { "gluten", "shellfish", "peanuts" }, 10.0) },
+            { "Margherita Pizza", (new string[] { "pizza dough", "tomato sauce", "mozzarella cheese", "basil" }, new string[] { "gluten", "dairy" }, 25.0 ) },
+            { "Fresh Fruit Platter", (new string[] { "assorted fresh fruits" }, new string[] { }, 10.0 ) },
+            { "Cheese and Crackers", (new string[] { "assorted cheeses", "crackers" }, new string[] { "gluten", "dairy" }, 5.0 ) },
+            { "Chocolate Cake", (new string[] { "chocolate cake", "chocolate ganache", "whipped cream" }, new string[] { "gluten", "dairy" }, 10.0 ) }
         };
 
         foreach (var drink in DrinkOptions) _Catering[(drink.Key, CateringOptions.Drinks)] = string.Join(", ", drink.Value.Item1);     
