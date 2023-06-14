@@ -55,6 +55,13 @@ public class ViewFlights
         }
         else
         {
+            double seat_price = _flight[0].Price; 
+            Console.WriteLine($"Seat price overview: ");
+            Console.WriteLine($"-------------------------");
+            Console.WriteLine($"Adult first class seat: €{seat_price * 2}\nChildren first class seat: €{Math.Round((seat_price * 2) * 0.8)}\n\nAdult second class seat: €{seat_price}\nChildren second class seat: €{Math.Round(seat_price * 0.8)}\n\nFor user with disability, choose row 3 for normal prices!");
+            Console.WriteLine($"-------------------------");
+            
+
             AccountModel AccountInfo = UserLogin.AccountInfo!;
             bool valid_seat = false;
             List<string> selectedAdultSeats = new List<string>();
@@ -763,7 +770,7 @@ public class ViewFlights
         Dictionary<(int, string), (string[], string[], double)> DrinkOptions = new Dictionary<(int, string), (string[], string[], double)>
         {
             { (1, "Sky High Spritzer"), (new string[] { "gin", "elderflower liqueur", "lime juice", "soda water" }, new string[] { "nuts", "gluten" }, 10.0 ) },
-            { (2, "Aviation Elixir"), (new string[] { "vodka", "blue cura�ao", "pineapple juice", "lemonade" }, new string[] { "gluten" }, 5.0) },
+            { (2, "Aviation Elixir"), (new string[] { "vodka", "blue curaçao", "pineapple juice", "lemonade" }, new string[] { "gluten" }, 5.0) },
             { (3, "Jetsetter Mojito"), (new string[] { "rum", "lime juice", "simple syrup", "mint leaves", "soda water" }, new string[] { "nuts" }, 20.0 ) },
             { (4, "Cloud Nine Cosmopolitan"), (new string[] { "vodka", "triple sec", "cranberry juice", "lime juice" }, new string[] { }, 15.0) },
             { (5, "Inflight Infusion"), (new string[] { "tequila", "orange juice", "grenadine syrup" }, new string[] { "gluten", "shellfish" }, 25.0 ) },
@@ -802,4 +809,6 @@ public class ViewFlights
         foreach (var drink in DrinkOptions) _Catering[(drink.Key.Item1, drink.Key.Item2, CateringOptions.Drinks)] = (drink.Value.Item1, drink.Value.Item2, drink.Value.Item3);
         foreach (var food in FoodOptions) _Catering[(food.Key.Item1, food.Key.Item2, CateringOptions.Foods)] = (food.Value.Item1, food.Value.Item2, food.Value.Item3);
     }
+
+
 }
