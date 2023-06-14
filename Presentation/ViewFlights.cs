@@ -308,16 +308,23 @@ public class ViewFlights
         HashSet<string> possible_destinations = new HashSet<string>();
         SortedDictionary<string, List<string>> destinationDates = new SortedDictionary<string, List<string>>();
 
+        DateTime currentDateTime = DateTime.Now;
         foreach (FlightInfoModel flight in _flights)
         {
-            possible_destinations.Add(flight.Destination);
+            DateTime departureDateTime = DateTime.ParseExact(flight.Date + " " + flight.DepartTime, "dd-MM-yyyy HH:mm", null);
+            TimeSpan timeDifference = departureDateTime - currentDateTime;
 
-            if (!destinationDates.ContainsKey(flight.Destination))
+            if (timeDifference.TotalHours >= 1)
             {
-                destinationDates[flight.Destination] = new List<string>();
-            }
+                possible_destinations.Add(flight.Destination);
 
-            destinationDates[flight.Destination].Add(flight.Date);
+                if (!destinationDates.ContainsKey(flight.Destination))
+                {
+                    destinationDates[flight.Destination] = new List<string>();
+                }
+
+                destinationDates[flight.Destination].Add(flight.Date);
+            }
         }
 
         Console.Clear();
