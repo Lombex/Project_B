@@ -55,6 +55,13 @@ public class ViewFlights
         }
         else
         {
+            double seat_price = _flight[0].Price; 
+            Console.WriteLine($"Seat price overview: ");
+            Console.WriteLine($"-------------------------");
+            Console.WriteLine($"Adult first class seat: €{seat_price * 2}\nChildren first class seat: €{Math.Round((seat_price * 2) * 0.8)}\n\nAdult second class seat: €{seat_price}\nChildren second class seat: €{Math.Round(seat_price * 0.8)}\n\nFor user with disability, choose row 3 for normal prices!");
+            Console.WriteLine($"-------------------------");
+            
+
             AccountModel AccountInfo = UserLogin.AccountInfo!;
             bool valid_seat = false;
             List<string> selectedAdultSeats = new List<string>();
