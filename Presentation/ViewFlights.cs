@@ -750,7 +750,7 @@ public class ViewFlights
         Dictionary<string, (string[], string[], double)> DrinkOptions = new Dictionary<string, (string[], string[], double)>
         {
             { "Sky High Spritzer", (new string[] { "gin", "elderflower liqueur", "lime juice", "soda water" }, new string[] { "nuts", "gluten" }, 10.0 ) },
-            { "Aviation Elixir", (new string[] { "vodka", "blue curaçao", "pineapple juice", "lemonade" }, new string[] { "gluten" }, 5.0) },
+            { "Aviation Elixir", (new string[] { "vodka", "blue curaï¿½ao", "pineapple juice", "lemonade" }, new string[] { "gluten" }, 5.0) },
             { "Jetsetter Mojito", (new string[] { "rum", "lime juice", "simple syrup", "mint leaves", "soda water" }, new string[] { "nuts" }, 20.0 ) },
             { "Cloud Nine Cosmopolitan", (new string[] { "vodka", "triple sec", "cranberry juice", "lime juice" }, new string[] { }, 15.0) },
             { "Inflight Infusion", (new string[] { "tequila", "orange juice", "grenadine syrup" }, new string[] { "gluten", "shellfish" }, 25.0 ) },
@@ -788,5 +788,10 @@ public class ViewFlights
 
         foreach (var drink in DrinkOptions) _Catering[(drink.Key, CateringOptions.Drinks)] = string.Join(", ", drink.Value.Item1);
         foreach (var food in FoodOptions) _Catering[(food.Key, CateringOptions.Foods)] = string.Join(", ", food.Value.Item1);
+    }
+
+    public static void DeleteFlight()
+    {
+        Console.WriteLine("Delete flight");
     }
 }
