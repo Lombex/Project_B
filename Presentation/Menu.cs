@@ -10,7 +10,7 @@ static class Menu
         Console.Clear();
         AccountFunctionality.PrintBanner();
         Console.WriteLine("\n!! In this application, please press the 'Enter' button every time you want to confirm !!");
-        List<string> main_menu_choices = new List<string>() { " Enter 1 to login", " Enter 2 to create account", " Enter 3 to quit" };
+        List<string> main_menu_choices = new List<string>() { " Enter 1 to login", " Enter 2 to create account", " Enter 3 for airport info", " Enter 4 to quit" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_menu_choices) Console.WriteLine(item);
         Console.WriteLine("+-------------------------+");
@@ -26,11 +26,12 @@ static class Menu
                 UserLogin.MakeAccount(UserLogin.AccountType.User, true);
                 break;
             case "3":
-                Console.WriteLine("Quitting application");
-                System.Environment.Exit(0);
+                PrintAirportInformation();
+                Start();
                 break;
             case "4":
-                ViewFlights.FlightSchedule();
+                Console.WriteLine("Quitting application");
+                System.Environment.Exit(0);
                 break;
             default:
                 AccountFunctionality.ErrorMessage();
@@ -198,8 +199,8 @@ static class Menu
                 Menu.ManageBookings();
                 break;
         }
-
     }
+
     public static void UserEditMenu()
     {
 
@@ -235,4 +236,13 @@ static class Menu
                 break;
         }
     }
+
+    public static void PrintAirportInformation()
+    {
+        Console.Clear();
+        AccountFunctionality.PrintBanner();
+        Console.WriteLine("Airport information: \n\nAddres: Driemanssteeweg 107, 3011 WN in Rotterdam\n\nNow that Rotterdam South is becoming more and more important for the city, \nthe wish has arisen that it should also be possible to fly from Rotterdam South.\nJake Darcy has started an airport where sustainability is paramount. \nWe started small, initially only flying within Europe. We will be using our own planes and we set up our own airline: Rotterdam Airlines. \nRotterdam Airlines has initially 1 aircraft at its disposal. A Boeing 737.\nWe do like to welcome you on board of Rotterdam Airlines! ");
+        Console.WriteLine("\nPlease press enter to go back!");
+        Console.ReadLine();
+    }   
 }
