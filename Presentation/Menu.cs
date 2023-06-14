@@ -81,7 +81,7 @@ static class Menu
         Admin admin = new Admin();
 
         // edit/delete flights should be in a submenu in 3, but for now this name is more accurate
-        List<string> admin_account_choices = new List<string>() { " Enter 1 to create an account", " Enter 2 to change user password", " Enter 3 to change user name", " Enter 4 to change user email", " Enter 5 to create a flight", " Enter 6 to modify a flight", " Enter 7 to view all flights ", " Enter 8 to delete flight", " Enter 9 to change banner/logo", " Enter 10 to log out" };
+        List<string> admin_account_choices = new List<string>() { " Enter 1 to create an account", " Enter 2 to change user password", " Enter 3 to change user name", " Enter 4 to change user email", " Enter 5 to delete a user", " Enter 6 to create a flight", " Enter 7 to modify a flight", " Enter 8 to view all flights ", " Enter 9 to delete flight", " Enter 10 to change banner/logo", " Enter 11 to log out" };
 
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in admin_account_choices) Console.WriteLine(item);
@@ -107,29 +107,33 @@ static class Menu
                 AdminAccount();
                 break;
             case "5":
+                admin.DeleteUser();
+                AdminAccount();
+                break;
+            case "6":
                 Console.WriteLine("Add flight:");
                 admin.Add_flight();
                 AdminAccount();
                 break;
-            case "6":
+            case "7":
                 admin.ModifyFlight();
                 AdminAccount();
                 break;
-            case "7":
+            case "8":
                 admin.ViewFlightList();
                 AdminAccount();
                 break;
-            case "8":
-                ViewFlights.DeleteFlight();
-                break;
             case "9":
+                admin.DeleteFlight();
+                break;
+            case "10":
                 Console.WriteLine("These are all available banners: ");
                 AccountFunctionality.PrintBanner(true);
                 int banner_choice = Convert.ToInt32(AccountFunctionality.GetInput("Choose a banner, and type the number of the banner you want: "));
                 AccountFunctionality.ChangeBanner(banner_choice);
                 AdminAccount();
                 break;
-            case "10":
+            case "11":
                 Menu.Start();
                 break;
             default:
@@ -247,5 +251,5 @@ static class Menu
         Console.WriteLine("Airport information: \n\nAddres: Driemanssteeweg 107, 3011 WN in Rotterdam\n\nNow that Rotterdam South is becoming more and more important for the city, \nthe wish has arisen that it should also be possible to fly from Rotterdam South.\nJake Darcy has started an airport where sustainability is paramount. \nWe started small, initially only flying within Europe. We will be using our own planes and we set up our own airline: Rotterdam Airlines. \nRotterdam Airlines has initially 1 aircraft at its disposal. A Boeing 737.\nWe do like to welcome you on board of Rotterdam Airlines! ");
         Console.WriteLine("\nPlease press enter to go back!");
         Console.ReadLine();
-    }   
+    }
 }

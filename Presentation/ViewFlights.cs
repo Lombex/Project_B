@@ -804,8 +804,5 @@ public class ViewFlights
         foreach (var food in FoodOptions) _Catering[(food.Key, CateringOptions.Foods)] = string.Join(", ", food.Value.Item1);
     }
 
-    public static void DeleteFlight()
-    {
-        Console.WriteLine("Delete flight");
-    }
+
 }
