@@ -1,3 +1,4 @@
+using ConsoleTables;
 using Project.Presentation;
 
 static class Menu
@@ -200,7 +201,6 @@ static class Menu
                 break;
         }
     }
-
     public static void UserEditMenu()
     {
 
@@ -236,7 +236,6 @@ static class Menu
                 break;
         }
     }
-
     public static void PrintAirportInformation()
     {
         Console.Clear();
@@ -244,5 +243,71 @@ static class Menu
         Console.WriteLine("Airport information: \n\nAddres: Driemanssteeweg 107, 3011 WN in Rotterdam\n\nNow that Rotterdam South is becoming more and more important for the city, \nthe wish has arisen that it should also be possible to fly from Rotterdam South.\nJake Darcy has started an airport where sustainability is paramount. \nWe started small, initially only flying within Europe. We will be using our own planes and we set up our own airline: Rotterdam Airlines. \nRotterdam Airlines has initially 1 aircraft at its disposal. A Boeing 737.\nWe do like to welcome you on board of Rotterdam Airlines! ");
         Console.WriteLine("\nPlease press enter to go back!");
         Console.ReadLine();
-    }   
+    }
+
+
+    public static List<(string, double)> CateringOrders = new List<(string, double)>();
+    public static void CateringMenu()
+    {
+        ViewFlights.Catering();
+        Console.WriteLine("Please select your option: ");
+        string[] Options = { "1. Drinks", "2. Food", "3. Exit" };
+        foreach (string option in Options) Console.WriteLine(option);
+        string Selection = Console.ReadLine()!;
+        switch (Selection.ToLower())
+        {
+            case "1" or "drinks":
+                ConsoleTable DrinksTable = new ConsoleTable("ID", "Drink", "Price", "Ingredients", "Allergies");
+                DrinksTable.Options.EnableCount = ViewFlights.options.EnableCount;
+                foreach (var Drinks in ViewFlights._Catering)
+                    if (Drinks.Key.Item3 == ViewFlights.CateringOptions.Drinks) DrinksTable.AddRow(Drinks.Key.Item1, Drinks.Key.Item2, "$ " + Drinks.Value.Item3, string.Join(", ", Drinks.Value.Item1), string.Join(", ", Drinks.Value.Item2)); 
+                Console.Clear();
+                Console.WriteLine(DrinksTable.ToString());
+                Console.WriteLine("\nSelect a drink using the ID: ");
+                
+                try
+                {
+                    int DrinkSelection = Convert.ToInt32(Console.ReadLine()!);
+                    foreach (var Items in ViewFlights._Catering) 
+                        if (Items.Key.Item1.Equals(DrinkSelection))
+                        {
+                            Console.WriteLine("Drink has been added to your order!");
+                            CateringOrders.Add((Items.Key.Item2, Items.Value.Item3));
+                        }
+                    CateringMenu();
+                    break;
+                }
+                catch (Exception) { }
+                
+                break;
+            case "2" or "food":
+                ConsoleTable FoodTable = new ConsoleTable("ID", "Food", "Price", "Ingredients", "Allergies");
+                FoodTable.Options.EnableCount = ViewFlights.options.EnableCount;
+                foreach (var Food in ViewFlights._Catering)
+                    if (Food.Key.Item3 == ViewFlights.CateringOptions.Foods) FoodTable.AddRow(Food.Key.Item1, Food.Key.Item2, "$ " + Food.Value.Item3, string.Join(", ", Food.Value.Item1), string.Join(", ", Food.Value.Item2));  
+                Console.Clear();
+                Console.WriteLine(FoodTable.ToString());
+                Console.WriteLine("\nSelect food using the ID: ");
+                
+                try
+                {
+                    int FoodSelection = Convert.ToInt32(Console.ReadLine()!);
+                    foreach (var Items in ViewFlights._Catering)
+                        if (Items.Key.Item1 == FoodSelection)
+                        {
+                            Console.WriteLine("Drink has been added to your order!");
+                            CateringOrders.Add((Items.Key.Item2, Items.Value.Item3));
+                        }
+                    CateringMenu();
+                    break;
+                }
+                catch (Exception) { }
+                
+                break;
+            case "3" or "exit":
+                break;
+            default:
+                break;
+        }
+    }
 }
