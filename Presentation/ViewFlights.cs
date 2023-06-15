@@ -184,11 +184,12 @@ public class ViewFlights
 
             bool IsSeatValid(string seat)
             {
+                List<string> valid_rows = new List<string> {"A", "B", "C", "D", "E", "F"};
                 char row = seat[0];
                 int column;
                 if (int.TryParse(seat[1..], out column))
                 {
-                    return row >= 'A' && row <= 'F' && column >= 1 && column <= 30;
+                    return valid_rows.Contains(Convert.ToString(row)) && column >= 1 && column <= 30;
                 }
                 return false;
             }
