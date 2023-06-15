@@ -83,6 +83,7 @@ public class ViewFlights
                     int childrenCountInput = Convert.ToInt32(Console.ReadLine());
                     numberOfChildren = childrenCountInput;
                 }
+                else numberOfChildren = 0;
 
                 Console.Write("How many adults (excluding children) are booking the flight? ");
                 numberOfAdults = Convert.ToInt32(Console.ReadLine());
@@ -143,8 +144,8 @@ public class ViewFlights
             }
 
             double Ticket_Price = 0.0;
-            List<string> firstClassSeats = new List<string> { "A1", "A2", "A3", "A4", "A5", "A6", "B1", "B2", "B3", "B4", "B5", "B6" };
-            List<string> disabledSeats = new List<string> { "C1", "C2", "C3", "C4", "C5", "C6" };
+            List<string> firstClassSeats = new List<string> { "A1", "A2", "B1", "B2", "C2", "D1", "D2", "E1", "E2", "F1", "F2" };
+            List<string> disabledSeats = new List<string> { "A3", "B3", "C3", "D3", "E3", "F3" };
 
             foreach (string seat in selectedAdultSeats)
             {
@@ -701,8 +702,8 @@ public class ViewFlights
 
                     if (flight[0] == changed_seat_flightID.ToString() && old_seatsInput == flight[3])
                     {
-                        List<string> firstClassSeats = new List<string> { "A1", "A2", "A3", "A4", "A5", "A6", "B1", "B2", "B3", "B4", "B5", "B6" };
-                        List<string> disabledSeats = new List<string> { "C1", "C2", "C3", "C4", "C5", "C6" };
+                        List<string> firstClassSeats = new List<string> { "A1", "A2", "B1", "B2", "C2", "D1", "D2", "E1", "E2", "F1", "F2" };
+                        List<string> disabledSeats = new List<string> { "A3", "B3", "C3", "D3", "E3", "F3" };
 
                         foreach (string new_seat in new_seatList)
                         {
