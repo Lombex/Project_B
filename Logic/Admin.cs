@@ -100,6 +100,8 @@ public class Admin : User
         Console.WriteLine("8. Arrival Time");
         Console.WriteLine("9. Gate");
         Console.WriteLine("10. Price");
+        Console.WriteLine("11. WindowMultuplier");
+        Console.WriteLine("12. FirstClassMutiplier");
 
         Console.Write("Enter your choice: ");
         string choice = Console.ReadLine()!;
@@ -148,6 +150,28 @@ public class Admin : User
                 if (int.TryParse(newValue, out int price))
                 {
                     flight.Price = price;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Price.");
+                    return;
+                }
+                break;
+            case "11":
+                ; if (double.TryParse(newValue, out double windowMultiplier))
+                {
+                    flight.WindowMultuplier = windowMultiplier;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Price.");
+                    return;
+                }
+                break;
+            case "12":
+                if (double.TryParse(newValue, out double FirstClassMutiplier))
+                {
+                    flight.FirstClassMutiplier = FirstClassMutiplier;
                 }
                 else
                 {

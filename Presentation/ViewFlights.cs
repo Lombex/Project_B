@@ -60,7 +60,7 @@ public class ViewFlights
             double seat_price = _flight[0].Price;
             Console.WriteLine($"Seat price overview: ");
             Console.WriteLine($"-------------------------");
-            Console.WriteLine($"Adult first class seat: €{seat_price * 2}\nChildren first class seat: €{Math.Round((seat_price * 2) * 0.8)}\n\nAdult second class seat: €{seat_price}\nChildren second class seat: €{Math.Round(seat_price * 0.8)}\n\nFor user with disability, choose row 3 for normal prices!");
+            Console.WriteLine($"Adult window first class seat: €{Math.Round((seat_price * _flight[0].FirstClassMutiplier) * _flight[0].WindowMultuplier)}\nAdult first class seat: €{Math.Round((seat_price * _flight[0].FirstClassMutiplier))}\nChildren window first class seat: €{Math.Round(((seat_price * _flight[0].FirstClassMutiplier) * 0.8) * _flight[0].WindowMultuplier)}\nChildren first class seat: €{Math.Round((seat_price * _flight[0].FirstClassMutiplier) * 0.8)}\nAdult window second class seat: €{Math.Round(seat_price * _flight[0].WindowMultuplier)}\nAdult second class seat: €{Math.Round(seat_price)}\nChildren window second class seat: €{Math.Round(seat_price * 0.8) * _flight[0].WindowMultuplier}\nChildren second class seat: €{Math.Round(seat_price * 0.8)}\nFor user with disability, choose row 3 for normal prices!");
             Console.WriteLine($"-------------------------");
 
 
@@ -71,6 +71,15 @@ public class ViewFlights
             List<string> allSelectedSeats = new List<string>();
             List<string> firstClassSeats = new List<string> { "A1", "A2", "B1", "B2", "C2", "D1", "D2", "E1", "E2", "F1", "F2" };
             List<string> disabledSeats = new List<string> { "A3", "B3", "C3", "D3", "E3", "F3" };
+            List<string> windowSeats = new List<string>()
+        {
+            "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10",
+            "A11", "A12", "A13", "A14", "A15", "A16", "A17", "A18", "A19", "A20",
+            "A21", "A22", "A23", "A24", "A25", "A26", "A27", "A28", "A29", "A30",
+            "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10",
+            "F11", "F12", "F13", "F14", "F15", "F16", "F17", "F18", "F19", "F20",
+            "F21", "F22", "F23", "F24", "F25", "F26", "F27", "F28", "F29", "F30"
+        };
 
             while (!valid_seat)
             {
@@ -214,7 +223,11 @@ public class ViewFlights
 
                 if (firstClassSeats.Contains(seat))
                 {
-                    ticketPrice *= 2;
+                    ticketPrice *= _flight[0].FirstClassMutiplier;
+                    if (windowSeats.Contains(seat))
+                    {
+                        ticketPrice *= _flight[0].WindowMultuplier;
+                    }
                 }
 
                 Ticket_Price += ticketPrice;
@@ -228,8 +241,20 @@ public class ViewFlights
                 {
                     childTicketPrice *= 2;
                     childTicketPrice *= 0.8;
+                    if (windowSeats.Contains(seat))
+                    {
+                        childTicketPrice *= _flight[0].WindowMultuplier;
+                    }
                 }
-                else childTicketPrice *= 0.8;
+                else
+                {
+                    childTicketPrice *= 0.8;
+                    if (windowSeats.Contains(seat))
+                    {
+                        childTicketPrice *= _flight[0].WindowMultuplier;
+                    }
+
+                }
 
                 Ticket_Price += childTicketPrice;
             }

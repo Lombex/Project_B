@@ -38,7 +38,12 @@ public class FlightInfoModel
     [JsonPropertyName("Price")]
     public int Price { get; set; }
 
-    public FlightInfoModel(int flightID, string flightnumber, string aircraft, string origin, string destination, string date, double flighttime, string departtime, string arrivaltime, int price, string gate = "A1")
+    [JsonPropertyName("WindowMultuplier")]
+    public double WindowMultuplier { get; set; }
+    [JsonPropertyName("FirstClassMutiplier")]
+    public double FirstClassMutiplier { get; set; }
+
+    public FlightInfoModel(int flightID, string flightnumber, string aircraft, string origin, string destination, string date, double flighttime, string departtime, string arrivaltime, int price, string gate = "A1", double windowMultuplier = 1.2, double firstClassMutiplier = 2)
     {
         FlightID = flightID;
         FlightNumber = flightnumber;
@@ -52,5 +57,7 @@ public class FlightInfoModel
         Gate = gate;
         SeatsTaken = new List<string>();
         Price = price;
+        WindowMultuplier = windowMultuplier;
+        FirstClassMutiplier = firstClassMutiplier;
     }
 }
