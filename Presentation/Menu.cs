@@ -254,6 +254,12 @@ static class Menu
 
 
     public static List<(string, double)> CateringOrders = new List<(string, double)>();
+    public static double GetTotalOrderAmount(List<(string, double)> Order)
+    {
+        double TotalAmount = 0;
+        foreach (var order in Order) TotalAmount += order.Item2;
+        return TotalAmount;
+    }
     public static void CateringMenu()
     {
         ViewFlights.Catering();
@@ -276,7 +282,7 @@ static class Menu
                 {
                     int DrinkSelection = Convert.ToInt32(Console.ReadLine()!);
                     foreach (var Items in ViewFlights._Catering) 
-                        if (Items.Key.Item1.Equals(DrinkSelection))
+                        if (Items.Key.Item1.Equals(DrinkSelection) && Items.Key.Item3 == ViewFlights.CateringOptions.Drinks)
                         {
                             Console.WriteLine("Drink has been added to your order!");
                             CateringOrders.Add((Items.Key.Item2, Items.Value.Item3));
@@ -291,25 +297,25 @@ static class Menu
                 ConsoleTable FoodTable = new ConsoleTable("ID", "Food", "Price", "Ingredients", "Allergies");
                 FoodTable.Options.EnableCount = ViewFlights.options.EnableCount;
                 foreach (var Food in ViewFlights._Catering)
-                    if (Food.Key.Item3 == ViewFlights.CateringOptions.Foods) FoodTable.AddRow(Food.Key.Item1, Food.Key.Item2, "$ " + Food.Value.Item3, string.Join(", ", Food.Value.Item1), string.Join(", ", Food.Value.Item2));  
+                    if (Food.Key.Item3 == ViewFlights.CateringOptions.Foods) FoodTable.AddRow(Food.Key.Item1, Food.Key.Item2, "$ " + Food.Value.Item3, string.Join(", ", Food.Value.Item1), string.Join(", ", Food.Value.Item2));
                 Console.Clear();
                 Console.WriteLine(FoodTable.ToString());
                 Console.WriteLine("\nSelect food using the ID: ");
-                
+
                 try
                 {
                     int FoodSelection = Convert.ToInt32(Console.ReadLine()!);
                     foreach (var Items in ViewFlights._Catering)
-                        if (Items.Key.Item1 == FoodSelection)
+                        if (Items.Key.Item1.Equals(FoodSelection) && Items.Key.Item3 == ViewFlights.CateringOptions.Foods)
                         {
-                            Console.WriteLine("Drink has been added to your order!");
+                            Console.WriteLine("Food has been added to your order!");
                             CateringOrders.Add((Items.Key.Item2, Items.Value.Item3));
                         }
                     CateringMenu();
                     break;
                 }
                 catch (Exception) { }
-                
+
                 break;
             case "3" or "exit":
                 break;

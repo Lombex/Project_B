@@ -176,6 +176,7 @@ public class ViewFlights
                 Ticket_Price += childTicketPrice;
             }
 
+            double GetTotalTicketPrice = Ticket_Price + Menu.GetTotalOrderAmount(Menu.CateringOrders);
 
             Console.Clear();
             Console.WriteLine("Please confirm your booking!");
@@ -183,7 +184,7 @@ public class ViewFlights
             Console.WriteLine($"-----------");
             Console.WriteLine($"Flight: {_flight[0].FlightNumber} from {_flight[0].Origin} to {_flight[0].Destination}");
             Console.WriteLine($"Date : {_flight[0].Date} - {_flight[0].DepartTime}");
-            Console.WriteLine($"Total price: {Ticket_Price}");
+            Console.WriteLine($"Total price: {GetTotalTicketPrice}");
             Console.WriteLine($"Booked seat(s): {SeatPicker}");
             Console.WriteLine($"Number of adults: {numberOfAdults}");
             Console.WriteLine($"Number of children: {numberOfChildren}");
@@ -194,6 +195,7 @@ public class ViewFlights
             if (user_input != "Yes" && user_input != "yes" && user_input != "Y" && user_input != "y")
             {
                 Console.WriteLine("Abort booking, please wait 5 seconds and try again later!");
+                Menu.CateringOrders.Clear();
                 Thread.Sleep(5000);
                 FlightMenu();
             }
@@ -223,7 +225,7 @@ public class ViewFlights
                     _flight[0].Destination,
                     _flight[0].DepartTime.ToString(),
                     _flight[0].ArrivalTime.ToString(),
-                    Ticket_Price.ToString(),
+                    GetTotalTicketPrice.ToString(),
                     string.Join(", ", Menu.CateringOrders),
                     _flight[0].Gate,
                 };
@@ -231,6 +233,7 @@ public class ViewFlights
                 updatedAccount.BookedFlights.Add(updatedBookedFlights);
                 UserLogin.AccountInfo = updatedAccount;
                 accountsAccess.WriteAll(accountList);
+                Menu.CateringOrders.Clear();
             }
             Menu.Account();
         }
