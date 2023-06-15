@@ -4,8 +4,10 @@ using System.Data;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading;
 using ConsoleTables;
+using Project.Presentation;
 
 public class ViewFlights
 {
@@ -572,7 +574,7 @@ public class ViewFlights
 
         Console.Clear();
         Console.WriteLine("The Layout of the plane: \n");
-        Table.Write();
+        SetConsoleColor.WriteEmbeddedColorLine(Table.ToStringAlternative().Replace("X", "[red]X[/red]"));
     }
 
     public static void SeeBookings(bool delete_flight, bool change_seat)
@@ -599,7 +601,9 @@ public class ViewFlights
             Bookingtable.Options.EnableCount = options.EnableCount;
             foreach (List<string> booking in flight_account_info)
             {
-                Bookingtable.AddRow(Convert.ToInt32(booking[0]) + 1, booking[1], booking[2], booking[3], booking[4], booking[5], booking[6], booking[7], booking[8], booking[9], booking[10]);
+                string cleanString = Regex.Replace(booking[9], @"[^a-zA-Z\s]", "");
+                cleanString = cleanString.Replace("(", "").Replace(")", ",");
+                Bookingtable.AddRow(Convert.ToInt32(booking[0]) + 1, booking[1], booking[2], booking[3], booking[4], booking[5], booking[6], booking[7], booking[8], cleanString, booking[10]);
             }
             Console.Clear();
             Console.WriteLine("All booked flights: \n");
@@ -763,14 +767,11 @@ public class ViewFlights
         Console.ReadKey();
         Menu.Account();
     }
-
     public enum CateringOptions
     {
         Drinks,
         Foods
     }
-    // KEY <int = ID, string = OrderName, CateringOptions = OrderType>
-    // VALUE <string[] = ingriedience, string[] = allergies, double = price>
     public static Dictionary<(int, string, CateringOptions), (string[], string[], double)> _Catering = new Dictionary<(int, string, CateringOptions), (string[], string[], double)>();
     public static void Catering()
     {

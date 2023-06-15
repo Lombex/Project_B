@@ -1,3 +1,5 @@
+using Project.Presentation;
+
 public class AccountFunctionality
 {
     public static string HidePassword()
@@ -106,7 +108,7 @@ public class AccountFunctionality
             }
             Console.WriteLine("\nCurrent Banner: ");
         }
-        Console.WriteLine(banner_options[banner_number - 1]);
+        SetConsoleColor.WriteEmbeddedColorLine($"[blue]{banner_options[banner_number - 1]}[/blue]");
     }
 
 
