@@ -1,3 +1,4 @@
+using ConsoleTables;
 using Project.Presentation;
 
 static class Menu
@@ -10,7 +11,7 @@ static class Menu
         Console.Clear();
         AccountFunctionality.PrintBanner();
         Console.WriteLine("\n!! In this application, please press the 'Enter' button every time you want to confirm !!");
-        List<string> main_menu_choices = new List<string>() { " Enter 1 to login", " Enter 2 to create account", " Enter 3 to quit" };
+        List<string> main_menu_choices = new List<string>() { " Enter 1 to login", " Enter 2 to create account", " Enter 3 for airport info", " Enter 4 to quit" };
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in main_menu_choices) Console.WriteLine(item);
         Console.WriteLine("+-------------------------+");
@@ -26,11 +27,12 @@ static class Menu
                 UserLogin.MakeAccount(UserLogin.AccountType.User, true);
                 break;
             case "3":
-                Console.WriteLine("Quitting application");
-                System.Environment.Exit(0);
+                PrintAirportInformation();
+                Start();
                 break;
             case "4":
-                ViewFlights.FlightSchedule();
+                Console.WriteLine("Quitting application");
+                System.Environment.Exit(0);
                 break;
             default:
                 AccountFunctionality.ErrorMessage();
@@ -80,7 +82,7 @@ static class Menu
         Admin admin = new Admin();
 
         // edit/delete flights should be in a submenu in 3, but for now this name is more accurate
-        List<string> admin_account_choices = new List<string>() { " Enter 1 to create an account", " Enter 2 to change user password", " Enter 3 to change user name", " Enter 4 to change user email", " Enter 5 to create a flight", " Enter 6 to modify a flight", " Enter 7 to view all flights ", " Enter 8 to change banner/logo", " Enter 9 to log out" };
+        List<string> admin_account_choices = new List<string>() { " Enter 1 to create an account", " Enter 2 to change user password", " Enter 3 to change user name", " Enter 4 to change user email", " Enter 5 to delete a user", " Enter 6 to create a flight", " Enter 7 to modify a flight", " Enter 8 to view all flights ", " Enter 9 to delete flight", " Enter 10 to change banner/logo", " Enter 11 to log out" };
 
         Console.WriteLine("\n+-------------------------+");
         foreach (string item in admin_account_choices) Console.WriteLine(item);
@@ -106,26 +108,33 @@ static class Menu
                 AdminAccount();
                 break;
             case "5":
+                admin.DeleteUser();
+                AdminAccount();
+                break;
+            case "6":
                 Console.WriteLine("Add flight:");
                 admin.Add_flight();
                 AdminAccount();
                 break;
-            case "6":
+            case "7":
                 admin.ModifyFlight();
                 AdminAccount();
                 break;
-            case "7":
+            case "8":
                 admin.ViewFlightList();
                 AdminAccount();
                 break;
-            case "8":
+            case "9":
+                admin.DeleteFlight();
+                break;
+            case "10":
                 Console.WriteLine("These are all available banners: ");
                 AccountFunctionality.PrintBanner(true);
                 int banner_choice = Convert.ToInt32(AccountFunctionality.GetInput("Choose a banner, and type the number of the banner you want: "));
                 AccountFunctionality.ChangeBanner(banner_choice);
                 AdminAccount();
                 break;
-            case "9":
+            case "11":
                 Menu.Start();
                 break;
             default:
@@ -198,7 +207,6 @@ static class Menu
                 Menu.ManageBookings();
                 break;
         }
-
     }
     public static void UserEditMenu()
     {
@@ -232,6 +240,80 @@ static class Menu
             default:
                 Console.WriteLine("This is not an option!");
                 UserEditMenu();
+                break;
+        }
+    }
+    public static void PrintAirportInformation()
+    {
+        Console.Clear();
+        AccountFunctionality.PrintBanner();
+        Console.WriteLine("Airport information: \n\nAddres: Driemanssteeweg 107, 3011 WN in Rotterdam\n\nNow that Rotterdam South is becoming more and more important for the city, \nthe wish has arisen that it should also be possible to fly from Rotterdam South.\nJake Darcy has started an airport where sustainability is paramount. \nWe started small, initially only flying within Europe. We will be using our own planes and we set up our own airline: Rotterdam Airlines. \nRotterdam Airlines has initially 1 aircraft at its disposal. A Boeing 737.\nWe do like to welcome you on board of Rotterdam Airlines! ");
+        Console.WriteLine("\nPlease press enter to go back!");
+        Console.ReadLine();
+    }
+
+
+    public static List<(string, double)> CateringOrders = new List<(string, double)>();
+    public static void CateringMenu()
+    {
+        ViewFlights.Catering();
+        Console.WriteLine("Please select your option: ");
+        string[] Options = { "1. Drinks", "2. Food", "3. Exit" };
+        foreach (string option in Options) Console.WriteLine(option);
+        string Selection = Console.ReadLine()!;
+        switch (Selection.ToLower())
+        {
+            case "1" or "drinks":
+                ConsoleTable DrinksTable = new ConsoleTable("ID", "Drink", "Price", "Ingredients", "Allergies");
+                DrinksTable.Options.EnableCount = ViewFlights.options.EnableCount;
+                foreach (var Drinks in ViewFlights._Catering)
+                    if (Drinks.Key.Item3 == ViewFlights.CateringOptions.Drinks) DrinksTable.AddRow(Drinks.Key.Item1, Drinks.Key.Item2, "$ " + Drinks.Value.Item3, string.Join(", ", Drinks.Value.Item1), string.Join(", ", Drinks.Value.Item2)); 
+                Console.Clear();
+                Console.WriteLine(DrinksTable.ToString());
+                Console.WriteLine("\nSelect a drink using the ID: ");
+                
+                try
+                {
+                    int DrinkSelection = Convert.ToInt32(Console.ReadLine()!);
+                    foreach (var Items in ViewFlights._Catering) 
+                        if (Items.Key.Item1.Equals(DrinkSelection))
+                        {
+                            Console.WriteLine("Drink has been added to your order!");
+                            CateringOrders.Add((Items.Key.Item2, Items.Value.Item3));
+                        }
+                    CateringMenu();
+                    break;
+                }
+                catch (Exception) { }
+                
+                break;
+            case "2" or "food":
+                ConsoleTable FoodTable = new ConsoleTable("ID", "Food", "Price", "Ingredients", "Allergies");
+                FoodTable.Options.EnableCount = ViewFlights.options.EnableCount;
+                foreach (var Food in ViewFlights._Catering)
+                    if (Food.Key.Item3 == ViewFlights.CateringOptions.Foods) FoodTable.AddRow(Food.Key.Item1, Food.Key.Item2, "$ " + Food.Value.Item3, string.Join(", ", Food.Value.Item1), string.Join(", ", Food.Value.Item2));  
+                Console.Clear();
+                Console.WriteLine(FoodTable.ToString());
+                Console.WriteLine("\nSelect food using the ID: ");
+                
+                try
+                {
+                    int FoodSelection = Convert.ToInt32(Console.ReadLine()!);
+                    foreach (var Items in ViewFlights._Catering)
+                        if (Items.Key.Item1 == FoodSelection)
+                        {
+                            Console.WriteLine("Drink has been added to your order!");
+                            CateringOrders.Add((Items.Key.Item2, Items.Value.Item3));
+                        }
+                    CateringMenu();
+                    break;
+                }
+                catch (Exception) { }
+                
+                break;
+            case "3" or "exit":
+                break;
+            default:
                 break;
         }
     }

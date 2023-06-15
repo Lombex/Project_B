@@ -1,19 +1,14 @@
 using Newtonsoft.Json;
+using ConsoleTables;
 public class Admin : User
 {
+    private static FlightInfoAccess flightinfoAccess = new FlightInfoAccess();
 
-    // Create new method edit customer account data
-
-    // Edit, remove, add booking
-
-    // Create new method add and remove flights
-
-    // Create new method change flight data
     public void ChangeName() => base.ChangeName(true);
     public void ChangeEmail() => base.ChangeEmail(true);
     public void ChangeUserPassword(string EmailAddress)
     {
-        List<AccountModel> account_list = AccountsAccess.LoadAll();
+        List<AccountModel> account_list = accountsAccess.LoadAll();
         foreach (AccountModel User in account_list)
         {
             if (User.EmailAddress == EmailAddress)
@@ -30,7 +25,7 @@ public class Admin : User
                     Password2 = AccountFunctionality.HidePassword();
                 }
                 User.Password = AccountsLogic.GetHashedSHA256(Password1!);
-                AccountsAccess.WriteAll(account_list);
+                accountsAccess.WriteAll(account_list);
                 return;
             }
         }
@@ -70,28 +65,21 @@ public class Admin : User
         string gate = AccountFunctionality.GetInput("Enter gate")!;
         int price = Convert.ToInt32(AccountFunctionality.GetInput("Enter standard price of the flight"));
 
-        List<FlightInfoModel> dataList = FlightInfoAccess.LoadAll();
+        List<FlightInfoModel> dataList = flightinfoAccess.LoadAll();
         int highestId = dataList.Max(data => data.FlightID);
         FlightInfoModel newFlight = new FlightInfoModel(highestId + 1, flight_number, aircraft, origin, destination, date, flighttime, departtime, arrivaltime, price, gate);
         dataList.Add(newFlight);
-        FlightInfoAccess.WriteAll(dataList);
+        flightinfoAccess.WriteAll(dataList);
 
         Menu.AdminAccount();
     }
-
-
     public void ModifyFlight()
     {
-        if (ViewFlights._flights == null) ViewFlights._flights = FlightInfoAccess.LoadAll();
+        if (ViewFlights._flights == null) ViewFlights._flights = flightinfoAccess.LoadAll();
 
-        Console.Write("Enter Flight ID to modify: ");
-        if (!int.TryParse(Console.ReadLine(), out int flightID))
-        {
-            Console.WriteLine("Invalid Flight ID.");
-            return;
-        }
+        ViewFlights.FlightSchedule();
 
-        FlightInfoModel flight = ViewFlights._flights.Find(f => f.FlightID == flightID)!;
+        FlightInfoModel flight = ViewFlights._flights.Find(f => f.FlightID == ViewFlights.FlightID - 1)!;
 
         if (flight == null)
         {
@@ -172,9 +160,115 @@ public class Admin : User
                 return;
         }
 
-        FlightInfoAccess.WriteAll(ViewFlights._flights);
+        flightinfoAccess.WriteAll(ViewFlights._flights);
 
         Console.WriteLine("Flight information updated successfully.");
+    }
+
+    public void DeleteFlight()
+    {
+
+        if (ViewFlights._flights == null) ViewFlights._flights = flightinfoAccess.LoadAll();
+
+        ViewFlights.FlightSchedule();
+
+        FlightInfoModel flight = ViewFlights._flights.Find(f => f.FlightID == ViewFlights.FlightID - 1)!;
+
+        if (flight == null)
+        {
+            Console.WriteLine("Flight not found.");
+            return;
+        }
+        Console.WriteLine($"Selected Flight: {flight.FlightNumber} - {flight.Origin} to {flight.Destination}");
+        Console.WriteLine("Are you sure you want to delete the flight?");
+        string answer = Console.ReadLine()!;
+
+        if (answer == "Y" || answer == "y" || answer == "Yes" || answer == "yes")
+        {
+            ViewFlights._flights.Remove(flight);
+            flightinfoAccess.WriteAll(ViewFlights._flights);
+
+            foreach (var account in ViewFlights.accountList)
+            {
+                List<List<string>> bookedFlights = account.BookedFlights;
+
+                bookedFlights.RemoveAll(flight => flight.Count > 0 && flight[0] == (ViewFlights.FlightID - 1).ToString());
+            }
+
+            accountsAccess.WriteAll(ViewFlights.accountList);
+
+            Console.WriteLine($"You have deleted the flight {flight.FlightNumber} - {flight.Origin} to {flight.Destination}");
+
+        }
+        else if (answer == "N" || answer == "n" || answer == "No" || answer == "no")
+        {
+            Menu.AdminAccount();
+        }
+        else DeleteFlight();
+    }
+    public void DeleteUser()
+    {
+        if (ViewFlights._flights == null)
+            ViewFlights._flights = flightinfoAccess.LoadAll();
+
+        ConsoleTable UserTable = new ConsoleTable("ID", "EmailAddress", "Fullname");
+        UserTable.Options.EnableCount = ViewFlights.options.EnableCount;
+
+        foreach (var account in ViewFlights.accountList)
+        {
+            UserTable.AddRow(account.Id, account.EmailAddress, account.FullName);
+        }
+
+        Console.Clear();
+        Console.WriteLine("All available users:\n");
+        Console.WriteLine(UserTable.ToString());
+
+        Console.WriteLine("Enter the ID of the user to delete:");
+        string input = Console.ReadLine()!;
+        if (!int.TryParse(input, out int userId))
+        {
+            Console.WriteLine("Invalid input. Please enter a valid user ID.");
+            return;
+        }
+
+        int userIndex = ViewFlights.accountList.FindIndex(account => account.Id == userId);
+
+        if (userIndex != -1)
+        {
+            // Remove the user from the account list
+            var removedAccount = ViewFlights.accountList[userIndex];
+            ViewFlights.accountList.RemoveAt(userIndex);
+
+            // Remove the user's bookings from flights' SeatsTaken list
+            foreach (var flightAccountInfo in removedAccount.BookedFlights)
+            {
+                string flightId = flightAccountInfo[0];
+                List<string> seatList = flightAccountInfo[3].Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                var flight = ViewFlights._flights.FirstOrDefault(f => f.FlightID.ToString() == flightId);
+                if (flight != null)
+                {
+                    foreach (var seat in seatList)
+                    {
+                        flight.SeatsTaken.Remove(seat);
+                    }
+                }
+            }
+
+            // Write the updated account list to the data store
+            accountsAccess.WriteAll(ViewFlights.accountList);
+
+            // Write the updated flights to the data store
+            flightinfoAccess.WriteAll(ViewFlights._flights);
+
+            // Display success message or perform additional actions if needed
+            Console.WriteLine("User deleted successfully.");
+        }
+        else
+        {
+            // User not found in the account list
+            Console.WriteLine("User not found.");
+        }
     }
     public void ViewFlightList() => ViewFlights.FlightMenu();
 }

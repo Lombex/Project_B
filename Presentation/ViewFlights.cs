@@ -1,13 +1,23 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Security.Claims;
+using System.Threading;
 using ConsoleTables;
-using DataModels;
 
 public class ViewFlights
 {
+
+    private static AccountsAccess accountsAccess = new AccountsAccess();
+    private static FlightInfoAccess flightinfoAccess = new FlightInfoAccess();
+
+    private static BookHistoryAccess bookhistoryAccess = new BookHistoryAccess();
+
     public static List<FlightInfoModel>? _flights;
 
-    public static List<AccountModel> accountList = AccountsAccess.LoadAll();
+    public static List<AccountModel> accountList = accountsAccess.LoadAll();
 
     public static ConsoleTableOptions options = new ConsoleTableOptions
     {
@@ -16,16 +26,14 @@ public class ViewFlights
     public static string? SeatPicker;
 
     public static bool HasDisability = false;
-    public static int numberOfChildren = 0;
-
-    public static int numberOfAdults = 0;
-
+    public static int numberOfChildren;
+    public static int numberOfAdults;
     public static int FlightID { get; private set; }
 
     public static void FlightMenu()
     {
         if (_flights == null)
-            _flights = FlightInfoAccess.LoadAll();
+            _flights = flightinfoAccess.LoadAll();
 
         FlightInfoLogic Fil = new FlightInfoLogic();
         FlightSchedule();
@@ -47,9 +55,18 @@ public class ViewFlights
         }
         else
         {
+            double seat_price = _flight[0].Price;
+            Console.WriteLine($"Seat price overview: ");
+            Console.WriteLine($"-------------------------");
+            Console.WriteLine($"Adult first class seat: €{seat_price * 2}\nChildren first class seat: €{Math.Round((seat_price * 2) * 0.8)}\n\nAdult second class seat: €{seat_price}\nChildren second class seat: €{Math.Round(seat_price * 0.8)}\n\nFor user with disability, choose row 3 for normal prices!");
+            Console.WriteLine($"-------------------------");
+
+
             AccountModel AccountInfo = UserLogin.AccountInfo!;
             bool valid_seat = false;
-            List<string> selectedSeats = new List<string>();
+            List<string> selectedAdultSeats = new List<string>();
+            List<string> selectedChildSeats = new List<string>();
+            List<string> allSelectedSeats = new List<string>();
 
             while (valid_seat == false)
             {
@@ -78,19 +95,34 @@ public class ViewFlights
                     FlightMenu();
                 }
 
-                Console.WriteLine("Choose the seat(s) you would like (separated by commas, e.g., A1, B2): ");
-                string seatPicker = Console.ReadLine()!;
-                selectedSeats = seatPicker.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+                Console.WriteLine("Choose the seat(s) you would like for adults (separated by commas, e.g., A1, B2): ");
+                string adultSeatPicker = Console.ReadLine()!;
+                selectedAdultSeats = adultSeatPicker.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                List<char> PlaneRows = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F' };
+                if (numberOfChildren > 0)
+                {
+                    Console.WriteLine("Choose the seat(s) you would like for children (separated by commas, e.g., A1, B2): ");
+                    string childSeatPicker = Console.ReadLine()!;
+                    selectedChildSeats = childSeatPicker.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+                }
+
+                Menu.CateringMenu();
+
+                allSelectedSeats = selectedAdultSeats.Concat(selectedChildSeats).ToList();
+
+                if (allSelectedSeats.Count != numberOfAdults + numberOfChildren)
+                {
+                    AccountFunctionality.ErrorMessage("The count of selected seats does not match the count of adults and children. Please try again!");
+                    FlightMenu();
+                }
 
                 bool allSeatsValid = true;
                 if (allSeatsValid)
                 {
                     bool seatsAvailable = true;
-                    foreach (string seat in selectedSeats)
+                    foreach (string seat in allSelectedSeats)
                     {
-                        if (_flight[0].SeatsTaken.Contains(seat))
+                        if (taken_seats.Contains(seat))
                         {
                             AccountFunctionality.ErrorMessage($"Seat {seat} is already taken. Please choose another seat.");
                             seatsAvailable = false;
@@ -101,7 +133,6 @@ public class ViewFlights
                     if (seatsAvailable)
                     {
                         valid_seat = true;
-                        SeatPicker = seatPicker;
                     }
                     else
                     {
@@ -115,7 +146,7 @@ public class ViewFlights
             List<string> firstClassSeats = new List<string> { "A1", "A2", "A3", "A4", "A5", "A6", "B1", "B2", "B3", "B4", "B5", "B6" };
             List<string> disabledSeats = new List<string> { "C1", "C2", "C3", "C4", "C5", "C6" };
 
-            foreach (string seat in selectedSeats)
+            foreach (string seat in selectedAdultSeats)
             {
                 double ticketPrice = _flight[0].Price;
 
@@ -130,14 +161,23 @@ public class ViewFlights
                     FlightMenu();
                 }
 
-                if (numberOfChildren > 0)
-                {
-                    ticketPrice *= 0.8;
-                    numberOfChildren--;
-                }
-
                 Ticket_Price += ticketPrice;
             }
+
+            foreach (string seat in selectedChildSeats)
+            {
+                double childTicketPrice = _flight[0].Price;
+
+                if (firstClassSeats.Contains(seat))
+                {
+                    childTicketPrice *= 2;
+                    childTicketPrice *= 0.8;
+                }
+                else childTicketPrice *= 0.8;
+
+                Ticket_Price += childTicketPrice;
+            }
+
 
             Console.Clear();
             Console.WriteLine("Please confirm your booking!");
@@ -146,9 +186,10 @@ public class ViewFlights
             Console.WriteLine($"Flight: {_flight[0].FlightNumber} from {_flight[0].Origin} to {_flight[0].Destination}");
             Console.WriteLine($"Date : {_flight[0].Date} - {_flight[0].DepartTime}");
             Console.WriteLine($"Total price: {Ticket_Price}");
-            Console.WriteLine($"Booked seat(s): {SeatPicker}");
+            Console.WriteLine($"Booked seat(s): {string.Join(",", allSelectedSeats)}");
             Console.WriteLine($"Number of adults: {numberOfAdults}");
             Console.WriteLine($"Number of children: {numberOfChildren}");
+            Console.WriteLine($"Catering Orders: {string.Join(",", Menu.CateringOrders)}");
             Console.WriteLine("------------");
             Console.WriteLine("\n\nEnter Yes to confirm");
             string user_input = Console.ReadLine()!;
@@ -159,42 +200,43 @@ public class ViewFlights
                 FlightMenu();
             }
 
-            _flight[0].SeatsTaken.AddRange(selectedSeats);
+            _flight[0].SeatsTaken.AddRange(selectedAdultSeats);
+            _flight[0].SeatsTaken.AddRange(selectedChildSeats);
             _flights[FlightId] = _flight[0];
-            FlightInfoAccess.WriteAll(_flights);
+            flightinfoAccess.WriteAll(_flights);
 
             int highestId = FilterByFlightID.Max(data => data.FlightID);
             BookHistoryModel newData = new BookHistoryModel(AccountInfo.Id, AccountInfo.FullName, AccountInfo.EmailAddress,
                 DateTime.Now.ToString(), FlightId, _flight[0].FlightNumber, SeatPicker!, _flight[0].Destination, _flight[0].Gate, _flight[0].DepartTime, _flight[0].ArrivalTime);
 
-            List<BookHistoryModel> dataList = BookHistoryAccess.LoadAll();
+            List<BookHistoryModel> dataList = bookhistoryAccess.LoadAll();
             dataList.Add(newData);
-            BookHistoryAccess.WriteAll(dataList);
+            bookhistoryAccess.WriteAll(dataList);
 
             AccountModel? updatedAccount = accountList.FirstOrDefault(a => a.Id == AccountInfo.Id);
             if (updatedAccount != null)
             {
                 List<string> updatedBookedFlights = new List<string> {
-            FlightId.ToString(),
-            _flight[0].FlightNumber,
-            DateTime.Now.ToString(),
-            SeatPicker!,
-            _flight[0].Origin,
-            _flight[0].Destination,
-            _flight[0].DepartTime.ToString(),
-            _flight[0].ArrivalTime.ToString(),
-            Ticket_Price.ToString(),
-            _flight[0].Gate,
-        };
+                    FlightId.ToString(),
+                    _flight[0].FlightNumber,
+                    DateTime.Now.ToString(),
+                    string.Join(",", selectedAdultSeats.Concat(selectedChildSeats)),
+                    _flight[0].Origin,
+                    _flight[0].Destination,
+                    _flight[0].DepartTime.ToString(),
+                    _flight[0].ArrivalTime.ToString(),
+                    Ticket_Price.ToString(),
+                    string.Join(", ", Menu.CateringOrders),
+                    _flight[0].Gate,
+                };
 
                 updatedAccount.BookedFlights.Add(updatedBookedFlights);
                 UserLogin.AccountInfo = updatedAccount;
-                AccountsAccess.WriteAll(accountList);
+                accountsAccess.WriteAll(accountList);
             }
             Menu.Account();
         }
     }
-
     public static void SortingMenu()
     {
 
@@ -274,21 +316,28 @@ public class ViewFlights
     public static void FlightSchedule()
     {
         if (_flights == null)
-            _flights = FlightInfoAccess.LoadAll();
+            _flights = flightinfoAccess.LoadAll();
 
         HashSet<string> possible_destinations = new HashSet<string>();
         SortedDictionary<string, List<string>> destinationDates = new SortedDictionary<string, List<string>>();
 
+        DateTime currentDateTime = DateTime.Now;
         foreach (FlightInfoModel flight in _flights)
         {
-            possible_destinations.Add(flight.Destination);
+            DateTime departureDateTime = DateTime.ParseExact(flight.Date + " " + flight.DepartTime, "dd-MM-yyyy HH:mm", null);
+            TimeSpan timeDifference = departureDateTime - currentDateTime;
 
-            if (!destinationDates.ContainsKey(flight.Destination))
+            if (timeDifference.TotalHours >= 1)
             {
-                destinationDates[flight.Destination] = new List<string>();
-            }
+                possible_destinations.Add(flight.Destination);
 
-            destinationDates[flight.Destination].Add(flight.Date);
+                if (!destinationDates.ContainsKey(flight.Destination))
+                {
+                    destinationDates[flight.Destination] = new List<string>();
+                }
+
+                destinationDates[flight.Destination].Add(flight.Date);
+            }
         }
 
         Console.Clear();
@@ -490,12 +539,9 @@ public class ViewFlights
             }
         }
     }
-
-
-
     public static void LayoutPlane()
     {
-        if (_flights == null) _flights = FlightInfoAccess.LoadAll();
+        if (_flights == null) _flights = flightinfoAccess.LoadAll();
         var Table = new ConsoleTable("Row", "A", "B", "C", "D", "E", "F");
         Table.Options.EnableCount = options.EnableCount;
 
@@ -524,11 +570,11 @@ public class ViewFlights
         Console.WriteLine("The Layout of the plane: \n");
         Table.Write();
     }
+
     public static void SeeBookings(bool delete_flight, bool change_seat)
     {
         int AmountOfFlights = UserLogin.AccountInfo!.BookedFlights.Count;
         List<List<string>> flight_account_info = new List<List<string>>(UserLogin.AccountInfo.BookedFlights);
-
 
         if (AmountOfFlights == 0)
         {
@@ -556,17 +602,21 @@ public class ViewFlights
 
             if (delete_flight == false && change_seat == false)
             {
-                Console.WriteLine("Do you want to manage your flights? Enter Y/y/Yes/yes");
+                Console.WriteLine("Do you want to manage your flights? Enter Yes or No");
                 string user_input = Console.ReadLine()!;
                 if (user_input == "Y" || user_input == "y" || user_input == "Yes" || user_input == "yes")
                 {
                     Menu.ManageBookings();
                 }
+                if (user_input == "N" || user_input == "n" || user_input == "No" || user_input == "no")
+                {
+                    Menu.Account();
+                }
             }
             else if (delete_flight == true)
             {
                 if (_flights == null)
-                    _flights = FlightInfoAccess.LoadAll();
+                    _flights = flightinfoAccess.LoadAll();
 
                 Console.WriteLine("Enter the flight ID you want to delete:");
                 int removed_flight_id = Convert.ToInt32(Console.ReadLine()) - 1;
@@ -593,13 +643,13 @@ public class ViewFlights
                             remove_flight[0].SeatsTaken.Remove(seat);
                         }
                         _flights[removed_flight_id] = remove_flight[0];
-                        FlightInfoAccess.WriteAll(_flights);
+                        flightinfoAccess.WriteAll(_flights);
 
                         // Account section
                         List<List<string>> list_flight_account_info = flight_account_info.ToList();
                         list_flight_account_info.RemoveAll(innerList => innerList.Contains(removed_flight_id.ToString()) && seatList.Any(innerList.Contains));
                         UserLogin.AccountInfo.BookedFlights = list_flight_account_info;
-                        AccountsAccess.WriteAll(accountList);
+                        accountsAccess.WriteAll(accountList);
                         bookingDeleted = true;
                         break;
                     }
@@ -617,7 +667,7 @@ public class ViewFlights
             else if (change_seat == true)
             {
                 if (_flights == null)
-                    _flights = FlightInfoAccess.LoadAll();
+                    _flights = flightinfoAccess.LoadAll();
 
                 Console.WriteLine("Enter the flight ID you want to change seats on:");
                 int changed_seat_flightID = Convert.ToInt32(Console.ReadLine()) - 1;
@@ -637,50 +687,130 @@ public class ViewFlights
                 List<FlightInfoModel> ChangeSeatFlight = FilterByFlightID.ToList();
 
                 bool seatsChanged = false;
+                bool seatsAvailable = true;
 
                 foreach (List<string> flight in flight_account_info)
                 {
-                    string[] bookedSeats = flight[3].Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    int ticketPrice = ChangeSeatFlight[0].Price;
+
+                    double TotalPrice = 0.0;
+
 
                     if (flight[0] == changed_seat_flightID.ToString() && old_seatsInput == flight[3])
                     {
-                        // Flight section
+                        List<string> firstClassSeats = new List<string> { "A1", "A2", "A3", "A4", "A5", "A6", "B1", "B2", "B3", "B4", "B5", "B6" };
+                        List<string> disabledSeats = new List<string> { "C1", "C2", "C3", "C4", "C5", "C6" };
+
+                        foreach (string new_seat in new_seatList)
+                        {
+
+                            if (firstClassSeats.Contains(new_seat)) TotalPrice += (ticketPrice * 2);
+
+                            else TotalPrice += ticketPrice;
+
+                        }
+
+                        foreach (string new_seat in new_seatList)
+                        {
+                            if (ChangeSeatFlight[0].SeatsTaken.Contains(new_seat))
+                            {
+                                seatsAvailable = false;
+                                break;
+                            }
+                        }
+
+                        if (!seatsAvailable)
+                        {
+                            Console.WriteLine("One or more of the new seats are already taken. Please choose different seats.");
+                            Console.ReadKey();
+                            ViewFlights.SeeBookings(false, true);
+                            return;
+                        }
+
                         foreach (string old_seat in old_seatList)
                         {
                             ChangeSeatFlight[0].SeatsTaken.RemoveAll(seat => seat == old_seat);
                         }
                         ChangeSeatFlight[0].SeatsTaken.AddRange(new_seatList);
                         _flights[changed_seat_flightID] = ChangeSeatFlight[0];
-                        FlightInfoAccess.WriteAll(_flights);
+                        flightinfoAccess.WriteAll(_flights);
 
-                        // Account section
-                        List<List<string>> list_flight_account_info = flight_account_info.ToList();
-                        flight[3] = new_seatsInput;
-                        list_flight_account_info.RemoveAll(innerList => innerList.Contains(changed_seat_flightID.ToString()) && innerList.Contains(old_seatsInput));
-                        UserLogin.AccountInfo.BookedFlights = list_flight_account_info;
-                        AccountsAccess.WriteAll(accountList);
+                        // Update account information
+                        flight[3] = string.Join(",", new_seatList);
+                        flight[8] = TotalPrice.ToString();
+                        AccountModel? updatedAccount = accountList.FirstOrDefault(a => a.Id == UserLogin.AccountInfo.Id);
+                        updatedAccount!.BookedFlights = flight_account_info;
+                        UserLogin.AccountInfo.BookedFlights = flight_account_info;
+                        accountsAccess.WriteAll(accountList);
                         seatsChanged = true;
                         break;
                     }
                 }
 
-                if (seatsChanged)
-                {
-                    Console.WriteLine("Seats changed successfully!");
-                    UserLogin.AccountInfo.BookedFlights = flight_account_info;
-                    AccountsAccess.WriteAll(accountList);
-                }
-                else
-                {
-                    Console.WriteLine("No booking found with the specified flight ID and old seat(s).");
-                }
+                if (seatsChanged) Console.WriteLine("Seats changed successfully!");
+
+                else Console.WriteLine("No booking found with the specified flight ID and old seat(s).");
+
+
             }
         }
         Console.WriteLine("Press any key to go back to the menu.");
         Console.ReadKey();
         Menu.Account();
-        // Create method filter flight by catagory
-
-        // Create method view flight information
     }
+
+    public enum CateringOptions
+    {
+        Drinks,
+        Foods
+    }
+    // KEY <int = ID, string = OrderName, CateringOptions = OrderType>
+    // VALUE <string[] = ingriedience, string[] = allergies, double = price>
+    public static Dictionary<(int, string, CateringOptions), (string[], string[], double)> _Catering = new Dictionary<(int, string, CateringOptions), (string[], string[], double)>();
+    public static void Catering()
+    {
+        Dictionary<(int, string), (string[], string[], double)> DrinkOptions = new Dictionary<(int, string), (string[], string[], double)>
+        {
+            { (1, "Sky High Spritzer"), (new string[] { "gin", "elderflower liqueur", "lime juice", "soda water" }, new string[] { "nuts", "gluten" }, 10.0 ) },
+            { (2, "Aviation Elixir"), (new string[] { "vodka", "blue curaçao", "pineapple juice", "lemonade" }, new string[] { "gluten" }, 5.0) },
+            { (3, "Jetsetter Mojito"), (new string[] { "rum", "lime juice", "simple syrup", "mint leaves", "soda water" }, new string[] { "nuts" }, 20.0 ) },
+            { (4, "Cloud Nine Cosmopolitan"), (new string[] { "vodka", "triple sec", "cranberry juice", "lime juice" }, new string[] { }, 15.0) },
+            { (5, "Inflight Infusion"), (new string[] { "tequila", "orange juice", "grenadine syrup" }, new string[] { "gluten", "shellfish" }, 25.0 ) },
+            { (6, "Mile High Margarita"), (new string[] { "tequila", "lime juice", "triple sec", "simple syrup" }, new string[] { "gluten", "dairy" }, 10.0 ) },
+            { (7, "Winged Whiskey Sour"), (new string[] { "whiskey", "lemon juice", "simple syrup", "egg white" }, new string[] { "nuts", "dairy", "gluten" }, 15.0 ) },
+            { (8, "Turbulence Tonic"), (new string[] { "gin", "tonic water", "lime wedge" }, new string[] { }, 10.0 ) },
+            { (9, "First Class Fizz"), (new string[] { "vodka", "orange juice", "club soda", "lemon wedge" }, new string[] { }, 20.0 ) },
+            { (10, "Airborne Aperol Spritz"), (new string[] { "aperol", "prosecco", "soda water", "orange slice" }, new string[] { "gluten" }, 30.0) },
+            { (11, "Sunset Sipper"), (new string[] { "rum", "pineapple juice", "orange juice", "grenadine syrup" }, new string[] { }, 15.0 ) },
+            { (12, "Cabin Cooler"), (new string[] { "gin", "lime juice", "mint leaves", "cucumber", "soda water" }, new string[] { }, 15.0 ) },
+            { (13, "Altitude Daiquiri"), (new string[] { "rum", "lime juice", "simple syrup" }, new string[] { }, 10.0 ) },
+            { (14, "Sky Blue Sangria"), (new string[] { "white wine", "blueberries", "pineapple chunks", "soda water" }, new string[] { }, 5.0 ) },
+            { (15, "Heavenly Hot Chocolate"), (new string[] { "hot chocolate mix", "milk", "whipped cream", "cocoa powder" }, new string[] { "nuts", "dairy" }, 30.0 ) },
+            { (16, "Captain's Coffee Blend"), (new string[] { "coffee", "whiskey", "sugar", "cream" }, new string[] { "gluten" }, 30.0 ) }
+        };
+        Dictionary<(int, string), (string[], string[], double)> FoodOptions = new Dictionary<(int, string), (string[], string[], double)>
+        {
+            { (1, "Classic Burger"), (new string[] { "beef patty", "cheese", "lettuce", "tomato", "onion", "pickles" }, new string[] { "gluten", "dairy" }, 20.0 ) },
+            { (2, "Vegetarian Wrap"), (new string[] { "grilled vegetables", "hummus", "lettuce", "tomato", "cucumber" }, new string[] { "gluten" }, 15.0 ) },
+            { (3, "Chicken Caesar Salad"), (new string[] { "grilled chicken", "romaine lettuce", "croutons", "parmesan cheese", "caesar dressing" }, new string[] { "gluten" }, 10.0) },
+            { (4, "Pasta Primavera"), (new string[] { "pasta", "mixed vegetables", "olive oil", "garlic", "parmesan cheese" }, new string[] { "gluten", "dairy" }, 15.0) },
+            { (5, "Beef Stir-Fry"), (new string[] { "beef strips", "mixed vegetables", "soy sauce", "ginger", "garlic", "rice" }, new string[] { "gluten", "soy" }, 10.0) },
+            { (6, "Grilled Salmon"), (new string[] { "salmon fillet", "lemon", "dill", "rice", "steamed vegetables" }, new string[] { }, 15.0) },
+            { (7, "Mushroom Risotto"), (new string[] { "arborio rice", "mushrooms", "onion", "garlic", "parmesan cheese" }, new string[] { "gluten", "dairy" }, 10.0) },
+            { (8, "Chicken Tikka Masala"), (new string[] { "chicken", "tomato sauce", "cream", "spices", "rice", "naan bread" }, new string[] { "gluten", "dairy" }, 40.0 ) },
+            { (9, "Spinach and Feta Stuffed Chicken"), (new string[] { "chicken breast", "spinach", "feta cheese", "garlic", "lemon", "rice", "steamed vegetables" }, new string[] { "gluten", "dairy" }, 5.0 ) },
+            { (10, "Vegetable Curry"), (new string[] { "mixed vegetables", "coconut milk", "spices", "rice", "naan bread" }, new string[] { "gluten", "dairy" }, 20.0 ) },
+            { (11, "Beef Lasagna"), (new string[] { "beef ragu", "pasta sheets", "bechamel sauce", "mozzarella cheese", "parmesan cheese" }, new string[] { "gluten", "dairy" }, 10.0 ) },
+            { (12, "Shrimp Pad Thai"), (new string[] { "shrimp", "rice noodles", "bean sprouts", "scallions", "peanuts", "tamarind sauce" }, new string[] { "gluten", "shellfish", "peanuts" }, 10.0) },
+            { (13, "Margherita Pizza"), (new string[] { "pizza dough", "tomato sauce", "mozzarella cheese", "basil" }, new string[] { "gluten", "dairy" }, 25.0 ) },
+            { (14, "Fresh Fruit Platter"), (new string[] { "assorted fresh fruits" }, new string[] { }, 10.0 ) },
+            { (15, "Cheese and Crackers"), (new string[] { "assorted cheeses", "crackers" }, new string[] { "gluten", "dairy" }, 5.0 ) },
+            { (16, "Chocolate Cake"), (new string[] { "chocolate cake", "chocolate ganache", "whipped cream" }, new string[] { "gluten", "dairy" }, 10.0 ) }
+        };
+
+        foreach (var drink in DrinkOptions) _Catering[(drink.Key.Item1, drink.Key.Item2, CateringOptions.Drinks)] = (drink.Value.Item1, drink.Value.Item2, drink.Value.Item3);
+        foreach (var food in FoodOptions) _Catering[(food.Key.Item1, food.Key.Item2, CateringOptions.Foods)] = (food.Value.Item1, food.Value.Item2, food.Value.Item3);
+    }
+
+
 }
