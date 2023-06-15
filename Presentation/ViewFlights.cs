@@ -68,7 +68,7 @@ public class ViewFlights
             List<string> selectedChildSeats = new List<string>();
             List<string> allSelectedSeats = new List<string>();
 
-            while (valid_seat == false)
+            while (!valid_seat)
             {
                 Console.Write("Do you have a disability?\n>> ");
                 string hasdisability = Console.ReadLine()!;
@@ -83,7 +83,10 @@ public class ViewFlights
                     int childrenCountInput = Convert.ToInt32(Console.ReadLine());
                     numberOfChildren = childrenCountInput;
                 }
-                else numberOfChildren = 0;
+                else
+                {
+                    numberOfChildren = 0;
+                }
 
                 Console.Write("How many adults (excluding children) are booking the flight? ");
                 numberOfAdults = Convert.ToInt32(Console.ReadLine());
@@ -94,16 +97,23 @@ public class ViewFlights
                     numberOfChildren = 1;
                     Console.WriteLine($"You have entered {numberOfChildren} child. Do you want to proceed with these numbers? (Y/N)");
                 }
-
-                else if (numberOfAdults == 1 && numberOfChildren == 0) Console.WriteLine($"You have entered {numberOfAdults} adult. Do you want to proceed with these numbers? (Y/N)");
+                else if (numberOfAdults == 1 && numberOfChildren == 0)
+                {
+                    Console.WriteLine($"You have entered {numberOfAdults} adult. Do you want to proceed with these numbers? (Y/N)");
+                }
                 else if (numberOfAdults <= 0 && numberOfChildren > 1)
                 {
                     numberOfAdults = 0;
                     Console.WriteLine($"You have entered {numberOfChildren} children. Do you want to proceed with these numbers? (Y/N)");
                 }
-                else if (numberOfChildren == 0 && numberOfAdults > 1) Console.WriteLine($"You have entered {numberOfAdults} adults. Do you want to proceed with these numbers? (Y/N)");
-
-                else Console.WriteLine($"You have entered {numberOfAdults} adults and {numberOfChildren} children. Do you want to proceed with these numbers? (Y/N)");
+                else if (numberOfChildren == 0 && numberOfAdults > 1)
+                {
+                    Console.WriteLine($"You have entered {numberOfAdults} adults. Do you want to proceed with these numbers? (Y/N)");
+                }
+                else
+                {
+                    Console.WriteLine($"You have entered {numberOfAdults} adults and {numberOfChildren} children. Do you want to proceed with these numbers? (Y/N)");
+                }
 
                 string proceedConfirmation = Console.ReadLine()!;
                 if (proceedConfirmation != "Y" && proceedConfirmation != "y" && proceedConfirmation != "Yes" && proceedConfirmation != "yes")
@@ -123,39 +133,62 @@ public class ViewFlights
                     selectedChildSeats = childSeatPicker.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
                 }
 
-                Menu.CateringMenu();
-
                 allSelectedSeats = selectedAdultSeats.Concat(selectedChildSeats).ToList();
 
-                if (allSelectedSeats.Count != numberOfAdults + numberOfChildren)
+                bool allSeatsValid = true;
+
+                foreach (string seat in allSelectedSeats)
                 {
-                    AccountFunctionality.ErrorMessage("The count of selected seats does not match the count of adults and children. Please try again!");
-                    FlightMenu();
+                    if (!IsSeatValid(seat))
+                    {
+                        AccountFunctionality.ErrorMessage($"Seat {seat} is not valid. Please choose another seat.");
+                        allSeatsValid = false;
+                        break;
+                    }
                 }
 
-                bool allSeatsValid = true;
                 if (allSeatsValid)
                 {
                     bool seatsAvailable = true;
+
                     foreach (string seat in allSelectedSeats)
                     {
-                        if (taken_seats.Contains(seat) && seat[0] < 'A' && seat[0] > 'F' && int.TryParse(seat[1..], out int seatNumber) && seatNumber < 1 && seatNumber > 30)
+                        if (taken_seats.Contains(seat))
                         {
                             AccountFunctionality.ErrorMessage($"Seat {seat} is already taken. Please choose another seat.");
                             seatsAvailable = false;
                             break;
                         }
-                        else AccountFunctionality.ErrorMessage($"{seat} is not available. Please choose different seats.");
                     }
 
-                    if (seatsAvailable) valid_seat = true;
-
+                    if (seatsAvailable)
+                    {
+                        valid_seat = true;
+                    }
                     else
                     {
                         valid_seat = false;
                         AccountFunctionality.ErrorMessage("One or more selected seats are not available. Please choose different seats.");
                     }
                 }
+                else
+                {
+                    valid_seat = false;
+                    continue;
+                }
+            }
+
+            Menu.CateringMenu();
+
+            bool IsSeatValid(string seat)
+            {
+                char row = seat[0];
+                int column;
+                if (int.TryParse(seat[1..], out column))
+                {
+                    return row >= 'A' && row <= 'F' && column >= 1 && column <= 30;
+                }
+                return false;
             }
 
             double Ticket_Price = 0.0;
@@ -203,7 +236,7 @@ public class ViewFlights
             Console.WriteLine($"Flight: {_flight[0].FlightNumber} from {_flight[0].Origin} to {_flight[0].Destination}");
             Console.WriteLine($"Date : {_flight[0].Date} - {_flight[0].DepartTime}");
             Console.WriteLine($"Total price: {GetTotalTicketPrice}");
-            Console.WriteLine($"Booked seat(s): {SeatPicker}");
+            Console.WriteLine($"Booked seat(s): {string.Join(",", allSelectedSeats)}");
             Console.WriteLine($"Number of adults: {numberOfAdults}");
             Console.WriteLine($"Number of children: {numberOfChildren}");
             Console.WriteLine($"Catering Orders: {string.Join(",", Menu.CateringOrders)}");
