@@ -594,11 +594,12 @@ public class ViewFlights
             "DepartTime",
             "ArrivalTime",
             "Price",
+            "Catering",
             "Gate");
             Bookingtable.Options.EnableCount = options.EnableCount;
             foreach (List<string> booking in flight_account_info)
             {
-                Bookingtable.AddRow(Convert.ToInt32(booking[0]) + 1, booking[1], booking[2], booking[3], booking[4], booking[5], booking[6], booking[7], booking[8], booking[9]);
+                Bookingtable.AddRow(Convert.ToInt32(booking[0]) + 1, booking[1], booking[2], booking[3], booking[4], booking[5], booking[6], booking[7], booking[8], booking[9], booking[10]);
             }
             Console.Clear();
             Console.WriteLine("All booked flights: \n");
