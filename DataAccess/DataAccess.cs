@@ -2,11 +2,11 @@
 
 public abstract class DataAccess<T>
 {
-    protected string path;
+    protected string? path;
 
     public List<T> LoadAll()
     {
-        string json = File.ReadAllText(path);
+        string json = File.ReadAllText(path!);
         return JsonSerializer.Deserialize<List<T>>(json)!;
     }
 
@@ -14,6 +14,6 @@ public abstract class DataAccess<T>
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
         string json = JsonSerializer.Serialize(data, options);
-        File.WriteAllText(path, json);
+        File.WriteAllText(path!, json);
     }
 }

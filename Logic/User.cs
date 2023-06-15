@@ -85,7 +85,7 @@ public class User
         if (UserLogin.PasswordCheck(NewPassword) && NewPassword == ConfirmedPassword)
         {
             Console.WriteLine($"Password has been successfully changed");
-            UserLogin.AccountInfo.Password = AccountsLogic.GetHashedSHA256(NewPassword);
+            UserLogin.AccountInfo!.Password = AccountsLogic.GetHashedSHA256(NewPassword);
             ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
             accountsAccess.WriteAll(ViewFlights.accountList);
             Console.Write("Press Enter to continue...");
@@ -138,7 +138,7 @@ public class User
         if (NewEmail == ConfirmEmail)
         {
             Console.WriteLine($"Email has been changed to {NewEmail}.");
-            UserLogin.AccountInfo.EmailAddress = NewEmail;
+            UserLogin.AccountInfo!.EmailAddress = NewEmail;
             ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
             accountsAccess.WriteAll(ViewFlights.accountList);
             Console.Write("\nPress Enter to continue...");
@@ -156,7 +156,7 @@ public class User
         if (!isAdmin) Console.Write("Please enter your password\n>> ");
         else Console.WriteLine("Please enter the user's password");
         string? password = AccountsLogic.GetHashedSHA256(AccountFunctionality.HidePassword());
-        AccountModel? acc = AccountsLogic.CheckLogin(UserLogin.AccountInfo.EmailAddress, password);
+        AccountModel? acc = AccountsLogic.CheckLogin(UserLogin.AccountInfo!.EmailAddress, password);
         return acc != null;
     }
 }

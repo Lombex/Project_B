@@ -124,13 +124,13 @@ public class ViewFlights
                     FlightMenu();
                 }
 
-                Console.WriteLine("Choose the seat(s) you would like for adults (separated by commas, e.g., A1, B2): ");
+                Console.WriteLine("Choose the seat(s) you would like for adults (separated by commas, e.g., A1,B2): ");
                 string adultSeatPicker = Console.ReadLine()!;
                 selectedAdultSeats = adultSeatPicker.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
 
                 if (numberOfChildren > 0)
                 {
-                    Console.WriteLine("Choose the seat(s) you would like for children (separated by commas, e.g., A1, B2): ");
+                    Console.WriteLine("Choose the seat(s) you would like for children (separated by commas, e.g., A1,B2): ");
                     string childSeatPicker = Console.ReadLine()!;
                     selectedChildSeats = childSeatPicker.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
                 }
@@ -184,7 +184,7 @@ public class ViewFlights
 
             bool IsSeatValid(string seat)
             {
-                List<string> valid_rows = new List<string> {"A", "B", "C", "D", "E", "F"};
+                List<string> valid_rows = new List<string> { "A", "B", "C", "D", "E", "F" };
                 char row = seat[0];
                 int column;
                 if (int.TryParse(seat[1..], out column))
@@ -238,7 +238,7 @@ public class ViewFlights
             Console.WriteLine($"-----------");
             Console.WriteLine($"Flight: {_flight[0].FlightNumber} from {_flight[0].Origin} to {_flight[0].Destination}");
             Console.WriteLine($"Date : {_flight[0].Date} - {_flight[0].DepartTime}");
-            Console.WriteLine($"Total price: {GetTotalTicketPrice}");
+            Console.WriteLine($"Total price: {Math.Round(GetTotalTicketPrice)}");
             Console.WriteLine($"Booked seat(s): {string.Join(",", allSelectedSeats)}");
             Console.WriteLine($"Number of adults: {numberOfAdults}");
             Console.WriteLine($"Number of children: {numberOfChildren}");
@@ -279,7 +279,7 @@ public class ViewFlights
                     _flight[0].Destination,
                     _flight[0].DepartTime.ToString(),
                     _flight[0].ArrivalTime.ToString(),
-                    GetTotalTicketPrice.ToString(),
+                    Math.Round(GetTotalTicketPrice).ToString(),
                     string.Join(", ", Menu.CateringOrders),
                     _flight[0].Gate,
                 };
