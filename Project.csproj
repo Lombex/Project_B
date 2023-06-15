@@ -13,13 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="DataSources\accounts.json">
+    <None Update="AirplaneApplication\DataSources\accounts.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="DataSources\bookhistory.json">
+    <None Update="AirplaneApplication\DataSources\bookhistory.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="DataSources\flightinfo.json">
+    <None Update="AirplaneApplication\DataSources\flightinfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
