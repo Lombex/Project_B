@@ -69,6 +69,8 @@ public class ViewFlights
             List<string> selectedAdultSeats = new List<string>();
             List<string> selectedChildSeats = new List<string>();
             List<string> allSelectedSeats = new List<string>();
+            List<string> firstClassSeats = new List<string> { "A1", "A2", "B1", "B2", "C2", "D1", "D2", "E1", "E2", "F1", "F2" };
+            List<string> disabledSeats = new List<string> { "A3", "B3", "C3", "D3", "E3", "F3" };
 
             while (!valid_seat)
             {
@@ -111,6 +113,10 @@ public class ViewFlights
                 else if (numberOfChildren == 0 && numberOfAdults > 1)
                 {
                     Console.WriteLine($"You have entered {numberOfAdults} adults. Do you want to proceed with these numbers? (Y/N)");
+                }
+                else if (numberOfChildren == 1 && numberOfAdults == 1)
+                {
+                    Console.WriteLine($"You have entered {numberOfAdults} adult and {numberOfChildren} child. Do you want to proceed with these numbers? (Y/N)");
                 }
                 else
                 {
@@ -161,6 +167,12 @@ public class ViewFlights
                             seatsAvailable = false;
                             break;
                         }
+
+                        if (disabledSeats.Contains(seat) && !HasDisability)
+                        {
+                            AccountFunctionality.ErrorMessage("You have no disability, so you cannot choose this seat. Please try again!");
+                            FlightMenu();
+                        }
                     }
 
                     if (seatsAvailable)
@@ -195,8 +207,6 @@ public class ViewFlights
             }
 
             double Ticket_Price = 0.0;
-            List<string> firstClassSeats = new List<string> { "A1", "A2", "B1", "B2", "C2", "D1", "D2", "E1", "E2", "F1", "F2" };
-            List<string> disabledSeats = new List<string> { "A3", "B3", "C3", "D3", "E3", "F3" };
 
             foreach (string seat in selectedAdultSeats)
             {
@@ -205,12 +215,6 @@ public class ViewFlights
                 if (firstClassSeats.Contains(seat))
                 {
                     ticketPrice *= 2;
-                }
-
-                if (disabledSeats.Contains(seat) && !HasDisability)
-                {
-                    AccountFunctionality.ErrorMessage("You have no disability, so you cannot choose this seat. Please try again!");
-                    FlightMenu();
                 }
 
                 Ticket_Price += ticketPrice;
