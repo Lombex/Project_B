@@ -622,7 +622,8 @@ public class ViewFlights
             for (char columnChar = 'A'; columnChar <= 'F'; columnChar++)
             {
                 string seat = $"{columnChar}{row}";
-                string value = taken_seats.Contains(seat) ? "X" : "";
+                string value = taken_seats.Contains(seat) ? "X" : "✓";
+                if (row == 3) value = taken_seats.Contains(seat) ? "X" : "i";
                 table_row.Add(value);
             }
 
@@ -631,7 +632,7 @@ public class ViewFlights
 
         Console.Clear();
         Console.WriteLine("The Layout of the plane: \n");
-        SetConsoleColor.WriteEmbeddedColorLine(Table.ToStringAlternative().Replace("X", "[red]X[/red]"));
+        SetConsoleColor.WriteEmbeddedColorLine(Table.ToStringAlternative().Replace("X", "[red]X[/red]").Replace("✓", "[green]✓[/green]").Replace("i", "[blue]i[/blue]"));
     }
 
     public static void SeeBookings(bool delete_flight, bool change_seat)
