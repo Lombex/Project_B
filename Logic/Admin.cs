@@ -164,7 +164,6 @@ public class Admin : User
 
         Console.WriteLine("Flight information updated successfully.");
     }
-
     public void DeleteFlight()
     {
 
@@ -198,7 +197,10 @@ public class Admin : User
             accountsAccess.WriteAll(ViewFlights.accountList);
 
             Console.WriteLine($"You have deleted the flight {flight.FlightNumber} - {flight.Origin} to {flight.Destination}");
+            Console.Write("Press Enter to continue...");
+            Console.ReadLine();
 
+            Menu.AdminAccount();
         }
         else if (answer == "N" || answer == "n" || answer == "No" || answer == "no")
         {
