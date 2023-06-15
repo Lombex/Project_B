@@ -99,6 +99,8 @@ public class User
     }
     public void ChangeEmail(bool isAdmin = false)
     {
+        string NewEmail = "";
+        string ConfirmEmail = "";
         if (!isAdmin)
         {
             if (!CheckPassword())
@@ -110,45 +112,38 @@ public class User
         }
         else
         {
+
             List<AccountModel> account_list = accountsAccess.LoadAll();
-            Console.Write("Enter the user's email address: ");
-            string EmailAddress = Console.ReadLine()!;
-            foreach (AccountModel account in account_list)
+            string EmailAddress = AccountFunctionality.GetInput("Enter the user's email address: ");
+            AccountModel? updatedAccount = account_list.FirstOrDefault(a => a.EmailAddress == EmailAddress);
+            if (updatedAccount != null)
             {
-                if (account.EmailAddress == EmailAddress)
+                NewEmail = AccountFunctionality.GetInput("Enter user's new email: ");
+                ConfirmEmail = AccountFunctionality.GetInput("Please confirm your new email: ");
+                if (NewEmail == ConfirmEmail)
                 {
-                    Console.WriteLine("Enter user's new email: ");
-                    string _NewEmail = Console.ReadLine()!;
-                    account.EmailAddress = _NewEmail;
+                    Console.WriteLine($"Email has been changed to {NewEmail}.");
+                    updatedAccount.EmailAddress = NewEmail;
+                    UserLogin.AccountInfo!.EmailAddress = NewEmail;
                     accountsAccess.WriteAll(account_list);
 
+                    Console.Write("\nPress Enter to continue...");
+                    Console.ReadLine();
                 }
                 else
                 {
-                    Console.WriteLine("Couldn't find that email, please try again!");
-                    ChangeName(true);
+                    Console.WriteLine("Given emails don't match!");
+                    ChangeEmail();
                 }
+
+            }
+            else
+            {
+                Console.WriteLine("Couldn't find that user, please try again!");
+                ChangeName(true);
             }
         }
 
-
-        string NewEmail = AccountFunctionality.GetInput("Enter your new email: ");
-        string ConfirmEmail = AccountFunctionality.GetInput("Please confirm your new email: ");
-
-        if (NewEmail == ConfirmEmail)
-        {
-            Console.WriteLine($"Email has been changed to {NewEmail}.");
-            UserLogin.AccountInfo!.EmailAddress = NewEmail;
-            ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
-            accountsAccess.WriteAll(ViewFlights.accountList);
-            Console.Write("\nPress Enter to continue...");
-            Console.ReadLine();
-        }
-        else
-        {
-            Console.WriteLine("Given emails don't match!");
-            ChangeEmail();
-        }
     }
 
     private bool CheckPassword(bool isAdmin = false)
