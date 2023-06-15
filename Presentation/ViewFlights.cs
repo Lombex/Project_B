@@ -88,7 +88,23 @@ public class ViewFlights
                 Console.Write("How many adults (excluding children) are booking the flight? ");
                 numberOfAdults = Convert.ToInt32(Console.ReadLine());
 
-                Console.WriteLine($"You have entered {numberOfAdults} adults and {numberOfChildren} children. Do you want to proceed with these numbers? (Y/N)");
+                if (numberOfAdults <= 0 && numberOfChildren <= 1)
+                {
+                    numberOfAdults = 0;
+                    numberOfChildren = 1;
+                    Console.WriteLine($"You have entered {numberOfChildren} child. Do you want to proceed with these numbers? (Y/N)");
+                }
+
+                else if (numberOfAdults == 1 && numberOfChildren == 0) Console.WriteLine($"You have entered {numberOfAdults} adult. Do you want to proceed with these numbers? (Y/N)");
+                else if (numberOfAdults <= 0 && numberOfChildren > 1)
+                {
+                    numberOfAdults = 0;
+                    Console.WriteLine($"You have entered {numberOfChildren} children. Do you want to proceed with these numbers? (Y/N)");
+                }
+                else if (numberOfChildren == 0 && numberOfAdults > 1) Console.WriteLine($"You have entered {numberOfAdults} adults. Do you want to proceed with these numbers? (Y/N)");
+
+                else Console.WriteLine($"You have entered {numberOfAdults} adults and {numberOfChildren} children. Do you want to proceed with these numbers? (Y/N)");
+
                 string proceedConfirmation = Console.ReadLine()!;
                 if (proceedConfirmation != "Y" && proceedConfirmation != "y" && proceedConfirmation != "Yes" && proceedConfirmation != "yes")
                 {
@@ -123,18 +139,17 @@ public class ViewFlights
                     bool seatsAvailable = true;
                     foreach (string seat in allSelectedSeats)
                     {
-                        if (taken_seats.Contains(seat))
+                        if (taken_seats.Contains(seat) && seat[0] < 'A' && seat[0] > 'F' && int.TryParse(seat[1..], out int seatNumber) && seatNumber < 1 && seatNumber > 30)
                         {
                             AccountFunctionality.ErrorMessage($"Seat {seat} is already taken. Please choose another seat.");
                             seatsAvailable = false;
                             break;
                         }
+                        else AccountFunctionality.ErrorMessage($"{seat} is not available. Please choose different seats.");
                     }
 
-                    if (seatsAvailable)
-                    {
-                        valid_seat = true;
-                    }
+                    if (seatsAvailable) valid_seat = true;
+
                     else
                     {
                         valid_seat = false;
