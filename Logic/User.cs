@@ -117,7 +117,7 @@ public class User
             {
                 Console.WriteLine("Give user's new Email: ");
                 string NewName = Console.ReadLine()!;
-                account!.EmailAddress = NewName;
+                account!.EmailAddress = NewName.ToLower();
                 ViewFlights.accountList[account.Id - 1] = account;
                 accountsAccess.WriteAll(ViewFlights.accountList);
                 Console.WriteLine("User has been changed!");
