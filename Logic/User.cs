@@ -131,8 +131,8 @@ public class User
                 ChangeEmail(isAdmin);
             }
         }
-        string EmailName = AccountFunctionality.GetInput("What name do you want to use? ");
-        string ConfirmEmail = AccountFunctionality.GetInput("Please enter your name again.");
+        string EmailName = AccountFunctionality.GetInput("What email do you want to use? ");
+        string ConfirmEmail = AccountFunctionality.GetInput("Please enter your email again.");
         if (EmailName == ConfirmEmail)
         {
             // uses TextInfo to turn names from "john doe" to "John Doe"
