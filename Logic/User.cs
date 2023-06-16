@@ -139,8 +139,8 @@ public class User
             var textinfo = new CultureInfo("en-US", false).TextInfo;
             EmailName = textinfo.ToTitleCase(EmailName.ToLower());
 
-            Console.WriteLine($"Email has been changed to {EmailName}");
-            UserLogin.AccountInfo!.EmailAddress = EmailName;
+            Console.WriteLine($"Email has been changed to {EmailName.ToLower()}");
+            UserLogin.AccountInfo!.EmailAddress = EmailName.ToLower();
             ViewFlights.accountList[UserLogin.AccountInfo.Id - 1] = UserLogin.AccountInfo;
             accountsAccess.WriteAll(ViewFlights.accountList);
             Console.Write("Press Enter to continue...");
