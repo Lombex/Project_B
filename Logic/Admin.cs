@@ -160,7 +160,7 @@ public class Admin : User
             case "11":
                 ; if (double.TryParse(newValue, out double windowMultiplier))
                 {
-                    flight.WindowMultuplier = windowMultiplier;
+                    flight.WindowMultiplier = windowMultiplier;
                 }
                 else
                 {
@@ -171,7 +171,7 @@ public class Admin : User
             case "12":
                 if (double.TryParse(newValue, out double FirstClassMutiplier))
                 {
-                    flight.FirstClassMutiplier = FirstClassMutiplier;
+                    flight.FirstClassMultiplier = FirstClassMutiplier;
                 }
                 else
                 {

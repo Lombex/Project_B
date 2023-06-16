@@ -60,7 +60,7 @@ public class ViewFlights
             double seat_price = _flight[0].Price;
             Console.WriteLine($"Seat price overview: ");
             Console.WriteLine($"-------------------------");
-            Console.WriteLine($"Adult window first class seat: €{Math.Round((seat_price * _flight[0].FirstClassMutiplier) * _flight[0].WindowMultuplier)}\nAdult first class seat: €{Math.Round((seat_price * _flight[0].FirstClassMutiplier))}\nChildren window first class seat: €{Math.Round(((seat_price * _flight[0].FirstClassMutiplier) * 0.8) * _flight[0].WindowMultuplier)}\nChildren first class seat: €{Math.Round((seat_price * _flight[0].FirstClassMutiplier) * 0.8)}\nAdult window second class seat: €{Math.Round(seat_price * _flight[0].WindowMultuplier)}\nAdult second class seat: €{Math.Round(seat_price)}\nChildren window second class seat: €{Math.Round((seat_price * 0.8) * _flight[0].WindowMultuplier)}\nChildren second class seat: €{Math.Round(seat_price * 0.8)}\nFor user with disability, choose row 3 for normal prices!");
+            Console.WriteLine($"Adult window first class seat: €{Math.Round((seat_price * _flight[0].FirstClassMultiplier) * _flight[0].WindowMultiplier)}\nAdult first class seat: €{Math.Round((seat_price * _flight[0].FirstClassMultiplier))}\nChildren window first class seat: €{Math.Round(((seat_price * _flight[0].FirstClassMultiplier) * 0.8) * _flight[0].WindowMultiplier)}\nChildren first class seat: €{Math.Round((seat_price * _flight[0].FirstClassMultiplier) * 0.8)}\nAdult window second class seat: €{Math.Round(seat_price * _flight[0].WindowMultiplier)}\nAdult second class seat: €{Math.Round(seat_price)}\nChildren window second class seat: €{Math.Round((seat_price * 0.8) * _flight[0].WindowMultiplier)}\nChildren second class seat: €{Math.Round(seat_price * 0.8)}\nFor user with disability, choose row 3 for normal prices!");
             Console.WriteLine($"-------------------------");
 
 
@@ -223,10 +223,10 @@ public class ViewFlights
 
                 if (firstClassSeats.Contains(seat))
                 {
-                    ticketPrice *= _flight[0].FirstClassMutiplier;
+                    ticketPrice *= _flight[0].FirstClassMultiplier;
                     if (windowSeats.Contains(seat))
                     {
-                        ticketPrice *= _flight[0].WindowMultuplier;
+                        ticketPrice *= _flight[0].WindowMultiplier;
                     }
                 }
 
@@ -243,7 +243,7 @@ public class ViewFlights
                     childTicketPrice *= 0.8;
                     if (windowSeats.Contains(seat))
                     {
-                        childTicketPrice *= _flight[0].WindowMultuplier;
+                        childTicketPrice *= _flight[0].WindowMultiplier;
                     }
                 }
                 else
@@ -251,7 +251,7 @@ public class ViewFlights
                     childTicketPrice *= 0.8;
                     if (windowSeats.Contains(seat))
                     {
-                        childTicketPrice *= _flight[0].WindowMultuplier;
+                        childTicketPrice *= _flight[0].WindowMultiplier;
                     }
 
                 }
@@ -669,6 +669,7 @@ public class ViewFlights
     {
         int AmountOfFlights = UserLogin.AccountInfo!.BookedFlights.Count;
         List<List<string>> flight_account_info = new List<List<string>>(UserLogin.AccountInfo.BookedFlights);
+        if (_flights == null) _flights = flightinfoAccess.LoadAll();
 
         if (AmountOfFlights == 0)
         {
@@ -677,6 +678,7 @@ public class ViewFlights
         else
         {
             ConsoleTable Bookingtable = new ConsoleTable("FlightID", "Flight Number",
+            "DateBooked",
             "Date",
             "Seat",
             "Origin",
@@ -687,11 +689,15 @@ public class ViewFlights
             "Catering",
             "Gate");
             Bookingtable.Options.EnableCount = options.EnableCount;
+
+
             foreach (List<string> booking in flight_account_info)
             {
+                int IDflight = Convert.ToInt32(booking[0]) + 1;
+                FlightInfoModel flight = _flights.FirstOrDefault(a => a.FlightID == IDflight)!;
                 string cleanString = Regex.Replace(booking[9], @"[^a-zA-Z\s]", "");
                 cleanString = cleanString.Replace("(", "").Replace(")", ",");
-                Bookingtable.AddRow(Convert.ToInt32(booking[0]) + 1, booking[1], booking[2], booking[3], booking[4], booking[5], booking[6], booking[7], booking[8], cleanString, booking[10]);
+                Bookingtable.AddRow(Convert.ToInt32(booking[0]) + 1, booking[1], booking[2], flight.Date, booking[3], booking[4], booking[5], booking[6], booking[7], booking[8], cleanString, booking[10]);
             }
             Console.Clear();
             Console.WriteLine("All booked flights: \n");
@@ -788,7 +794,7 @@ public class ViewFlights
 
                 foreach (List<string> flight in flight_account_info)
                 {
-                    int ticketPrice = ChangeSeatFlight[0].Price;
+                    double ticketPrice = ChangeSeatFlight[0].Price;
 
                     double TotalPrice = 0.0;
 
@@ -797,11 +803,27 @@ public class ViewFlights
                     {
                         List<string> firstClassSeats = new List<string> { "A1", "A2", "B1", "B2", "C2", "D1", "D2", "E1", "E2", "F1", "F2" };
                         List<string> disabledSeats = new List<string> { "A3", "B3", "C3", "D3", "E3", "F3" };
+                        List<string> windowSeats = new List<string>()
+        {
+            "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10",
+            "A11", "A12", "A13", "A14", "A15", "A16", "A17", "A18", "A19", "A20",
+            "A21", "A22", "A23", "A24", "A25", "A26", "A27", "A28", "A29", "A30",
+            "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10",
+            "F11", "F12", "F13", "F14", "F15", "F16", "F17", "F18", "F19", "F20",
+            "F21", "F22", "F23", "F24", "F25", "F26", "F27", "F28", "F29", "F30"
+        };
 
                         foreach (string new_seat in new_seatList)
                         {
-
-                            if (firstClassSeats.Contains(new_seat)) TotalPrice += (ticketPrice * 2);
+                            if (firstClassSeats.Contains(new_seat))
+                            {
+                                ticketPrice *= ChangeSeatFlight[0].FirstClassMultiplier;
+                                if (windowSeats.Contains(new_seat))
+                                {
+                                    ticketPrice *= ChangeSeatFlight[0].WindowMultiplier;
+                                }
+                                TotalPrice += ticketPrice;
+                            }
 
                             else TotalPrice += ticketPrice;
 
@@ -834,7 +856,7 @@ public class ViewFlights
 
                         // Update account information
                         flight[3] = string.Join(",", new_seatList);
-                        flight[8] = TotalPrice.ToString();
+                        flight[8] = Math.Round(TotalPrice).ToString();
                         AccountModel? updatedAccount = accountList.FirstOrDefault(a => a.Id == UserLogin.AccountInfo.Id);
                         updatedAccount!.BookedFlights = flight_account_info;
                         UserLogin.AccountInfo.BookedFlights = flight_account_info;
