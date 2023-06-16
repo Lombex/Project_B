@@ -52,26 +52,16 @@ public class Admin : User
             Create_account();
         }
     }
-    public void Add_flight()
-    {
-        string flight_number = AccountFunctionality.GetInput("Enter flight number")!;
-        string aircraft = AccountFunctionality.GetInput("Enter Aircraft");
-        string origin = AccountFunctionality.GetInput("Enter origin");
-        string destination = AccountFunctionality.GetInput("Enter destination");
-        string date = AccountFunctionality.GetInput("Enter Date");
-        double flighttime = Convert.ToDouble(AccountFunctionality.GetInput("Enter flighttime (in hours) [ format: 0.1 ]"));
-        string departtime = AccountFunctionality.GetInput("Enter depart time (local)");
-        string arrivaltime = AccountFunctionality.GetInput("Enter arrival time (local)");
-        string gate = AccountFunctionality.GetInput("Enter gate")!;
-        int price = Convert.ToInt32(AccountFunctionality.GetInput("Enter standard price of the flight"));
 
+
+    public void Add_flight(string flight_number, string aircraft, string origin, string destination, string date, double flighttime, string departtime, string arrivaltime, int price, string gate)
+    {
         List<FlightInfoModel> dataList = flightinfoAccess.LoadAll();
         int highestId = dataList.Max(data => data.FlightID);
         FlightInfoModel newFlight = new FlightInfoModel(highestId + 1, flight_number, aircraft, origin, destination, date, flighttime, departtime, arrivaltime, price, gate);
         dataList.Add(newFlight);
         flightinfoAccess.WriteAll(dataList);
-
-        Menu.AdminAccount();
+        return;
     }
     public void ModifyFlight()
     {
@@ -296,5 +286,10 @@ public class Admin : User
             Console.WriteLine("User not found.");
         }
     }
-    public void ViewFlightList() => ViewFlights.FlightMenu();
+    public void ViewFlightList()
+    {
+        FlightInfoAccess flightinfoAccess = new FlightInfoAccess();
+        ViewFlights._flights = flightinfoAccess.LoadAll();
+        ViewFlights.FlightMenu();
+    }
 }

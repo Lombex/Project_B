@@ -1,7 +1,7 @@
 using ConsoleTables;
 using Project.Presentation;
 
-static class Menu
+public static class Menu
 {
     //This shows the menu. You can call back to this method to show the menu again
     //after another presentation method is completed.
@@ -113,7 +113,7 @@ static class Menu
                 break;
             case "6":
                 Console.WriteLine("Add flight:");
-                admin.Add_flight();
+                AccountFunctionality.Add_Data_Flight();
                 AdminAccount();
                 break;
             case "7":
@@ -121,6 +121,7 @@ static class Menu
                 AdminAccount();
                 break;
             case "8":
+
                 admin.ViewFlightList();
                 AdminAccount();
                 break;
@@ -273,15 +274,15 @@ static class Menu
                 ConsoleTable DrinksTable = new ConsoleTable("ID", "Drink", "Price", "Ingredients", "Allergies");
                 DrinksTable.Options.EnableCount = ViewFlights.options.EnableCount;
                 foreach (var Drinks in ViewFlights._Catering)
-                    if (Drinks.Key.Item3 == ViewFlights.CateringOptions.Drinks) DrinksTable.AddRow(Drinks.Key.Item1, Drinks.Key.Item2, "$ " + Drinks.Value.Item3, string.Join(", ", Drinks.Value.Item1), string.Join(", ", Drinks.Value.Item2)); 
+                    if (Drinks.Key.Item3 == ViewFlights.CateringOptions.Drinks) DrinksTable.AddRow(Drinks.Key.Item1, Drinks.Key.Item2, "$ " + Drinks.Value.Item3, string.Join(", ", Drinks.Value.Item1), string.Join(", ", Drinks.Value.Item2));
                 Console.Clear();
                 Console.WriteLine(DrinksTable.ToString());
                 Console.WriteLine("\nSelect a drink using the ID: ");
-                
+
                 try
                 {
                     int DrinkSelection = Convert.ToInt32(Console.ReadLine()!);
-                    foreach (var Items in ViewFlights._Catering) 
+                    foreach (var Items in ViewFlights._Catering)
                         if (Items.Key.Item1.Equals(DrinkSelection) && Items.Key.Item3 == ViewFlights.CateringOptions.Drinks)
                         {
                             Console.WriteLine("Drink has been added to your order!");
@@ -291,7 +292,7 @@ static class Menu
                     break;
                 }
                 catch (Exception) { }
-                
+
                 break;
             case "2" or "food":
                 ConsoleTable FoodTable = new ConsoleTable("ID", "Food", "Price", "Ingredients", "Allergies");

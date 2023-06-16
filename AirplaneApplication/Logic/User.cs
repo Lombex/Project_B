@@ -153,7 +153,7 @@ public class User
         }
     }
 
-    private bool CheckPassword(bool isAdmin = false)
+    public bool CheckPassword(bool isAdmin = false)
     {
         if (!isAdmin) Console.Write("Please enter your password\n>> ");
         else Console.WriteLine("Please enter the user's password");

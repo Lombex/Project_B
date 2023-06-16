@@ -4,7 +4,7 @@ using System.Net;
 using System.Numerics;
 using System.Text.RegularExpressions;
 
-static class UserLogin
+public static class UserLogin
 {
     private static AccountsAccess accountsAccess = new AccountsAccess();
     public static AccountModel? AccountInfo { get; set; } // AccountInformation
@@ -46,7 +46,7 @@ static class UserLogin
         }
         return true;
     }
-    private static bool SanitizeEmailValidator(string email)
+    public static bool SanitizeEmailValidator(string email)
     {
         const string emailRegex = @"^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
         string sanitizedEmail = Regex.Replace(email, @"[^a-zA-Z0-9.@+-]", "");

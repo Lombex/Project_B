@@ -68,7 +68,7 @@ public class AccountFunctionality
                 System.Environment.Exit(0);
                 ErrorMessage("Program failed to exit. Close manually or try again.");
                 return true;
-                // unnecessary return because it'll have shut down but the compiler whines on
+            // unnecessary return because it'll have shut down but the compiler whines on
             default:
                 return false;
         }
@@ -85,11 +85,10 @@ public class AccountFunctionality
     {
         Console.Clear();
         PrintBanner();
-        Console.WriteLine("\n" + message + "\n(Press Enter to continue)");
-        Console.ReadLine();
+        Console.WriteLine("\n" + message + "\n(Press Enter wait 1 second)");
+        Thread.Sleep(1000);
     }
 
-    // we're not counting from 0, because idk
     static private int banner_number = 1;
     static private List<string> banner_options = new List<string>()
     {
@@ -126,5 +125,21 @@ public class AccountFunctionality
         {
             banner_number = id;
         }
+    }
+
+    public static void Add_Data_Flight()
+    {
+        Admin admin = new Admin();
+        string flight_number = AccountFunctionality.GetInput("Enter flight number")!;
+        string aircraft = AccountFunctionality.GetInput("Enter Aircraft");
+        string origin = AccountFunctionality.GetInput("Enter origin");
+        string destination = AccountFunctionality.GetInput("Enter destination");
+        string date = AccountFunctionality.GetInput("Enter Date");
+        double flighttime = Convert.ToDouble(AccountFunctionality.GetInput("Enter flighttime (in hours) [ format: 0.1 ]"));
+        string departtime = AccountFunctionality.GetInput("Enter depart time (local)");
+        string arrivaltime = AccountFunctionality.GetInput("Enter arrival time (local)");
+        string gate = AccountFunctionality.GetInput("Enter gate")!;
+        int price = Convert.ToInt32(AccountFunctionality.GetInput("Enter standard price of the flight"));
+        admin.Add_flight(flight_number, aircraft, origin, destination, date, flighttime, departtime, arrivaltime, price, gate);
     }
 }

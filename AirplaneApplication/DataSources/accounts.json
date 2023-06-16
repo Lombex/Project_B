@@ -15,20 +15,6 @@
     "FullName": "user",
     "IsAdmin": false,
     "IsEmployee": false,
-    "BookedFlights": [
-      [
-        "367",
-        "OP7161",
-        "16-6-2023 11:45:14",
-        "A1",
-        "Rotterdam",
-        "Dublin",
-        "13:00",
-        "15:58",
-        "883",
-        "",
-        "A1"
-      ]
-    ]
+    "BookedFlights": []
   }
 ]
