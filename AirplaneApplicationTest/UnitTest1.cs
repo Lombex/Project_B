@@ -12,10 +12,9 @@ namespace AirplaneApplicationTest
         // use Console.In for input
         public void Check_if_input_null_gives_right_exception()
         {
-            AccountsLogic account_logic = new AccountsLogic();
-            try 
+            try
             {
-                account_logic.CheckLogin(null, null);
+                AccountsLogic.CheckLogin(null, null);
                 Assert.Fail("no exception thrown");
             }
             catch (Exception ex)
@@ -24,29 +23,29 @@ namespace AirplaneApplicationTest
             }
         }
 
-        [TestMethod]
-        public void Check_logout()
-        {
-            // start van een idee mr vgm werkt dit niet
-            bool succeeded;
-            process.StartInfo.RedirectStandardInput = true;
-            MainSpace.Main();
-            process.StandardInput.WriteLine("3");
-            // Assert.
+        // [TestMethod]
+        // public void Check_logout()
+        // {
+        //     // start van een idee mr vgm werkt dit niet
+        //     bool succeeded;
+        //     process.StartInfo.RedirectStandardInput = true;
+        //     MainSpace.Main();
+        //     process.StandardInput.WriteLine("3");
+        //     // Assert.
 
-            /* example for timeouts:
+        //     /* example for timeouts:
 
-            var task = Task.Run(() => SomeMethod(input));
-            if (task.Wait(TimeSpan.FromSeconds(10)))
-                return task.Result;
-            else
-                throw new Exception("Timed out");
-            */
-        }
+        //     var task = Task.Run(() => SomeMethod(input));
+        //     if (task.Wait(TimeSpan.FromSeconds(10)))
+        //         return task.Result;
+        //     else
+        //         throw new Exception("Timed out");
+        //     */
+        // }
 
-        public void Check_for_creating_new_user_account()
-        {
-            UserLogin.MakeAccount(UserLogin.AccountType.User, true);
-        }
+        // public void Check_for_creating_new_user_account()
+        // {
+        //     UserLogin.MakeAccount(UserLogin.AccountType.User, true);
+        // }
     }
 }

@@ -1,3 +1,5 @@
+using Project.Presentation;
+
 public class AccountFunctionality
 {
     public static string HidePassword()
@@ -24,6 +26,15 @@ public class AccountFunctionality
             }
             info = Console.ReadKey(true);
         }
+        if (password == "q")
+        {
+            if (!Quit())
+            {
+                Console.Clear();
+                Console.Write("Please enter your password\n>> ");
+                password = HidePassword();
+            }
+        }
         Console.WriteLine();
         return password;
     }
@@ -32,7 +43,35 @@ public class AccountFunctionality
     public static string GetInput(string prompt = "")
     {
         Console.Write(prompt + "\n>> ");
-        return Console.ReadLine();
+        string? input = Console.ReadLine();
+        switch (input)
+        {
+            case "q":
+                if (!Quit()) return GetInput(prompt);
+                return GetInput(prompt);
+            case "":
+                return GetInput(prompt);
+            default:
+                return input!;
+        }
+
+    }
+
+    private static bool Quit()
+    {
+        string Quit = GetInput("\nAre you sure you want to quit? (y/n)");
+        switch (Quit)
+        {
+            case "y":
+            case "Y":
+                Console.WriteLine("Bye!");
+                System.Environment.Exit(0);
+                ErrorMessage("Program failed to exit. Close manually or try again.");
+                return true;
+                // unnecessary return because it'll have shut down but the compiler whines on
+            default:
+                return false;
+        }
     }
 
     public static void ErrorMessage()
@@ -69,17 +108,17 @@ public class AccountFunctionality
             }
             Console.WriteLine("\nCurrent Banner: ");
         }
-        Console.WriteLine(banner_options[banner_number - 1]);
+        SetConsoleColor.WriteEmbeddedColorLine($"[blue]{banner_options[banner_number - 1]}[/blue]");
     }
 
 
     public static void ChangeBanner(int id)
     {
-        if(id > banner_options.Count)
+        if (id > banner_options.Count)
         {
             banner_number = banner_options.Count;
         }
-        else if(id <= 0)
+        else if (id <= 0)
         {
             banner_number = 1;
         }

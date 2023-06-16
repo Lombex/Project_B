@@ -5,6 +5,30 @@
     "Password": "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2",
     "FullName": "root",
     "IsAdmin": true,
-    "IsEmployee": false
+    "IsEmployee": false,
+    "BookedFlights": []
+  },
+  {
+    "Id": 2,
+    "EmailAddress": "user@gmail.com",
+    "Password": "bc5848f227cc161eb5f68dfe98cb13110a9c843ce69e953a88107d865583d397",
+    "FullName": "user",
+    "IsAdmin": false,
+    "IsEmployee": false,
+    "BookedFlights": [
+      [
+        "367",
+        "OP7161",
+        "16-6-2023 11:45:14",
+        "A1",
+        "Rotterdam",
+        "Dublin",
+        "13:00",
+        "15:58",
+        "883",
+        "",
+        "A1"
+      ]
+    ]
   }
 ]

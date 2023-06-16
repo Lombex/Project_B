@@ -2,6 +2,9 @@ using System.Text.Json.Serialization;
 
 public class FlightInfoModel
 {
+    [JsonPropertyName("Flight-ID")]
+    public int FlightID { get; set; }
+
     [JsonPropertyName("Flight-number")]
     public string FlightNumber { get; set; }
 
@@ -29,8 +32,20 @@ public class FlightInfoModel
     [JsonPropertyName("Gate")]
     public string Gate { get; set; }
 
-    public FlightInfoModel(string flightnumber, string aircraft, string origin, string destination, string date, double flighttime, string departtime, string arrivaltime, string gate = "A1")
+    [JsonPropertyName("SeatsTaken")]
+    public List<string> SeatsTaken { get; set; }
+
+    [JsonPropertyName("Price")]
+    public int Price { get; set; }
+
+    [JsonPropertyName("WindowMultuplier")]
+    public double WindowMultiplier { get; set; }
+    [JsonPropertyName("FirstClassMutiplier")]
+    public double FirstClassMultiplier { get; set; }
+
+    public FlightInfoModel(int flightID, string flightnumber, string aircraft, string origin, string destination, string date, double flighttime, string departtime, string arrivaltime, int price, string gate = "A1", double windowMultiplier = 1.2, double firstClassMultiplier = 2)
     {
+        FlightID = flightID;
         FlightNumber = flightnumber;
         Aircraft = aircraft;
         Origin = origin;
@@ -40,5 +55,9 @@ public class FlightInfoModel
         DepartTime = departtime;
         ArrivalTime = arrivaltime;
         Gate = gate;
+        SeatsTaken = new List<string>();
+        Price = price;
+        WindowMultiplier = windowMultiplier;
+        FirstClassMultiplier = firstClassMultiplier;
     }
 }
